@@ -16,10 +16,10 @@ import java.sql.SQLException;
  */
 public class UserDAOImpl implements UserDAO {
 
-    public static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
     private final Connection connection;
 
-    public UserDAOImpl(Connection connection) {
+    UserDAOImpl(Connection connection) {
         this.connection = connection;
     }
 

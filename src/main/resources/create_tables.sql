@@ -1,3 +1,4 @@
+drop table if exists "user";
 CREATE TABLE "user"
 (
   "id"           serial  NOT NULL,
@@ -15,7 +16,7 @@ CREATE TABLE "user"
   );
 
 
-
+drop table if exists "role";
 CREATE TABLE "role"
 (
   "id"   serial  NOT NULL,
@@ -26,7 +27,7 @@ CREATE TABLE "role"
   );
 
 
-
+drop table if exists "ad";
 CREATE TABLE "ad"
 (
   "id"          serial  NOT NULL,
@@ -38,27 +39,27 @@ CREATE TABLE "ad"
   "price_min"   DECIMAL NOT NULL,
   "date"        DATE    NOT NULL,
   "day_count"   int     NOT NULL,
-  "confirm"     BOOLEAN NOT NULL DEFAULT '0',
-  "is_actual"   BOOLEAN NOT NULL DEFAULT '1',
+  "confirm"     BOOLEAN NOT NULL DEFAULT false,
+  "is_actual"   BOOLEAN NOT NULL DEFAULT true,
   CONSTRAINT ad_pk PRIMARY KEY ("id")
 ) WITH (
     OIDS= FALSE
   );
 
 
-
+drop table if exists "category";
 CREATE TABLE "category"
 (
   "id"        serial  NOT NULL,
   "name"      varchar NOT NULL UNIQUE,
-  "parent_id" int     NOT NULL DEFAULT '0',
+  "parent_id" int,
   CONSTRAINT category_pk PRIMARY KEY ("id")
 ) WITH (
     OIDS= FALSE
   );
 
 
-
+drop table if exists "image";
 CREATE TABLE "image"
 (
   "id"      serial  NOT NULL,
@@ -71,7 +72,7 @@ CREATE TABLE "image"
   );
 
 
-
+drop table if exists "city";
 CREATE TABLE "city"
 (
   "id"   serial  NOT NULL,

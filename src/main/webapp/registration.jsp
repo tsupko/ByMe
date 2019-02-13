@@ -12,7 +12,7 @@
 </head>
 <body>
     <h2>Добро пожаловать на страницу регистрации!</h2>
-    <form method="post" action="${pageContext.request.contextPath}/">
+    <form method="post" action="/">
         <label>
             Введите логин: <input type="text" name="username">
         </label><br>

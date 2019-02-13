@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 /**
  * реализация UserDAO
- * для таблицы user, имеет POJO реализациею entity.User
+ * для таблицы user, имеет POJO реализацию entity.User
  *
  * @author Kuzina Anastasia
  */

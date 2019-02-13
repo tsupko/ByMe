@@ -1,10 +1,8 @@
-package ru.inno.project.dao;
+package ru.innopolis.project.dao;
 
-import ru.inno.project.entity.User;
+import ru.innopolis.project.entity.User;
 
-public interface UserDAO {
-
+public interface UserDao {
     void create(User user);
     User selectById(int id);
-
 }

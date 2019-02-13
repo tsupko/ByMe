@@ -1,26 +1,33 @@
-package ru.inno.project.dao;
+package ru.innopolis.project.dao;
 
-import org.apache.log4j.Logger;
-import ru.inno.project.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import ru.innopolis.project.entity.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
- * реализация UserDAO
- * для таблицы user, имеет POJO реализацию entity.User
+ * Реализация интерфейса {@code UserDao} для работы с объектами {@code entity.User}.
  *
- * @author Kuzina Anastasia
+ * @author Kuzina Anastasia, Александр Цупко
  */
-public class UserDAOImpl implements UserDAO {
+@Repository
+public class UserDaoImpl implements UserDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
-    public static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
-    private final Connection connection;
+    private Connection connection = null;
 
-    public UserDAOImpl(Connection connection) {
-        this.connection = connection;
+    public UserDaoImpl() {
+        try {
+            this.connection = DriverManager.getConnection(
+                    "jdbc:postgresql://localhost:5432/postgres",
+                    "postgres",
+                    ""
+            );
+        } catch (SQLException e) {
+            LOGGER.error("Исключение при установке соединения с базой данных: {}", e);
+        }
     }
 
     /**
@@ -34,7 +41,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String USER_PHONE_NUMBER = "phone_number";
     private static final String USER_ROLE_ID = "role_id";
     private static final String USER_CITY_ID = "city_id";
-    private static final String USER_IS_ACTYAL = "is_actual";
+    private static final String USER_IS_ACTUAL = "is_actual";
 
     /**
      *  sql-скрипт для создания записи в соответствующей таблице
@@ -47,33 +54,33 @@ public class UserDAOImpl implements UserDAO {
      * создание записи в БД с полями переданного экземпляра
      *  в соответствующей таблице
      *
-     * @param user объект для которого будет создана запись в БД
+     * @param user объект, для которого будет создана запись в БД
      */
     @Override
     public void create(User user) {
-        LOGGER.debug("Creating user  " + user.toString());
-        System.out.println("Creating user  " + user.toString());
+        if (user == null) {
+            return;
+        }
+        LOGGER.debug("Создание пользователя {}", user);
         try (PreparedStatement stmt = connection.prepareStatement(INSERT_USER)) {
             stmt.setString(1, user.getLogin());
             stmt.setString(2, user.getPassword());
             stmt.setString(3, user.getName());
             stmt.setString(4, user.getEmail());
-            stmt.setString(5, user.getPhone_number());
-            stmt.setInt(6, user.getRole_id());
-            stmt.setInt(7, user.getCity_id());
-            stmt.setBoolean(8, user.is_actual());
-
+            stmt.setString(5, user.getPhoneNumber());
+            stmt.setInt(6, user.getRoleId());
+            stmt.setInt(7, user.getCityId());
+            stmt.setBoolean(8, user.isActual());
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     user.setId(rs.getInt("id"));
-                    LOGGER.debug("User with id=" + user.getId() + " created");
-                    System.out.println(("User with id=" + user.getId() + " created"));
+                    LOGGER.info("Пользователь с id={} создан успешно", user.getId());
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error("Исключение при возвращении id после создания пользователя: {}", e);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Исключение при подготовке insert-запроса: {}", e);
         }
     }
 
@@ -89,7 +96,10 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public User selectById(int id) {
-        LOGGER.debug("selectById for id = " + id);
+        if (id <= 0) {
+            return null;
+        }
+        LOGGER.debug("Выбор пользователя по id={}", id);
         User user = new User();
         try (PreparedStatement stmt = connection.prepareStatement(SELECT_USER_BY_ID)) {
             stmt.setInt(1, id);
@@ -100,18 +110,20 @@ public class UserDAOImpl implements UserDAO {
                     user.setPassword(rs.getString(USER_PASSWORD));
                     user.setName(rs.getString(USER_NAME));
                     user.setEmail(rs.getString(USER_EMAIL));
-                    user.setPhone_number(rs.getString(USER_PHONE_NUMBER));
-                    user.setRole_id(rs.getInt(USER_ROLE_ID));
-                    user.setCity_id(rs.getInt(USER_CITY_ID));
-                    user.setActual(rs.getBoolean(USER_IS_ACTYAL));
+                    user.setPhoneNumber(rs.getString(USER_PHONE_NUMBER));
+                    user.setRoleId(rs.getInt(USER_ROLE_ID));
+                    user.setCityId(rs.getInt(USER_CITY_ID));
+                    user.setActual(rs.getBoolean(USER_IS_ACTUAL));
+                }
+                if (user.getId() != 0) {
+                    LOGGER.info("{} выбран по id={} успешно", user, id);
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error("Исключение при получении пользователя по id={}: {}", id, e);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Исключение при подготовке запроса на выбор пользователя по id={}: {}", id, e);
         }
-        LOGGER.info(user.toString());
-        return (user);
+        return user.getId() == 0 ? null : user;
     }
 }

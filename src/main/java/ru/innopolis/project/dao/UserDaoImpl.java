@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.innopolis.project.entity.User;
 
+import javax.sql.DataSource;
 import java.sql.*;
 
 /**
@@ -22,10 +23,18 @@ public class UserDaoImpl implements UserDao {
             this.connection = DriverManager.getConnection(
                     "jdbc:postgresql://localhost:5432/postgres",
                     "postgres",
-                    ""
+                    "masterkey"
             );
         } catch (SQLException e) {
             LOGGER.error("Исключение при установке соединения с базой данных: {}", e);
+        }
+    }
+
+    public UserDaoImpl(DataSource dataSource) {
+        try {
+            this.connection = dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -124,5 +133,24 @@ public class UserDaoImpl implements UserDao {
             LOGGER.error("Исключение при подготовке запроса на выбор пользователя по id={}: {}", id, e);
         }
         return user.getId() == 0 ? null : user;
+    }
+
+    private static final String SELECT_BY_NAME_PASS = "SELECT * FROM \"user\" WHERE login = ? AND password = ?";
+    @Override
+    public boolean isExist(String name, String password) {
+        try (PreparedStatement stmt = connection.prepareStatement(SELECT_BY_NAME_PASS)) {
+            stmt.setString(1, name);
+            stmt.setString(2, password);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -2,8 +2,8 @@ package ru.innopolis.project.servlet;
 
 
 import org.apache.commons.dbcp.BasicDataSource;
-import ru.innopolis.project.dao.UserDAO;
-import ru.innopolis.project.dao.UserDAOImpl;
+import ru.innopolis.project.dao.UserDao;
+import ru.innopolis.project.dao.UserDaoImpl;
 
 
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ import java.util.Properties;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    UserDAO userDao;
+    UserDao userDao;
 
     BasicDataSource dataSource = new BasicDataSource();
     @Override
@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
             dataSource.setUrl(dbUrl);
             dataSource.setDriverClassName(driverClassName);
 
-            userDao = new UserDAOImpl(dataSource);
+            userDao = new UserDaoImpl(dataSource);
 
 
         } catch (IOException e) {

@@ -3,8 +3,8 @@ package ru.innopolis.project;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import ru.innopolis.project.dao.UserDAO;
-import ru.innopolis.project.dao.UserDAOImpl;
+import ru.innopolis.project.dao.UserDao;
+import ru.innopolis.project.dao.UserDaoImpl;
 
 /**
  * Клиентский код.
@@ -20,7 +20,7 @@ public class App {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(App.class);
 
-        UserDAO userDao = context.getBean("userDAOImpl", UserDAOImpl.class);
+        UserDao userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
 
         for (int i = 0; i < 10; i++) {
             userDao.selectById(i);

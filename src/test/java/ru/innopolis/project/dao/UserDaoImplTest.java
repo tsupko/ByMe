@@ -7,11 +7,11 @@ import ru.innopolis.project.entity.User;
 
 public class UserDaoImplTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImplTest.class);
-    private static UserDAO userDAO;
+    private static UserDao userDAO;
 
     private static void init() {
         LOGGER.info("init");
-        userDAO = new UserDAOImpl();
+        userDAO = new UserDaoImpl();
     }
 
     @Test

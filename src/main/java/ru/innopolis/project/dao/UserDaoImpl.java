@@ -9,16 +9,16 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 /**
- * Реализация интерфейса {@code UserDAO} для работы с объектами {@code entity.User}.
+ * Реализация интерфейса {@code UserDao} для работы с объектами {@code entity.User}.
  *
  * @author Kuzina Anastasia, Александр Цупко
  */
 @Repository
-public class UserDAOImpl implements UserDAO {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserDAOImpl.class);
+public class UserDaoImpl implements UserDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
     private Connection connection = null;
 
-    public UserDAOImpl() {
+    public UserDaoImpl() {
         try {
             this.connection = DriverManager.getConnection(
                     "jdbc:postgresql://localhost:5432/postgres",
@@ -30,7 +30,7 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    public UserDAOImpl(DataSource dataSource) {
+    public UserDaoImpl(DataSource dataSource) {
         try {
             this.connection = dataSource.getConnection();
         } catch (SQLException e) {

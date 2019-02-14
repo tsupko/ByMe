@@ -5,14 +5,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.innopolis.project.dao.UserDAO;
+import ru.innopolis.project.dao.UserDao;
 import ru.innopolis.project.entity.User;
 
 @Controller
 public class UserController {
-    private UserDAO dao;
+    private UserDao dao;
 
-    public void setDao(UserDAO dao) {
+    public void setDao(UserDao dao) {
         this.dao = dao;
     }
 

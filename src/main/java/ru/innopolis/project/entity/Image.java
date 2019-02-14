@@ -9,8 +9,8 @@ public class Image {
 
     private int id;
     private String img;
-    private boolean is_main;
-    private int ad_id;
+    private boolean isMain;
+    private int adId;
 
     public int getId() {
         return id;
@@ -28,20 +28,20 @@ public class Image {
         this.img = img;
     }
 
-    public boolean isIs_main() {
-        return is_main;
+    public boolean isMain() {
+        return isMain;
     }
 
-    public void setIs_main(boolean is_main) {
-        this.is_main = is_main;
+    public void setMain(boolean is_main) {
+        this.isMain = isMain;
     }
 
-    public int getAd_id() {
-        return ad_id;
+    public int getAdId() {
+        return adId;
     }
 
-    public void setAd_id(int ad_id) {
-        this.ad_id = ad_id;
+    public void setAdId(int adId) {
+        this.adId = adId;
     }
 
     @Override
@@ -49,8 +49,8 @@ public class Image {
         return "Image{" +
                 "id=" + id +
                 ", img='" + img + '\'' +
-                ", is_main=" + is_main +
-                ", ad_id=" + ad_id +
+                ", isMain=" + isMain +
+                ", adId=" + adId +
                 '}';
     }
 }

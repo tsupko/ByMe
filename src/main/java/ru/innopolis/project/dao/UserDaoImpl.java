@@ -15,14 +15,6 @@ import java.sql.*;
 @Repository
 public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
-
-<<<<<<< HEAD:src/main/java/ru/inno/project/dao/UserDAOImpl.java
-    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
-    private final Connection connection;
-
-    UserDAOImpl(Connection connection) {
-        this.connection = connection;
-=======
     private Connection connection = null;
 
     public UserDaoImpl() {
@@ -35,7 +27,6 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             LOGGER.error("Исключение при установке соединения с базой данных: {}", e);
         }
->>>>>>> f3_registration:src/main/java/ru/innopolis/project/dao/UserDaoImpl.java
     }
 
     /**

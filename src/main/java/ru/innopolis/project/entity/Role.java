@@ -1,4 +1,4 @@
-package ru.inno.project.entity;
+package ru.innopolis.project.entity;
 
 /**
  * POJO класс для таблицы user

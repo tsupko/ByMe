@@ -1,3 +1,5 @@
 .idea
+classes
+lib
 target
 *.iml

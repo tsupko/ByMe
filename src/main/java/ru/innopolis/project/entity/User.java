@@ -1,10 +1,13 @@
-package ru.inno.project.entity;
+package ru.innopolis.project.entity;
+
+import org.springframework.stereotype.Component;
 
 /**
  * POJO класс для таблицы user
  *
  * @author Kuzina Anastasia
  */
+@Component
 public class User {
 
     private int id;
@@ -12,11 +15,10 @@ public class User {
     private String password;
     private String name;
     private String email;
-    private String phone_number;
-    private int role_id;
-    private int city_id;
-    private boolean is_actual;
-
+    private String phoneNumber;
+    private int roleId;
+    private int cityId;
+    private boolean isActual;
 
     public int getId() {
         return id;
@@ -58,36 +60,36 @@ public class User {
         this.email = email;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phone_number) {
+        this.phoneNumber = phone_number;
     }
 
-    public int getRole_id() {
-        return role_id;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setRole_id(int role_id) {
-        this.role_id = role_id;
+    public void setRoleId(int role_id) {
+        this.roleId = role_id;
     }
 
-    public int getCity_id() {
-        return city_id;
+    public int getCityId() {
+        return cityId;
     }
 
-    public void setCity_id(int city_id) {
-        this.city_id = city_id;
+    public void setCityId(int city_id) {
+        this.cityId = city_id;
     }
 
-    public boolean is_actual() {
-        return is_actual;
+    public boolean isActual() {
+        return isActual;
     }
 
     public void setActual(boolean is_actual) {
-        this.is_actual = is_actual;
+        this.isActual = is_actual;
     }
 
     @Override
@@ -98,10 +100,10 @@ public class User {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", phone_number='" + phone_number + '\'' +
-                ", role_id='" + role_id + '\'' +
-                ", city_id='" + city_id + '\'' +
-                ", is_actual='" + is_actual + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", roleId='" + roleId + '\'' +
+                ", cityId='" + cityId + '\'' +
+                ", isActual='" + isActual + '\'' +
                 '}';
     }
 }

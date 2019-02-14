@@ -5,33 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.innopolis.project.entity.User;
 
-public class UserDAOImplTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserDAOImplTest.class);
-    private static UserDAO userDAO;
+public class UserDaoImplTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImplTest.class);
+    private static UserDao userDAO;
 
     private static void init() {
         LOGGER.info("init");
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        /*
-         *  параметры для подключения к БД
-         */
-        String url = "jdbc:postgresql://localhost:5432/postgres";
-        String login = "postgres";
-        String pass = "";
-
-//        Connection connection = null;
-//        try {
-//            connection = DriverManager.getConnection(url, login, pass);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
-        userDAO = new UserDAOImpl();
+        userDAO = new UserDaoImpl();
     }
 
     @Test

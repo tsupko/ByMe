@@ -5,13 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.innopolis.project.entity.User;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 public class UserDAOImplTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDAOImplTest.class);
-    private static UserDao userDAO;
+    private static UserDAO userDAO;
 
     private static void init() {
         LOGGER.info("init");
@@ -35,7 +31,7 @@ public class UserDAOImplTest {
 //            e.printStackTrace();
 //        }
 
-        userDAO = new UserDaoImpl();
+        userDAO = new UserDAOImpl();
     }
 
     @Test

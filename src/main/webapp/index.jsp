@@ -12,6 +12,6 @@
   </head>
   <body>
     <h2>Добро пожаловать на главную страницу!</h2>
-    <p><a href="registration.jsp"><b>Зарегистрироваться</b></a> или <a href=""><b>Войти</b></a></p>
+    <p><a href="jsp/registration.jsp"><b>Зарегистрироваться</b></a> или <a href="jsp/login.jsp"><b>Войти</b></a></p>
   </body>
 </html>

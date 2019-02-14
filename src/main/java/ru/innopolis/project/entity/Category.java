@@ -9,7 +9,7 @@ public class Category {
 
     private int id;
     private String name;
-    private int parent_id;
+    private int parentId;
 
     public int getId() {
         return id;
@@ -27,12 +27,12 @@ public class Category {
         this.name = name;
     }
 
-    public int getParent_id() {
-        return parent_id;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setParent_id(int parent_id) {
-        this.parent_id = parent_id;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Category {
         return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", parent_id=" + parent_id +
+                ", parentId=" + parentId +
                 '}';
     }
 }

@@ -13,14 +13,14 @@ public class Ad {
     private int id;
     private String title;
     private String text;
-    private int user_id;
-    private int category_id;
+    private int userId;
+    private int categoryId;
     private BigDecimal price;
-    private BigDecimal price_min;
+    private BigDecimal priceMin;
     private Date date;
-    private int day_count;
+    private int dayCount;
     private boolean confirm;
-    private boolean is_actual;
+    private boolean isActual;
 
     public int getId() {
         return id;
@@ -46,20 +46,20 @@ public class Ad {
         this.text = text;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getCategory_id() {
-        return category_id;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(int category_id) {
+        this.categoryId = categoryId;
     }
 
     public BigDecimal getPrice() {
@@ -70,12 +70,12 @@ public class Ad {
         this.price = price;
     }
 
-    public BigDecimal getPrice_min() {
-        return price_min;
+    public BigDecimal getPriceMin() {
+        return priceMin;
     }
 
-    public void setPrice_min(BigDecimal price_min) {
-        this.price_min = price_min;
+    public void setPriceMin(BigDecimal price_min) {
+        this.priceMin = priceMin;
     }
 
     public Date getDate() {
@@ -86,12 +86,12 @@ public class Ad {
         this.date = date;
     }
 
-    public int getDay_count() {
-        return day_count;
+    public int getDayCount() {
+        return dayCount;
     }
 
-    public void setDay_count(int day_count) {
-        this.day_count = day_count;
+    public void setDayCount(int dayCount) {
+        this.dayCount = dayCount;
     }
 
     public boolean isConfirm() {
@@ -102,12 +102,12 @@ public class Ad {
         this.confirm = confirm;
     }
 
-    public boolean isIs_actual() {
-        return is_actual;
+    public boolean isActual() {
+        return isActual;
     }
 
-    public void setIs_actual(boolean is_actual) {
-        this.is_actual = is_actual;
+    public void setActual(boolean isActual) {
+        this.isActual = isActual;
     }
 
 
@@ -117,14 +117,14 @@ public class Ad {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", text='" + text + '\'' +
-                ", user_id=" + user_id +
-                ", category_id=" + category_id +
+                ", userId=" + userId +
+                ", categoryId=" + categoryId +
                 ", price=" + price +
-                ", price_min=" + price_min +
+                ", priceMin=" + priceMin +
                 ", date=" + date +
-                ", day_count=" + day_count +
+                ", dayCount=" + dayCount +
                 ", confirm=" + confirm +
-                ", is_actual=" + is_actual +
+                ", isActual=" + isActual +
                 '}';
     }
 }

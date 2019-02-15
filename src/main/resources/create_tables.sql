@@ -1,3 +1,6 @@
+create database byme;
+--create schema public;
+
 drop table if exists "user";
 CREATE TABLE "user"
 (
@@ -37,8 +40,6 @@ CREATE TABLE "ad"
   "category_id" int     NOT NULL,
   "price"       DECIMAL NOT NULL,
   "price_min"   DECIMAL NOT NULL,
-  "date"        DATE    NOT NULL,
-  "day_count"   int     NOT NULL,
   "confirm"     BOOLEAN NOT NULL DEFAULT false,
   "is_actual"   BOOLEAN NOT NULL DEFAULT true,
   CONSTRAINT ad_pk PRIMARY KEY ("id")

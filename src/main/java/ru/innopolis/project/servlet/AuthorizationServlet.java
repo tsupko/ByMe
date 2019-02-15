@@ -13,8 +13,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/authorization")
+public class AuthorizationServlet extends HttpServlet {
     UserDao userDao;
 
     BasicDataSource dataSource = new BasicDataSource();
@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
         Properties properties = new Properties();
 
         try {
-            properties.load(new FileInputStream(getServletContext().getRealPath("/WEB-INF/classes/db.properties")));
+            properties.load(new FileInputStream(getServletContext().getRealPath("/resources/jdbc.properties")));
             String dbUrl = properties.getProperty("db.url");
             String dbUsername = properties.getProperty("db.username");
             String dbPassword = properties.getProperty("db.password");
@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getServletContext().getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
+        req.getServletContext().getRequestDispatcher("/jsp/authorization.jsp").forward(req, resp);
     }
 
     @Override
@@ -56,9 +56,8 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", name);
 
             resp.sendRedirect(req.getContextPath() + "/home");
-//            req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
         } else {
-            resp.sendRedirect(req.getContextPath() + "/login");
+            resp.sendRedirect(req.getContextPath() + "/jsp/authorization.jsp");
         }
     }
 }

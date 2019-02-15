@@ -8,7 +8,7 @@
 <div class="head">
     <button class="headButton" onclick="location.href='registration.jsp'">Зарегистрироваться</button>
 </div>
-<form method="post" action="authorization">
+<form method="post" action="/authorization">
     <table class="table">
         <tr>
             <td>Введите логин:</td>

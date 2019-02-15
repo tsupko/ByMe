@@ -21,9 +21,9 @@ public class UserDaoImpl implements UserDao {
     public UserDaoImpl() {
         try {
             this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/postgres",
+                    "jdbc:postgresql://localhost:5432/byme",
                     "postgres",
-                    "masterkey"
+                    ""
             );
         } catch (SQLException e) {
             LOGGER.error("Исключение при установке соединения с базой данных: {}", e);

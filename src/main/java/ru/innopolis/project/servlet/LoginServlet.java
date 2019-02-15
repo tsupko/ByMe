@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
         String name = req.getParameter("name");
         String password = req.getParameter("password");
 
-        if (userDao.isExist(name, password)) {
+        if (userDao.exists(name, password)) {
             HttpSession session = req.getSession();
             session.setAttribute("user", name);
 

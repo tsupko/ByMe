@@ -3,3 +3,4 @@ classes
 lib
 target
 *.iml
+db.properties

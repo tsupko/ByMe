@@ -4,3 +4,4 @@ lib
 target
 *.iml
 db.properties
+.DS_Store

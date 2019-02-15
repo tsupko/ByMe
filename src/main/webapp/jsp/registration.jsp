@@ -1,25 +1,55 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: aleksandrtsupko
-  Date: 2019-02-12
-  Time: 15:47
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Страница регистрации</title>
+    <link href="css/registration.css" rel="stylesheet" type="text/css">
 </head>
+
 <body>
-    <h2>Добро пожаловать на страницу регистрации!</h2>
-    <form method="post" action="/">
-        <label>
-            Введите логин: <input type="text" name="username">
-        </label><br>
-        <label>
-            Введите пароль: <input type="password" name="password">
-        </label><br>
-        <input type="submit" name="register" value="Зарегистрироваться"><br>
-    </form>
+<div class="head">
+    <button class="headButton" onclick="location.href='authorization.jsp'">Войти</button>
+</div>
+<form method="post" action="/">
+    <table class="table">
+        <tr>
+            <td>Введите логин:</td>
+            <td><input type="text" name="login"></td>
+        </tr>
+
+        <tr>
+        <tr>
+            <td>Введите пароль:</td>
+            <td><input type="password" name="password"></td>
+        </tr>
+        <tr>
+        <tr>
+            <td>Введите пароль еще раз:</td>
+            <td><input type="password" name="checkPassword"></td>
+        </tr>
+
+        <tr>
+            <td>Введите имя:</td>
+            <td><input type="text" name="username"></td>
+        </tr>
+        <tr>
+        <tr>
+            <td>Введите почту:</td>
+            <td><input type="text" name="email"></td>
+        </tr>
+        <tr>
+            <td>Введите телефон:</td>
+            <td><input type="text" name="phone"></td>
+        </tr>
+        <tr>
+        <tr>
+            <td>Введите город:</td>
+            <td><input type="text" name="city"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button class="headButton" name="register" type="submit">Зарегистрироваться</button></td>
+        </tr>
+    </table>
+</form>
 </body>
 </html>

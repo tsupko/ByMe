@@ -13,21 +13,22 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
-    UserDao userDao;
+@WebServlet("/authorization")
+public class AuthorizationServlet extends HttpServlet {
 
-    BasicDataSource dataSource = new BasicDataSource();
+    private final BasicDataSource dataSource = new BasicDataSource();
+    private UserDao userDao;
+
     @Override
-    public void init() throws ServletException {
+    public void init() {
         Properties properties = new Properties();
 
         try {
-            properties.load(new FileInputStream(getServletContext().getRealPath("/WEB-INF/classes/db.properties")));
-            String dbUrl = properties.getProperty("db.url");
-            String dbUsername = properties.getProperty("db.username");
-            String dbPassword = properties.getProperty("db.password");
-            String driverClassName = properties.getProperty("db.driverClassName");
+            properties.load(new FileInputStream(getServletContext().getRealPath("/resources/jdbc.properties")));
+            String dbUrl =              properties.getProperty("jdbc.url");
+            String dbUsername =         properties.getProperty("jdbc.username");
+            String dbPassword =         properties.getProperty("jdbc.password");
+            String driverClassName =    properties.getProperty("jdbc.driverClassName");
 
             dataSource.setUsername(dbUsername);
             dataSource.setPassword(dbPassword);
@@ -43,11 +44,11 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getServletContext().getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
+        req.getServletContext().getRequestDispatcher("/jsp/authorization.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String name = req.getParameter("name");
         String password = req.getParameter("password");
 
@@ -56,9 +57,8 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", name);
 
             resp.sendRedirect(req.getContextPath() + "/home");
-//            req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
         } else {
-            resp.sendRedirect(req.getContextPath() + "/login");
+            resp.sendRedirect(req.getContextPath() + "/jsp/authorization.jsp");
         }
     }
 }

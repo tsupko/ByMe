@@ -137,7 +137,7 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SELECT_BY_NAME_PASS = "SELECT * FROM \"user\" WHERE login = ? AND password = ?";
     @Override
-    public boolean isExist(String name, String password) {
+    public boolean exists(String name, String password) {
         try (PreparedStatement stmt = connection.prepareStatement(SELECT_BY_NAME_PASS)) {
             stmt.setString(1, name);
             stmt.setString(2, password);

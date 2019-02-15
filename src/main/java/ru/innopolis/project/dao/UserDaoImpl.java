@@ -21,13 +21,17 @@ public class UserDaoImpl implements UserDao {
     public UserDaoImpl() {
         try {
             this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/postgres",
+                    "jdbc:postgresql://localhost:5432/byme",
                     "postgres",
-                    "masterkey"
+                    ""
             );
         } catch (SQLException e) {
             LOGGER.error("Исключение при установке соединения с базой данных: {}", e);
         }
+    }
+
+    public UserDaoImpl(Connection connection) {
+        this.connection = connection;
     }
 
     public UserDaoImpl(DataSource dataSource) {
@@ -52,21 +56,22 @@ public class UserDaoImpl implements UserDao {
     private static final String USER_IS_ACTUAL = "is_actual";
 
     /**
-     *  sql-скрипт для создания записи в соответствующей таблице
+     * sql-скрипт для создания записи в соответствующей таблице
      */
-    private static final String INSERT_USER = "insert into \"user\"" +
+    private static final String INSERT_USER = "insert into public.user" +
             " (login, password, name, email, phone_number, role_id, city_id, is_actual)" +
             " values (?, ?, ?, ?, ?, ?, ?, ?) returning id";
 
     /**
      * создание записи в БД с полями переданного экземпляра
-     *  в соответствующей таблице
+     * в соответствующей таблице
      *
      * @param user объект, для которого будет создана запись в БД
      */
     @Override
     public void create(User user) {
         if (user == null) {
+            LOGGER.error("Попытка создавать запись в БД для user == null ");
             return;
         }
         LOGGER.debug("Создание пользователя {}", user);
@@ -93,9 +98,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     *  sql-скрипт для выборки по id
+     * sql-скрипт для выборки по id
      */
-    private static final String SELECT_USER_BY_ID = "select * from \"user\" where id = ?";
+    private static final String SELECT_USER_BY_ID = "select * from public.user where id = ?";
 
     /**
      * создание объекта user по переданному id
@@ -105,6 +110,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User selectById(int id) {
         if (id <= 0) {
+            LOGGER.error("Некорректный id={}: {}", id);
             return null;
         }
         LOGGER.debug("Выбор пользователя по id={}", id);
@@ -135,21 +141,37 @@ public class UserDaoImpl implements UserDao {
         return user.getId() == 0 ? null : user;
     }
 
-    private static final String SELECT_BY_NAME_PASS = "SELECT * FROM \"user\" WHERE login = ? AND password = ?";
+    /**
+     * sql-скрипт для проверки наличия пользователя в БД
+     */
+    private static final String SELECT_BY_LOGIN_PASS = "SELECT * FROM public.user WHERE login = ? AND password = ?";
+
+    /**
+     * проверка наличия пользователя с указанными параметрами в таблице user
+     *
+     * @param login    логин пользователся
+     * @param password пароль пользователся
+     */
     @Override
-    public boolean isExist(String name, String password) {
-        try (PreparedStatement stmt = connection.prepareStatement(SELECT_BY_NAME_PASS)) {
-            stmt.setString(1, name);
+    public boolean exists(String login, String password) {
+        if (login.trim().isEmpty() && password.trim().isEmpty()) {
+            LOGGER.error("Параметры login и  password не могут быть пустыми");
+            return false;
+        }
+        try (PreparedStatement stmt = connection.prepareStatement(SELECT_BY_LOGIN_PASS)) {
+            stmt.setString(1, login);
             stmt.setString(2, password);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return true;
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error("Исключение при проверке наличия пользователя по login={}: {}, password={}: {}",
+                        login, password, e);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Исключение при подготовке запроса проверки наличия пользователя " +
+                    "по login={}: {}, password={}: {}", login, password, e);
         }
         return false;
     }

@@ -8,5 +8,5 @@ public interface UserDao {
 
     User selectById(int id);
 
-    public boolean exists(String name, String password);
+    public boolean exists(String login, String password);
 }

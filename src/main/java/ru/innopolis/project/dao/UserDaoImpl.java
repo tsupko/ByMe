@@ -23,11 +23,15 @@ public class UserDaoImpl implements UserDao {
             this.connection = DriverManager.getConnection(
                     "jdbc:postgresql://localhost:5432/byme",
                     "postgres",
-                    "2019src14"
+                    ""
             );
         } catch (SQLException e) {
             LOGGER.error("Исключение при установке соединения с базой данных: {}", e);
         }
+    }
+
+    public UserDaoImpl(Connection connection) {
+        this.connection = connection;
     }
 
     public UserDaoImpl(DataSource dataSource) {
@@ -52,7 +56,7 @@ public class UserDaoImpl implements UserDao {
     private static final String USER_IS_ACTUAL = "is_actual";
 
     /**
-     *  sql-скрипт для создания записи в соответствующей таблице
+     * sql-скрипт для создания записи в соответствующей таблице
      */
     private static final String INSERT_USER = "insert into public.user" +
             " (login, password, name, email, phone_number, role_id, city_id, is_actual)" +
@@ -94,7 +98,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     *  sql-скрипт для выборки по id
+     * sql-скрипт для выборки по id
      */
     private static final String SELECT_USER_BY_ID = "select * from public.user where id = ?";
 
@@ -138,19 +142,19 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     *  sql-скрипт для проверки наличия пользователя в БД
+     * sql-скрипт для проверки наличия пользователя в БД
      */
     private static final String SELECT_BY_LOGIN_PASS = "SELECT * FROM public.user WHERE login = ? AND password = ?";
 
     /**
      * проверка наличия пользователя с указанными параметрами в таблице user
      *
-     * @param login логин пользователся
+     * @param login    логин пользователся
      * @param password пароль пользователся
      */
     @Override
     public boolean exists(String login, String password) {
-        if (login.trim().isEmpty() && password.trim().isEmpty()){
+        if (login.trim().isEmpty() && password.trim().isEmpty()) {
             LOGGER.error("Параметры login и  password не могут быть пустыми");
             return false;
         }
@@ -167,7 +171,7 @@ public class UserDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Исключение при подготовке запроса проверки наличия пользователя " +
-                            "по login={}: {}, password={}: {}", login, password, e);
+                    "по login={}: {}, password={}: {}", login, password, e);
         }
         return false;
     }

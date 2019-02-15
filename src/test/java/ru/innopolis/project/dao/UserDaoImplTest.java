@@ -4,28 +4,46 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.innopolis.project.entity.User;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserDaoImplTest {
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class UserDaoImplTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImplTest.class);
     private static UserDao userDAO;
+    private static Connection connection;
 
     private static void init() {
         LOGGER.info("init");
-        userDAO = new UserDaoImpl();
+
+        try {
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://localhost:5432/byme",
+                    "postgres",
+                    "2019src14"
+            );
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            LOGGER.error("Исключение при установке соединения с базой данных: {}", e);
+        }
+
+        userDAO = new UserDaoImpl(connection);
     }
 
     @Test
-    public void createTest() {
+    void createTest() {
         init();
 
         LOGGER.info("create user test");
         User user = new User();
 
-        user.setLogin("test2");
+        user.setLogin("test");
         user.setPassword("123");
         user.setName("TTT");
-        user.setEmail("ttt2@ya.ru");
+        user.setEmail("ttt@ya.ru");
         user.setPhoneNumber("+70000000000");
         user.setRoleId(1);
         user.setCityId(1);
@@ -33,10 +51,15 @@ public class UserDaoImplTest {
 
         LOGGER.info(user.toString());
         userDAO.create(user);
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void selectByIdTest() {
+    void selectByIdTest() {
         LOGGER.info("select user by id test");
         init();
         int id = 4;
@@ -54,7 +77,7 @@ public class UserDaoImplTest {
         String login = "admin";
         String password = "admin";
         userDAO.exists(login, password);
-        assertEquals(true, userDAO.exists(login, password));
+        assertTrue(userDAO.exists(login, password));
     }
 
     @Test
@@ -64,7 +87,7 @@ public class UserDaoImplTest {
         String login = "gfdsuygj";
         String password = "sfd";
         userDAO.exists(login, password);
-        assertEquals(false, userDAO.exists(login, password));
+        assertFalse(userDAO.exists(login, password));
     }
 
     @Test

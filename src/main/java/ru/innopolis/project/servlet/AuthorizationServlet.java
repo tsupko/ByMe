@@ -58,7 +58,7 @@ public class AuthorizationServlet extends HttpServlet {
 
             resp.sendRedirect(req.getContextPath() + "/home");
         } else {
-            resp.sendRedirect(req.getContextPath() + "/authorization"); // doPost: noAuth, doGET: AUTH, /jsp/authorization.jsp
+            resp.sendRedirect(req.getContextPath() + "/authorization");
         }
     }
 }

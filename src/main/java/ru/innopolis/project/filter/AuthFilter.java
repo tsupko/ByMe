@@ -8,24 +8,23 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebFilter("/home")
-public class AuthFilter implements Filter{
+public class AuthFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest)servletRequest;
-        HttpServletResponse response = (HttpServletResponse)servletResponse;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute("user") == null) {
-            servletRequest.getServletContext().getRequestDispatcher("/login").forward(request, response);
+            servletRequest.getServletContext().getRequestDispatcher("/authorization").forward(request, response);
+        } else {
+            chain.doFilter(request, response);
         }
-
-        chain.doFilter(request, response);
     }
 
     @Override

@@ -2,14 +2,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
+    <context:annotation-config/>
     <context:component-scan base-package="ru.innopolis.project"/>
 
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="prefix" value="/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 
@@ -23,7 +23,5 @@
         <property name="username"           value="${jdbc.username}"/>
         <property name="password"           value="${jdbc.password}"/>
     </bean>
-
-    <mvc:annotation-driven/>
 
 </beans>

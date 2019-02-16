@@ -10,7 +10,7 @@
   <div class="loginButtons">
     <button class="headButton" onclick="location.href='jsp/add.jsp'">Добавить объявление</button>
     <button class="headButton" onclick="location.href='jsp/authorization.jsp'">Выйти</button>
-    <button class="headButton" onclick="location.href='jsp/registration.jsp'">Зарегистрироваться</button>
+      <button class="headButton"><a href="${pageContext.request.contextPath}/registration.form">Зарегистрироваться</a></button>
     <button class="headButton" onclick="location.href='jsp/authorization.jsp'">Войти</button>
   </div>
 </div>

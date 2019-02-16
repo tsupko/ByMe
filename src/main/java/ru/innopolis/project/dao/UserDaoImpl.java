@@ -2,6 +2,9 @@ package ru.innopolis.project.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 import ru.innopolis.project.entity.User;
 
@@ -17,17 +20,10 @@ import java.sql.*;
 public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
     private Connection connection = null;
+    private JdbcTemplate dataSource;
 
     public UserDaoImpl() {
-        try {
-            this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/byme",
-                    "postgres",
-                    ""
-            );
-        } catch (SQLException e) {
-            LOGGER.error("Исключение при установке соединения с базой данных: {}", e);
-        }
+
     }
 
     public UserDaoImpl(Connection connection) {
@@ -40,6 +36,11 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = new JdbcTemplate(dataSource);
     }
 
     /**
@@ -75,26 +76,25 @@ public class UserDaoImpl implements UserDao {
             return;
         }
         LOGGER.debug("Создание пользователя {}", user);
-        try (PreparedStatement stmt = connection.prepareStatement(INSERT_USER)) {
+        this.dataSource.execute(INSERT_USER, (PreparedStatementCallback<User>) stmt -> {
             stmt.setString(1, user.getLogin());
             stmt.setString(2, user.getPassword());
             stmt.setString(3, user.getName());
             stmt.setString(4, user.getEmail());
             stmt.setString(5, user.getPhoneNumber());
-            stmt.setInt(6, user.getRoleId());
-            stmt.setInt(7, user.getCityId());
-            stmt.setBoolean(8, user.isActual());
+            stmt.setInt(6, 3 /* role=user */);
+            stmt.setInt(7, 1 /* city=Kazan */);
+            stmt.setBoolean(8, true /* is_actual */);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     user.setId(rs.getInt("id"));
-                    LOGGER.info("Пользователь с id={} создан успешно", user.getId());
                 }
             } catch (SQLException e) {
-                LOGGER.error("Исключение при возвращении id после создания пользователя: {}", e);
+                LOGGER.error("Исключение при создании пользователя: ", e);
             }
-        } catch (SQLException e) {
-            LOGGER.error("Исключение при подготовке insert-запроса: {}", e);
-        }
+            LOGGER.info("Пользователь с id={} создан успешно. Инфо: {}", user.getId(), user);
+            return user;
+        });
     }
 
     /**

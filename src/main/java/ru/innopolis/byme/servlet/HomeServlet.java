@@ -1,4 +1,4 @@
-package ru.innopolis.project.servlet;
+package ru.innopolis.byme.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

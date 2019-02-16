@@ -1,4 +1,4 @@
-package ru.innopolis.project.entity;
+package ru.innopolis.byme.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;

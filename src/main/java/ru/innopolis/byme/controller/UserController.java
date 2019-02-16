@@ -1,4 +1,4 @@
-package ru.innopolis.project.controller;
+package ru.innopolis.byme.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.innopolis.project.dao.UserDao;
-import ru.innopolis.project.entity.User;
+import ru.innopolis.byme.dao.UserDao;
+import ru.innopolis.byme.entity.User;
 
 @Controller
 public class UserController {

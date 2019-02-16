@@ -1,9 +1,9 @@
-package ru.innopolis.project.dao;
+package ru.innopolis.byme.dao;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.innopolis.project.entity.User;
+import ru.innopolis.byme.entity.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

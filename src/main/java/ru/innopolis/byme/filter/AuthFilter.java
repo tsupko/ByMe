@@ -1,4 +1,4 @@
-package ru.innopolis.project.filter;
+package ru.innopolis.byme.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

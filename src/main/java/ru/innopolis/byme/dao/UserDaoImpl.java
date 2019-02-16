@@ -1,4 +1,4 @@
-package ru.innopolis.project.dao;
+package ru.innopolis.byme.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
-import ru.innopolis.project.entity.User;
+import ru.innopolis.byme.entity.User;
 
 import javax.sql.DataSource;
 import java.sql.*;

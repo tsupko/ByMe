@@ -2,6 +2,7 @@ package ru.innopolis.project.servlet;
 
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.core.io.ClassPathResource;
 import ru.innopolis.project.dao.UserDao;
 import ru.innopolis.project.dao.UserDaoImpl;
 
@@ -9,7 +10,6 @@ import ru.innopolis.project.dao.UserDaoImpl;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -24,7 +24,7 @@ public class AuthorizationServlet extends HttpServlet {
         Properties properties = new Properties();
 
         try {
-            properties.load(new FileInputStream(getServletContext().getRealPath("/resources/jdbc.properties")));
+            properties.load(new ClassPathResource("jdbc.properties").getInputStream());
             String dbUrl =              properties.getProperty("jdbc.url");
             String dbUsername =         properties.getProperty("jdbc.username");
             String dbPassword =         properties.getProperty("jdbc.password");

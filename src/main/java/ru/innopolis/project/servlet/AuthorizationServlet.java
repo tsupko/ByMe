@@ -49,7 +49,7 @@ public class AuthorizationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String name = req.getParameter("name");
+        String name = req.getParameter("login");
         String password = req.getParameter("password");
 
         if (userDao.exists(name, password)) {

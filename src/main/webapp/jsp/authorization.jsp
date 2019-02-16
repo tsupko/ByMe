@@ -12,7 +12,7 @@
     <table class="table">
         <tr>
             <td>Введите логин:</td>
-            <td><label for="name"></label><input type="text" id="name" name="name"></td>
+            <td><label for="login"></label><input type="text" id="login" name="login"></td>
         </tr>
         <tr>
             <td>Введите пароль:</td>

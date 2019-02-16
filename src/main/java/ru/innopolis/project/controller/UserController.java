@@ -1,29 +1,34 @@
 package ru.innopolis.project.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.innopolis.project.dao.UserDao;
 import ru.innopolis.project.entity.User;
 
 @Controller
 public class UserController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private UserDao dao;
 
-    public void setDao(UserDao dao) {
+    public UserController(UserDao dao) {
         this.dao = dao;
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    @GetMapping("/registration")
     public String registration(Model model) {
-        model.addAttribute("form", new User());
+        LOGGER.info("Открыта страница регистрации");
+        model.addAttribute("user", new User());
         return "registration";
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("form") User user) {
+    @PostMapping("/registration")
+    public String registration(@ModelAttribute("user") User user) {
+        LOGGER.info("Новый пользователь: {}", user);
         dao.create(user);
         return "redirect:/";
     }

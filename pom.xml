@@ -20,7 +20,7 @@
         <slf4j.version>1.7.25</slf4j.version>
         <junit.version>5.4.0</junit.version>
         <mockito.version>1.10.19</mockito.version>
-        <spring.version>5.1.4.RELEASE</spring.version>
+        <spring.version>5.1.5.RELEASE</spring.version>
     </properties>
 
     <dependencies>
@@ -78,7 +78,19 @@
             <artifactId>commons-dbcp</artifactId>
             <version>1.4</version>
         </dependency>
-
+        <!-- JDBC Template -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!-- JSTL -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!-- Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -113,6 +125,7 @@
                     <check />
                 </configuration>
             </plugin>
+            <!-- Конфигурация плагина Surefire -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

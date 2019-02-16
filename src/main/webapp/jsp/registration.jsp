@@ -9,7 +9,7 @@
 <div class="head">
     <button class="headButton" onclick="location.href='authorization.jsp'">Войти</button>
 </div>
-<form method="post" action="/">
+<form method="post" action="${pageContext.request.contextPath}/registration.form">
     <table class="table">
         <tr>
             <td>Введите логин:</td>
@@ -29,7 +29,7 @@
 
         <tr>
             <td>Введите имя:</td>
-            <td><input type="text" name="username"></td>
+            <td><input type="text" name="name"></td>
         </tr>
         <tr>
         <tr>
@@ -38,7 +38,7 @@
         </tr>
         <tr>
             <td>Введите телефон:</td>
-            <td><input type="text" name="phone"></td>
+            <td><input type="text" name="phoneNumber"></td>
         </tr>
         <tr>
         <tr>

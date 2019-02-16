@@ -5,11 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.innopolis.byme.entity.User;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Реализация интерфейса {@code UserDao} для работы с объектами {@code entity.User}.
@@ -115,30 +118,98 @@ public class UserDaoImpl implements UserDao {
         }
         LOGGER.debug("Выбор пользователя по id={}", id);
         User user = new User();
-        try (PreparedStatement stmt = connection.prepareStatement(SELECT_USER_BY_ID)) {
+        this.dataSource.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<User>) stmt -> {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    user.setId(rs.getInt(USER_ID));
-                    user.setLogin(rs.getString(USER_LOGIN));
-                    user.setPassword(rs.getString(USER_PASSWORD));
-                    user.setName(rs.getString(USER_NAME));
-                    user.setEmail(rs.getString(USER_EMAIL));
-                    user.setPhoneNumber(rs.getString(USER_PHONE_NUMBER));
-                    user.setRoleId(rs.getInt(USER_ROLE_ID));
-                    user.setCityId(rs.getInt(USER_CITY_ID));
-                    user.setActual(rs.getBoolean(USER_IS_ACTUAL));
-                }
-                if (user.getId() != 0) {
-                    LOGGER.info("{} выбран по id={} успешно", user, id);
+                    assignResultSetToUserFields(user, rs);
                 }
             } catch (SQLException e) {
                 LOGGER.error("Исключение при получении пользователя по id={}: {}", id, e);
             }
-        } catch (SQLException e) {
-            LOGGER.error("Исключение при подготовке запроса на выбор пользователя по id={}: {}", id, e);
-        }
+            LOGGER.info("{} выбран по id={} успешно", user, id);
+            return user.getId() == 0 ? null : user;
+        });
         return user.getId() == 0 ? null : user;
+    }
+
+    /**
+     * sql-скрипт для изменения значений в таблице user
+     */
+    private static final String UPDATE_USER = "update public.user" +
+            " set password = ?, name = ?, email = ?, phone_number = ? where id = ?\n";
+
+    /**
+     * изменение значений  в таблице user
+     * в соответствии с полями переданного экземпляра
+     *
+     * @param user объект, для которого будет обновлена запись в БД
+     */
+    @Override
+    public void update(User user) {
+//        this.dataSource.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<User>) stmt -> {
+        try (PreparedStatement stmt = connection.prepareStatement(UPDATE_USER)) {
+            stmt.setString(1, user.getPassword());
+            stmt.setString(2, user.getName());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getPhoneNumber());
+            stmt.setInt(5, user.getId());
+            stmt.execute();
+        } catch (SQLException e) {
+            LOGGER.error("Исключение при изменении пользователя: ", e);
+        }
+        LOGGER.info("Пользователь с id={} изменен успешно. Инфо: {}", user.getId(), user.toString());
+    }
+
+    /**
+     * sql-скрипт для удаления значений в таблице user
+     */
+    private static final String DELETE_USER = "delete from public.user where id = ?\n";
+
+    /**
+     * удаление значений  в таблице user
+     * в соответствии с переданным экземпляром
+     *
+     * @param user объект, для которого будет удалена запись в БД
+     */
+    @Override
+    public void delete(User user) {
+        try (PreparedStatement stmt = connection.prepareStatement(DELETE_USER)) {
+            stmt.setInt(1, user.getId());
+            stmt.execute();
+        } catch (SQLException e) {
+            LOGGER.error("Исключение при удалении пользователя: ", e);
+        }
+        LOGGER.info("Пользователь с id={} удален успешно. Инфо: {}", user.getId(), user.toString());
+    }
+
+    /**
+     * sql-скрипт для выбора всех пользователей из таблицы user
+     */
+    private static final String SELECT_ALL_USERS = "Select * from public.user";
+
+    /**
+     * выбор всех пользователей из таблицы user
+     */
+    @Override
+    public Collection<User> getAllUsers() {
+        LOGGER.info("getAllPersons");
+        Collection<User> users = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_ALL_USERS)) {
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    User user = new User();
+                    assignResultSetToUserFields(user, rs);
+                    LOGGER.info(user.toString());
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info(users.toString());
+        return (users);
     }
 
     /**
@@ -174,5 +245,24 @@ public class UserDaoImpl implements UserDao {
                     "по login={}: {}, password={}: {}", login, password, e);
         }
         return false;
+    }
+
+    /**
+     * присвоение полям объекта user
+     * значений из результата выполнения SQL-запроса
+     *
+     * @param user объект, полям которого будут присвоены значения из resultSet
+     * @param resultSet результат выполнения SQL-запроса
+     */
+    private void assignResultSetToUserFields(User user, ResultSet resultSet) throws SQLException {
+        user.setId(resultSet.getInt(USER_ID));
+        user.setLogin(resultSet.getString(USER_LOGIN));
+        user.setPassword(resultSet.getString(USER_PASSWORD));
+        user.setName(resultSet.getString(USER_NAME));
+        user.setEmail(resultSet.getString(USER_EMAIL));
+        user.setPhoneNumber(resultSet.getString(USER_PHONE_NUMBER));
+        user.setRoleId(resultSet.getInt(USER_ROLE_ID));
+        user.setCityId(resultSet.getInt(USER_CITY_ID));
+        user.setActual(resultSet.getBoolean(USER_IS_ACTUAL));
     }
 }

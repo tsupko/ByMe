@@ -1,6 +1,7 @@
 package ru.innopolis.byme.dao;
 
 import ru.innopolis.byme.entity.User;
+import java.util.Collection;
 
 public interface UserDao {
 
@@ -8,5 +9,11 @@ public interface UserDao {
 
     User selectById(int id);
 
-    public boolean exists(String login, String password);
+    void update(User user);
+
+    void delete(User user);
+
+    Collection<User> getAllUsers();
+
+    boolean exists(String login, String password);
 }

@@ -1,6 +1,6 @@
-package ru.innopolis.project.dao;
+package ru.innopolis.byme.dao;
 
-import ru.innopolis.project.entity.User;
+import ru.innopolis.byme.entity.User;
 
 public interface UserDao {
 

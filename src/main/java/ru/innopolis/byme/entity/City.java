@@ -1,11 +1,11 @@
-package ru.innopolis.project.entity;
+package ru.innopolis.byme.entity;
 
 /**
- * POJO класс для таблицы user
+ * POJO класс для таблицы city
  *
  * @author Kuzina Anastasia
  */
-public class Role {
+public class City {
 
     private int id;
     private String name;
@@ -28,7 +28,7 @@ public class Role {
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "City{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

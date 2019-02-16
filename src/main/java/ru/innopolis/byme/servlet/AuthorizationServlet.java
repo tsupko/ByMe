@@ -1,10 +1,10 @@
-package ru.innopolis.project.servlet;
+package ru.innopolis.byme.servlet;
 
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.core.io.ClassPathResource;
-import ru.innopolis.project.dao.UserDao;
-import ru.innopolis.project.dao.UserDaoImpl;
+import ru.innopolis.byme.dao.UserDao;
+import ru.innopolis.byme.dao.UserDaoImpl;
 
 
 import javax.servlet.ServletException;

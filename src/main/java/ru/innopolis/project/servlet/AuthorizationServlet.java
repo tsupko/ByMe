@@ -44,11 +44,11 @@ public class AuthorizationServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getServletContext().getRequestDispatcher("/jsp/authorization.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/jsp/authorization.jsp");
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String name = req.getParameter("login");
         String password = req.getParameter("password");
 
@@ -58,7 +58,7 @@ public class AuthorizationServlet extends HttpServlet {
 
             resp.sendRedirect(req.getContextPath() + "/home");
         } else {
-            resp.sendRedirect(req.getContextPath() + "/jsp/authorization.jsp");
+            resp.sendRedirect(req.getContextPath() + "/authorization");
         }
     }
 }

@@ -18,30 +18,30 @@
 <div class="context">
   <div class="tableContext">
     <table class="table">
-      <tr><td background="resources/testImg/cat0.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat1.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat2.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat3.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
-      <tr><td background="resources/testImg/cat4.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat5.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat6.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat7.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
-      <tr><td background="resources/testImg/cat8.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat0.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat1.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat2.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
-      <tr><td background="resources/testImg/cat3.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat4.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat5.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat6.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
-      <tr><td background="resources/testImg/cat7.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat8.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat0.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat1.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
-      <tr><td background="resources/testImg/cat2.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat3.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat4.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
-          <td background="resources/testImg/cat5.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
+      <tr><td background="static/testImg/cat0.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat1.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat2.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat3.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
+      <tr><td background="static/testImg/cat4.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat5.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat6.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat7.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
+      <tr><td background="static/testImg/cat8.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat0.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat1.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat2.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
+      <tr><td background="static/testImg/cat3.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat4.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat5.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat6.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
+      <tr><td background="static/testImg/cat7.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat8.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat0.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat1.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
+      <tr><td background="static/testImg/cat2.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat3.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat4.jpeg" onclick="location.href='jsp/authorization.jsp'"></td>
+          <td background="static/testImg/cat5.jpeg" onclick="location.href='jsp/authorization.jsp'"></td></tr>
     </table>
   </div>
   <div class="head">

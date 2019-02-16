@@ -9,7 +9,7 @@
 <div class="head">
     <button class="headButton" onclick="location.href='authorization.jsp'">Войти</button>
 </div>
-<form method="post" action="${pageContext.request.contextPath}/registration.form">
+<form method="post" action="${pageContext.request.contextPath}/registration">
     <table class="table">
         <tr>
             <td>Введите логин:</td>

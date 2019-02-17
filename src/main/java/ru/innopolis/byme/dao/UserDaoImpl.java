@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.innopolis.byme.entity.User;
 
@@ -78,26 +77,32 @@ public class UserDaoImpl implements UserDao {
             LOGGER.error("Попытка создавать запись в БД для user == null ");
             return;
         }
-        LOGGER.debug("Создание пользователя {}", user);
-        this.dataSource.execute(INSERT_USER, (PreparedStatementCallback<User>) stmt -> {
-            stmt.setString(1, user.getLogin());
-            stmt.setString(2, user.getPassword());
-            stmt.setString(3, user.getName());
-            stmt.setString(4, user.getEmail());
-            stmt.setString(5, user.getPhoneNumber());
-            stmt.setInt(6, 3 /* role=user */);
-            stmt.setInt(7, 1 /* city=Kazan */);
-            stmt.setBoolean(8, true /* is_actual */);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    user.setId(rs.getInt("id"));
+        if (exists(user.getLogin(), user.getPassword())) {
+            LOGGER.error("Пользователь с login={}: {}, password={}: {} уже существует",
+                    user.getLogin(), user.getPassword());
+            return;
+        } else {
+            LOGGER.debug("Создание пользователя {}", user);
+            this.dataSource.execute(INSERT_USER, (PreparedStatementCallback<User>) stmt -> {
+                stmt.setString(1, user.getLogin());
+                stmt.setString(2, user.getPassword());
+                stmt.setString(3, user.getName());
+                stmt.setString(4, user.getEmail());
+                stmt.setString(5, user.getPhoneNumber());
+                stmt.setInt(6, 3 /* role=user */);
+                stmt.setInt(7, 1 /* city=Kazan */);
+                stmt.setBoolean(8, true /* is_actual */);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        user.setId(rs.getInt("id"));
+                    }
+                } catch (SQLException e) {
+                    LOGGER.error("Исключение при создании пользователя: ", e);
                 }
-            } catch (SQLException e) {
-                LOGGER.error("Исключение при создании пользователя: ", e);
-            }
-            LOGGER.info("Пользователь с id={} создан успешно. Инфо: {}", user.getId(), user);
-            return user;
-        });
+                LOGGER.info("Пользователь с id={} создан успешно. Инфо: {}", user.getId(), user);
+                return user;
+            });
+        }
     }
 
     /**
@@ -147,18 +152,16 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public void update(User user) {
-//        this.dataSource.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<User>) stmt -> {
-        try (PreparedStatement stmt = connection.prepareStatement(UPDATE_USER)) {
+        this.dataSource.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<Boolean>) stmt -> {
             stmt.setString(1, user.getPassword());
             stmt.setString(2, user.getName());
             stmt.setString(3, user.getEmail());
             stmt.setString(4, user.getPhoneNumber());
             stmt.setInt(5, user.getId());
             stmt.execute();
-        } catch (SQLException e) {
-            LOGGER.error("Исключение при изменении пользователя: ", e);
-        }
-        LOGGER.info("Пользователь с id={} изменен успешно. Инфо: {}", user.getId(), user.toString());
+            LOGGER.info("Пользователь с id={} изменен успешно. Инфо: {}", user.getId(), user.toString());
+            return true;
+        });
     }
 
     /**
@@ -174,13 +177,12 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public void delete(User user) {
-        try (PreparedStatement stmt = connection.prepareStatement(DELETE_USER)) {
+        this.dataSource.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<Boolean>) stmt -> {
             stmt.setInt(1, user.getId());
             stmt.execute();
-        } catch (SQLException e) {
-            LOGGER.error("Исключение при удалении пользователя: ", e);
-        }
-        LOGGER.info("Пользователь с id={} удален успешно. Инфо: {}", user.getId(), user.toString());
+            LOGGER.info("Пользователь с id={} удален успешно. Инфо: {}", user.getId(), user.toString());
+            return true;
+        });
     }
 
     /**
@@ -195,20 +197,19 @@ public class UserDaoImpl implements UserDao {
     public Collection<User> getAllUsers() {
         LOGGER.info("getAllPersons");
         Collection<User> users = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(SELECT_ALL_USERS)) {
-            try (ResultSet rs = statement.executeQuery()) {
+        this.dataSource.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<Collection<User>>) stmt -> {
+            try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     User user = new User();
                     assignResultSetToUserFields(user, rs);
                     LOGGER.info(user.toString());
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error("Исключение при получении всех пользователей из таблицы user ", e);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        LOGGER.info(users.toString());
+            LOGGER.info(users.toString());
+            return (users);
+        });
         return (users);
     }
 
@@ -229,7 +230,7 @@ public class UserDaoImpl implements UserDao {
             LOGGER.error("Параметры login и  password не могут быть пустыми");
             return false;
         }
-        try (PreparedStatement stmt = connection.prepareStatement(SELECT_BY_LOGIN_PASS)) {
+        this.dataSource.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<Boolean>) stmt -> {
             stmt.setString(1, login);
             stmt.setString(2, password);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -240,10 +241,8 @@ public class UserDaoImpl implements UserDao {
                 LOGGER.error("Исключение при проверке наличия пользователя по login={}: {}, password={}: {}",
                         login, password, e);
             }
-        } catch (SQLException e) {
-            LOGGER.error("Исключение при подготовке запроса проверки наличия пользователя " +
-                    "по login={}: {}, password={}: {}", login, password, e);
-        }
+            return false;
+        });
         return false;
     }
 
@@ -251,7 +250,7 @@ public class UserDaoImpl implements UserDao {
      * присвоение полям объекта user
      * значений из результата выполнения SQL-запроса
      *
-     * @param user объект, полям которого будут присвоены значения из resultSet
+     * @param user      объект, полям которого будут присвоены значения из resultSet
      * @param resultSet результат выполнения SQL-запроса
      */
     private void assignResultSetToUserFields(User user, ResultSet resultSet) throws SQLException {

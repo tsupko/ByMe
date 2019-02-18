@@ -177,7 +177,7 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public void delete(User user) {
-        this.dataSource.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<Boolean>) stmt -> {
+        this.dataSource.execute(DELETE_USER, (PreparedStatementCallback<Boolean>) stmt -> {
             stmt.setInt(1, user.getId());
             stmt.execute();
             LOGGER.info("Пользователь с id={} удален успешно. Инфо: {}", user.getId(), user.toString());

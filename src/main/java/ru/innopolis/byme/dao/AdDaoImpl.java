@@ -2,12 +2,15 @@ package ru.innopolis.byme.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 import ru.innopolis.byme.entity.Ad;
 
+import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -18,24 +21,16 @@ import java.util.Collection;
 @Repository
 public class AdDaoImpl implements AdDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdDaoImpl.class);
-    private Connection connection = null;
     private JdbcTemplate dataSource;
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public AdDaoImpl() {
-        try {
-            this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/byme",
-                    "postgres",
-                    ""
-            );
-        } catch (SQLException e) {
-            LOGGER.error("Исключение при установке соединения с базой данных: {}", e);
-        }
+
     }
 
-    public AdDaoImpl(Connection connection) {
-        this.connection = connection;
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+
+        this.dataSource = new JdbcTemplate(dataSource);
     }
 
     /**
@@ -52,7 +47,7 @@ public class AdDaoImpl implements AdDao {
     private static final String AD_IS_ACTUAL = "is_actual";
 
     /**
-     * sql-скрипт для выборки по id
+     * sql-скрипт для выборки объявления по id
      */
     private static final String SELECT_AD_BY_ID = "select * from ad where id = ?";
 
@@ -69,29 +64,21 @@ public class AdDaoImpl implements AdDao {
         }
         LOGGER.debug("Выбор объявления по id={}", id);
         Ad ad = new Ad();
-        try (PreparedStatement stmt = connection.prepareStatement(SELECT_AD_BY_ID)) {
+        this.dataSource.execute(SELECT_AD_BY_ID, (PreparedStatementCallback<Ad>) stmt -> {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    ad.setId(id);
-                    ad.setTitle(rs.getString(AD_TITLE));
-                    ad.setText(rs.getString(AD_TEXT));
-                    ad.setUserId(rs.getInt(AD_USER_ID));
-                    ad.setCategoryId(rs.getInt(AD_CATEGORY_ID));
-                    ad.setPrice(rs.getBigDecimal(AD_PRICE));
-                    ad.setPriceMin(rs.getBigDecimal(AD_PRICE_MIN));
-                    ad.setConfirm(rs.getBoolean(AD_CONFIRM));
-                    ad.setActual(rs.getBoolean(AD_IS_ACTUAL));
+                    assignResultSetToAdFields(rs, ad);
                 }
                 if (ad.getId() != 0) {
-                    LOGGER.info("{} выбран по id={} успешно", ad, id);
+                    LOGGER.info("Объявление {} выбрано по id={} успешно", ad, id);
                 }
             } catch (SQLException e) {
                 LOGGER.error("Исключение при получении объявления по id={}: {}", id, e);
             }
-        } catch (SQLException e) {
-            LOGGER.error("Исключение при подготовке запроса на выбор объявления по id={}: {}", id, e);
-        }
+            LOGGER.info("Объявление {} выбрано по id={} успешно", ad, id);
+            return ad.getId() == 0 ? null : ad;
+        });
         return ad.getId() == 0 ? null : ad;
     }
 
@@ -115,7 +102,7 @@ public class AdDaoImpl implements AdDao {
             return;
         }
         LOGGER.debug("Создание объявления {}", ad);
-        try (PreparedStatement stmt = connection.prepareStatement(INSERT_AD)) {
+        this.dataSource.execute(INSERT_AD, (PreparedStatementCallback<Ad>) stmt -> {
             stmt.setString(1, ad.getTitle());
             stmt.setString(2, ad.getText());
             stmt.setInt(3, ad.getUserId());
@@ -127,14 +114,13 @@ public class AdDaoImpl implements AdDao {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     ad.setId(rs.getInt("id"));
-                    LOGGER.info("Объявление с id={} создано успешно", ad.getId());
                 }
             } catch (SQLException e) {
                 LOGGER.error("Исключение при возвращении id после создания объявления: {}", e);
             }
-        } catch (SQLException e) {
-            LOGGER.error("Исключение при подготовке insert-запроса: {}", e);
-        }
+            LOGGER.info("Объявление с id={} создано успешно", ad.getId());
+            return ad;
+        });
     }
 
     @Override
@@ -147,8 +133,44 @@ public class AdDaoImpl implements AdDao {
 
     }
 
+    /**
+     * sql-скрипт для выбора всех объявлений из таблицы ad
+     */
+    private static final String SELECT_ALL_ADS = "Select * from ad";
+
+    /**
+     * выбор всех объявлений из таблицы ad
+     */
     @Override
     public Collection<Ad> getAll() {
-        return null;
+        LOGGER.info("getAllAds");
+        Collection<Ad> ads = new ArrayList<>();
+        this.dataSource.execute(SELECT_ALL_ADS, (PreparedStatementCallback<Collection<Ad>>) stmt -> {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Ad ad = new Ad();
+                    assignResultSetToAdFields(rs, ad);
+
+                    LOGGER.info(ad.toString());
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Исключение при получении всех объявлений из таблицы ad ", e);
+            }
+            LOGGER.info(ads.toString());
+            return (ads);
+        });
+        return (ads);
+    }
+
+    private void assignResultSetToAdFields(ResultSet rs, Ad ad) throws SQLException {
+        ad.setId(rs.getInt(AD_ID));
+        ad.setTitle(rs.getString(AD_TITLE));
+        ad.setText(rs.getString(AD_TEXT));
+        ad.setUserId(rs.getInt(AD_USER_ID));
+        ad.setCategoryId(rs.getInt(AD_CATEGORY_ID));
+        ad.setPrice(rs.getBigDecimal(AD_PRICE));
+        ad.setPriceMin(rs.getBigDecimal(AD_PRICE_MIN));
+        ad.setConfirm(rs.getBoolean(AD_CONFIRM));
+        ad.setActual(rs.getBoolean(AD_IS_ACTUAL));
     }
 }

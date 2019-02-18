@@ -58,7 +58,7 @@ public class Ad {
         return categoryId;
     }
 
-    public void setCategoryId(int category_id) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -74,7 +74,7 @@ public class Ad {
         return priceMin;
     }
 
-    public void setPriceMin(BigDecimal price_min) {
+    public void setPriceMin(BigDecimal priceMin) {
         this.priceMin = priceMin;
     }
 

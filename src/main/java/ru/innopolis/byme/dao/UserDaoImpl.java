@@ -195,7 +195,7 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public Collection<User> getAllUsers() {
-        LOGGER.info("getAllPersons");
+        LOGGER.info("getAllUsers");
         Collection<User> users = new ArrayList<>();
         this.dataSource.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<Collection<User>>) stmt -> {
             try (ResultSet rs = stmt.executeQuery()) {

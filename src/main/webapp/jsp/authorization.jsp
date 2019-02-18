@@ -6,7 +6,8 @@
 </head>
 <body>
 <div class="head">
-    <button class="headButton" onclick="location.href='/registration'">Зарегистрироваться</button>
+    <button class="headButton" onclick="location.href='/'">Домой</button>
+    <button class="headButton" onclick="location.href='registration.jsp'">Зарегистрироваться</button>
 </div>
 <form method="post" action="${pageContext.request.contextPath}/authorization">
     <table class="table">

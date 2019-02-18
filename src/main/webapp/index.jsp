@@ -7,7 +7,23 @@
 
 <body>
 <div class="head">
-  <div class="loginButtons">
+
+    <div class="loginButtons">
+
+    <select>
+        <option selected disabled>${city}</option>
+        <option label="Kazan" value="1" selected>Казань</option>
+        <option label="Moscow" value="2" selected>Москва</option>
+        <option label="Samara" value="3" selected>Самара</option>
+    </select>
+
+    <select>
+        <option selected disabled>${category}</option>
+        <option label="electronics" value="1" selected>Электроника</option>
+        <option label="technique" value="2" selected>Бытовая техника</option>
+        <option label="additionally" value="3" selected>Всякая всячина</option>
+    </select>
+
     <button class="headButton" onclick="location.href='jsp/add.jsp'">Добавить объявление</button>
     <button class="headButton" onclick="location.href='jsp/authorization.jsp'">Выйти</button>
     <button class="headButton" onclick="location.href='/registration'">Зарегистрироваться</button>

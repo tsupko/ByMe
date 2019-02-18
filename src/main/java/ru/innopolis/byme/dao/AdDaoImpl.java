@@ -123,14 +123,58 @@ public class AdDaoImpl implements AdDao {
         });
     }
 
+    /**
+     * sql-скрипт для изменения значений в таблице ad
+     */
+    private static final String UPDATE_AD = "update ad " +
+            " set title = ?, text = ?, user_id = ?, category_id = ?, " +
+            " price = ?, price_min = ?, confirm = ?, is_actual = ?\n" +
+            " where id = ?\n";
+
+    /**
+     * изменение значений  в таблице ad
+     * в соответствии с полями переданного экземпляра
+     *
+     * @param ad объект, для которого будет обновлена запись в БД
+     */
     @Override
     public void update(Ad ad) {
+        this.dataSource.execute(UPDATE_AD, (PreparedStatementCallback<Boolean>) stmt -> {
+            stmt.setString(1, ad.getTitle());
+            stmt.setString(2, ad.getText());
+            stmt.setInt(3, ad.getUserId());
+            stmt.setInt(4, ad.getCategoryId());
+            stmt.setBigDecimal(5, ad.getPrice());
+            stmt.setBigDecimal(6, ad.getPriceMin());
+            stmt.setBoolean(7, ad.isConfirm());
+            stmt.setBoolean(8, ad.isActual());
+            stmt.setInt(9, ad.getId());
+            stmt.execute();
+            LOGGER.info("Объявление с id={} изменено успешно. Инфо: {}", ad.getId(), ad.toString());
+            return true;
+        });
 
     }
 
+    /**
+     * sql-скрипт для удаления значений в таблице ad
+     */
+    private static final String DELETE_AD = "delete from ad where id = ?\n";
+
+    /**
+     * удаление значений  в таблице ad
+     * в соответствии с переданным экземпляром
+     *
+     * @param ad объект, для которого будет удалена запись в БД
+     */
     @Override
     public void delete(Ad ad) {
-
+        this.dataSource.execute(DELETE_AD, (PreparedStatementCallback<Boolean>) stmt -> {
+            stmt.setInt(1, ad.getId());
+            stmt.execute();
+            LOGGER.info("Объявление с id={} удалено успешно. Инфо: {}", ad.getId(), ad.toString());
+            return true;
+        });
     }
 
     /**

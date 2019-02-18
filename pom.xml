@@ -20,7 +20,7 @@
         <slf4j.version>1.7.25</slf4j.version>
         <junit.version>5.4.0</junit.version>
         <mockito.version>1.10.19</mockito.version>
-        <spring.version>5.1.5.RELEASE</spring.version>
+        <spring.version>5.1.4.RELEASE</spring.version>
     </properties>
 
     <dependencies>
@@ -96,6 +96,24 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.0.1</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.version}</version>
         </dependency>
     </dependencies>
 

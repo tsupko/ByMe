@@ -13,18 +13,18 @@
     <table class="table">
         <tr>
             <td>Введите логин:</td>
-            <td><input type="text" name="login"></td>
+            <td><input type="text" name="login" required autofocus></td>
         </tr>
 
         <tr>
         <tr>
             <td>Введите пароль:</td>
-            <td><input type="password" name="password"></td>
+            <td><input type="password" name="password" required></td>
         </tr>
         <tr>
         <tr>
             <td>Введите пароль еще раз:</td>
-            <td><input type="password" name="checkPassword"></td>
+            <td><input type="password" name="checkPassword" required></td>
         </tr>
 
         <tr>

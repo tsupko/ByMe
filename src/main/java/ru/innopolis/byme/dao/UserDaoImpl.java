@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.innopolis.byme.entity.User;
 
@@ -70,7 +69,6 @@ public class UserDaoImpl implements UserDao {
         if (exists(user.getLogin(), user.getPassword())) {
             LOGGER.error("Пользователь с login={}: {}, password={}: {} уже существует",
                     user.getLogin(), user.getPassword());
-            return;
         } else {
             LOGGER.debug("Создание пользователя {}", user);
             this.jdbcTemplate.execute(INSERT_USER, (PreparedStatementCallback<User>) stmt -> {
@@ -110,18 +108,15 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> selectById(int id) {
         if (id <= 0) {
             LOGGER.error("Некорректный id={}: {}", id);
-            return null;
+            return Optional.empty ();
         }
         LOGGER.debug("Выбор пользователя по id={}", id);
         User user = new User();
-        this.jdbcTemplate.query(SELECT_USER_BY_ID, new RowMapper<Object>() {
-            @Override
-            public Object mapRow(ResultSet resultSet, int i) throws SQLException {
-                user.setId(resultSet.getInt(1));
-                return null;
-            }
+        this.jdbcTemplate.query(SELECT_USER_BY_ID, (resultSet, i) -> {
+            user.setId(resultSet.getInt(1));
+            return null;
         });
-        return Optional.ofNullable(user);
+        return Optional.of(user);
     }
 
     /**
@@ -138,7 +133,7 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public void update(User user) {
-        this.jdbcTemplate.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<Boolean>) stmt -> {
+        this.jdbcTemplate.execute(UPDATE_USER, (PreparedStatementCallback<Boolean>) stmt -> {
             stmt.setString(1, user.getPassword());
             stmt.setString(2, user.getName());
             stmt.setString(3, user.getEmail());
@@ -183,7 +178,7 @@ public class UserDaoImpl implements UserDao {
     public Collection<User> getAllUsers() {
         LOGGER.info("getAllUsers");
         Collection<User> users = new ArrayList<>();
-        this.jdbcTemplate.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<Collection<User>>) stmt -> {
+        this.jdbcTemplate.execute(SELECT_ALL_USERS, (PreparedStatementCallback<Collection<User>>) stmt -> {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     User user = new User();
@@ -217,9 +212,7 @@ public class UserDaoImpl implements UserDao {
             LOGGER.error("Параметры login и  password не могут быть пустыми");
             return false;
         }
-        Boolean exists = Boolean.FALSE;
-
-        exists = this.jdbcTemplate.execute(SELECT_BY_LOGIN_PASS, (PreparedStatementCallback<Boolean>) stmt -> {
+        Boolean exists = this.jdbcTemplate.execute(SELECT_BY_LOGIN_PASS, (PreparedStatementCallback<Boolean>) stmt -> {
             stmt.setString(1, login);
             stmt.setString(2, password);
             try (ResultSet rs = stmt.executeQuery()) {

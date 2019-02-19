@@ -21,16 +21,16 @@ import java.util.Collection;
 @Repository
 public class AdDaoImpl implements AdDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdDaoImpl.class);
-    private JdbcTemplate dataSource;
+    private JdbcTemplate jdbcTemplate;
 
     public AdDaoImpl() {
 
     }
 
     @Autowired
-    public void setDataSource(DataSource dataSource) {
+    public AdDaoImpl(DataSource dataSource) {
 
-        this.dataSource = new JdbcTemplate(dataSource);
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     /**
@@ -49,7 +49,8 @@ public class AdDaoImpl implements AdDao {
     /**
      * sql-скрипт для выборки объявления по id
      */
-    private static final String SELECT_AD_BY_ID = "select * from ad where id = ?";
+    private static final String SELECT_AD_BY_ID = "select * from ad" +
+            " where id = ? and is_actual = true";
 
     /**
      * создание объекта ad по переданному id
@@ -64,7 +65,7 @@ public class AdDaoImpl implements AdDao {
         }
         LOGGER.debug("Выбор объявления по id={}", id);
         Ad ad = new Ad();
-        this.dataSource.execute(SELECT_AD_BY_ID, (PreparedStatementCallback<Ad>) stmt -> {
+        this.jdbcTemplate.execute(SELECT_AD_BY_ID, (PreparedStatementCallback<Ad>) stmt -> {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -102,7 +103,7 @@ public class AdDaoImpl implements AdDao {
             return;
         }
         LOGGER.debug("Создание объявления {}", ad);
-        this.dataSource.execute(INSERT_AD, (PreparedStatementCallback<Ad>) stmt -> {
+        this.jdbcTemplate.execute(INSERT_AD, (PreparedStatementCallback<Ad>) stmt -> {
             stmt.setString(1, ad.getTitle());
             stmt.setString(2, ad.getText());
             stmt.setInt(3, ad.getUserId());
@@ -139,7 +140,7 @@ public class AdDaoImpl implements AdDao {
      */
     @Override
     public void update(Ad ad) {
-        this.dataSource.execute(UPDATE_AD, (PreparedStatementCallback<Boolean>) stmt -> {
+        this.jdbcTemplate.execute(UPDATE_AD, (PreparedStatementCallback<Boolean>) stmt -> {
             stmt.setString(1, ad.getTitle());
             stmt.setString(2, ad.getText());
             stmt.setInt(3, ad.getUserId());
@@ -159,17 +160,17 @@ public class AdDaoImpl implements AdDao {
     /**
      * sql-скрипт для удаления значений в таблице ad
      */
-    private static final String DELETE_AD = "delete from ad where id = ?\n";
+    private static final String DELETE_AD = "update ad" +
+            " set is_actual = false where id = ?\n";
 
     /**
-     * удаление значений  в таблице ad
-     * в соответствии с переданным экземпляром
+     * Метод помечает запись в таблице ad как неактуальную
      *
-     * @param ad объект, для которого будет удалена запись в БД
+     * @param ad объект, для которого запись в БД будет помечена как неактуальная
      */
     @Override
     public void delete(Ad ad) {
-        this.dataSource.execute(DELETE_AD, (PreparedStatementCallback<Boolean>) stmt -> {
+        this.jdbcTemplate.execute(DELETE_AD, (PreparedStatementCallback<Boolean>) stmt -> {
             stmt.setInt(1, ad.getId());
             stmt.execute();
             LOGGER.info("Объявление с id={} удалено успешно. Инфо: {}", ad.getId(), ad.toString());
@@ -180,7 +181,7 @@ public class AdDaoImpl implements AdDao {
     /**
      * sql-скрипт для выбора всех объявлений из таблицы ad
      */
-    private static final String SELECT_ALL_ADS = "Select * from ad";
+    private static final String SELECT_ALL_ADS = "Select * from ad where is_actual = true";
 
     /**
      * выбор всех объявлений из таблицы ad
@@ -189,7 +190,7 @@ public class AdDaoImpl implements AdDao {
     public Collection<Ad> getAll() {
         LOGGER.info("getAllAds");
         Collection<Ad> ads = new ArrayList<>();
-        this.dataSource.execute(SELECT_ALL_ADS, (PreparedStatementCallback<Collection<Ad>>) stmt -> {
+        this.jdbcTemplate.execute(SELECT_ALL_ADS, (PreparedStatementCallback<Collection<Ad>>) stmt -> {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Ad ad = new Ad();

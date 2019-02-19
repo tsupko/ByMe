@@ -99,7 +99,7 @@ public class UserDaoImpl implements UserDao {
      * sql-скрипт для выборки по id
      */
     private static final String SELECT_USER_BY_ID = "select * from public.user" +
-            " where id = ? and is_actual = true";
+            " where is_actual = true and id = ?  ";
 
     /**
      * создание объекта user по переданному id
@@ -217,7 +217,7 @@ public class UserDaoImpl implements UserDao {
             LOGGER.error("Параметры login и  password не могут быть пустыми");
             return false;
         }
-        this.jdbcTemplate.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<Boolean>) stmt -> {
+        this.jdbcTemplate.execute(SELECT_BY_LOGIN_PASS, (PreparedStatementCallback<Boolean>) stmt -> {
             stmt.setString(1, login);
             stmt.setString(2, password);
             try (ResultSet rs = stmt.executeQuery()) {

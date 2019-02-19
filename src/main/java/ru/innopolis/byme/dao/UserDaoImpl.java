@@ -121,7 +121,7 @@ public class UserDaoImpl implements UserDao {
                 return null;
             }
         });
-        return Optional.of(user);
+        return Optional.ofNullable(user);
     }
 
     /**
@@ -217,7 +217,9 @@ public class UserDaoImpl implements UserDao {
             LOGGER.error("Параметры login и  password не могут быть пустыми");
             return false;
         }
-        this.jdbcTemplate.execute(SELECT_BY_LOGIN_PASS, (PreparedStatementCallback<Boolean>) stmt -> {
+        Boolean exists = Boolean.FALSE;
+
+        exists = this.jdbcTemplate.execute(SELECT_BY_LOGIN_PASS, (PreparedStatementCallback<Boolean>) stmt -> {
             stmt.setString(1, login);
             stmt.setString(2, password);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -230,7 +232,7 @@ public class UserDaoImpl implements UserDao {
             }
             return false;
         });
-        return false;
+        return exists;
     }
 
     /**

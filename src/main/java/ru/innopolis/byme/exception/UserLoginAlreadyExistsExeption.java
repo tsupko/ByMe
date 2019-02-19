@@ -1,4 +1,4 @@
-package ru.innopolis.byme.dao;
+package ru.innopolis.byme.exception;
 
 public class UserLoginAlreadyExistsExeption extends Exception {
 

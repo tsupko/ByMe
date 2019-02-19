@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 import ru.innopolis.byme.entity.User;
+import ru.innopolis.byme.exception.UserLoginAlreadyExistsExeption;
 
 import javax.sql.DataSource;
 import java.sql.*;

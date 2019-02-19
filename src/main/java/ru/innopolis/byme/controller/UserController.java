@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.innopolis.byme.dao.UserDao;
-import ru.innopolis.byme.dao.UserLoginAlreadyExistsExeption;
+import ru.innopolis.byme.exception.UserLoginAlreadyExistsExeption;
 import ru.innopolis.byme.entity.User;
 
 @Controller

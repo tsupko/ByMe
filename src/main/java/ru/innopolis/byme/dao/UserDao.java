@@ -1,6 +1,8 @@
 package ru.innopolis.byme.dao;
 
 import ru.innopolis.byme.entity.User;
+import ru.innopolis.byme.exception.UserLoginAlreadyExistsExeption;
+
 import java.util.Collection;
 import java.util.Optional;
 

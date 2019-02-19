@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface UserDao {
 
-    void create(User user);
+    void create(User user) throws UserLoginAlreadyExistsExeption;
 
     Optional<User> selectById(int id);
 
@@ -17,4 +17,6 @@ public interface UserDao {
     Collection<User> getAllUsers();
 
     boolean exists(String login, String password);
+
+    boolean exists(String login);
 }

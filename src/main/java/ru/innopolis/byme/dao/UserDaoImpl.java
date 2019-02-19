@@ -61,14 +61,13 @@ public class UserDaoImpl implements UserDao {
      * @param user объект, для которого будет создана запись в БД
      */
     @Override
-    public void create(User user) {
+    public void create(User user) throws UserLoginAlreadyExistsExeption {
         if (user == null) {
             LOGGER.error("Попытка создавать запись в БД для user == null ");
             return;
         }
-        if (exists(user.getLogin(), user.getPassword())) {
-            LOGGER.error("Пользователь с login={}: {}, password={}: {} уже существует",
-                    user.getLogin(), user.getPassword());
+        if (exists(user.getLogin())) {
+            throw new UserLoginAlreadyExistsExeption("Пользователь c данным логином уже зарегистрирован: login = " + user.getLogin());
         } else {
             LOGGER.debug("Создание пользователя {}", user);
             this.jdbcTemplate.execute(INSERT_USER, (PreparedStatementCallback<User>) stmt -> {
@@ -83,11 +82,11 @@ public class UserDaoImpl implements UserDao {
                 try (ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {
                         user.setId(rs.getInt("id"));
+                        LOGGER.info("Пользователь с id={} создан успешно. Инфо: {}", user.getId(), user.toString());
                     }
                 } catch (SQLException e) {
                     LOGGER.error("Исключение при создании пользователя: ", e);
                 }
-                LOGGER.info("Пользователь с id={} создан успешно. Инфо: {}", user.getId(), user);
                 return user;
             });
         }
@@ -198,7 +197,7 @@ public class UserDaoImpl implements UserDao {
      * sql-скрипт для проверки наличия актуального пользователя в БД
      */
     private static final String SELECT_BY_LOGIN_PASS = "SELECT * FROM public.user" +
-            " WHERE login = ? AND password = ? and is_actual = true";
+            " WHERE login = ? AND password = ? AND is_actual = true";
 
     /**
      * проверка наличия актуального пользователя с указанными параметрами в таблице user
@@ -208,8 +207,8 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public boolean exists(String login, String password) {
-        if (login.trim().isEmpty() && password.trim().isEmpty()) {
-            LOGGER.error("Параметры login и  password не могут быть пустыми");
+        if (login.trim().isEmpty() || password.trim().isEmpty()) {
+            LOGGER.error("Параметры login и password не могут быть пустыми");
             return false;
         }
         Boolean exists = this.jdbcTemplate.execute(SELECT_BY_LOGIN_PASS, (PreparedStatementCallback<Boolean>) stmt -> {
@@ -222,6 +221,37 @@ public class UserDaoImpl implements UserDao {
             } catch (SQLException e) {
                 LOGGER.error("Исключение при проверке наличия пользователя по login={}: {}, password={}: {}",
                         login, password, e);
+            }
+            return false;
+        });
+        return exists;
+    }
+
+    /**
+     * sql-скрипт для проверки наличия актуального пользователя в БД
+     */
+    private static final String SELECT_BY_LOGIN = "SELECT * FROM public.user" +
+            " WHERE login = ? AND is_actual = true";
+
+    /**
+     * проверка наличия актуального пользователя с указанными параметрами в таблице user
+     *
+     * @param login    логин пользователся
+     */
+    @Override
+    public boolean exists(String login) {
+        if (login.trim().isEmpty()) {
+            LOGGER.error("Параметр login не может быть пустым");
+            return false;
+        }
+        Boolean exists = this.jdbcTemplate.execute(SELECT_BY_LOGIN, (PreparedStatementCallback<Boolean>) stmt -> {
+            stmt.setString(1, login);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Исключение при проверке наличия пользователя по login={}: {}", login,  e);
             }
             return false;
         });

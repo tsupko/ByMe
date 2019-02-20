@@ -12,6 +12,8 @@ public interface UserDao {
 
     Optional<User> selectById(int id);
 
+    Optional<User> selectByLogin(String login);
+
     void update(User user);
 
     void delete(User user);

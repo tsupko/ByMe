@@ -1,13 +1,16 @@
 package ru.innopolis.byme.dao;
 
 import ru.innopolis.byme.entity.User;
+import ru.innopolis.byme.exception.UserLoginAlreadyExistsExeption;
+
 import java.util.Collection;
+import java.util.Optional;
 
 public interface UserDao {
 
-    void create(User user);
+    void create(User user) throws UserLoginAlreadyExistsExeption;
 
-    User selectById(int id);
+    Optional<User> selectById(int id);
 
     void update(User user);
 
@@ -16,4 +19,6 @@ public interface UserDao {
     Collection<User> getAllUsers();
 
     boolean exists(String login, String password);
+
+    boolean exists(String login);
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.innopolis.byme.dao.UserDao;
+import ru.innopolis.byme.exception.UserLoginAlreadyExistsExeption;
 import ru.innopolis.byme.entity.User;
 
 @Controller
@@ -29,7 +30,11 @@ public class UserController {
     @PostMapping("/registration")
     public String registration(@ModelAttribute("user") User user) {
         LOGGER.info("Новый пользователь: {}", user);
-        dao.create(user);
+        try {
+            dao.create(user);
+        } catch (UserLoginAlreadyExistsExeption userLoginAlreadyExistsExeption) {
+            userLoginAlreadyExistsExeption.printStackTrace();
+        }
         return "redirect:/";
     }
 }

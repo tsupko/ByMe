@@ -77,11 +77,4 @@ public class UserController {
         LOGGER.info("category {}", category);
         return "index";
     }
-
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String home(){
-        LOGGER.info("home обработан userController get");
-        return "home";
-    }
-
 }

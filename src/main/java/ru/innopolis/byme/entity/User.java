@@ -2,7 +2,6 @@ package ru.innopolis.byme.entity;
 
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -16,19 +15,25 @@ public class User {
 
     private int id;
 
-    @NotEmpty
     @Size(min = 5, max = 30, message = "Логин должен быть от 5 до 30 символов")
     private String login;
 
-    @NotEmpty
     @Size(min = 5, max = 15, message = "Пароль должен быть от 5 до 15 символов")
     private String password;
 
-    @NotEmpty
+    private String confirmPassword;
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     @Size(min = 5, max = 30, message = "Имя должно быть от 5 до 30 символов")
     private String name;
 
-    @NotEmpty
     @Pattern(regexp = ".*@.*\\..+", message = "Некорректный адрес электронной почты")
     private String email;
 

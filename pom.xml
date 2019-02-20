@@ -20,9 +20,8 @@
         <slf4j.version>1.7.25</slf4j.version>
         <junit.version>5.4.0</junit.version>
         <mockito.version>1.10.19</mockito.version>
-        <spring.version>5.1.4.RELEASE</spring.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <spring.version>5.1.5.RELEASE</spring.version>
+        <spring.security.version>5.1.4.RELEASE</spring.security.version>
     </properties>
 
     <dependencies>
@@ -74,17 +73,17 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        <!-- Apache Commons Database Connection Pooling (DBCP) -->
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
-        </dependency>
         <!-- JDBC Template -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+        <!-- Apache Commons Database Connection Pooling (DBCP) -->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
         </dependency>
         <!-- JSTL -->
         <dependency>
@@ -99,17 +98,36 @@
             <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
-
+        <!-- Spring Security -->
+        <!-- Security Web -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring.security.version}</version>
         </dependency>
-
+        <!-- Security Config -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <!-- Validation API -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+            <version>3.5.1-Final</version>
+        </dependency>
+        <!-- Hibernate Validator -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.14.Final</version>
         </dependency>
     </dependencies>
 

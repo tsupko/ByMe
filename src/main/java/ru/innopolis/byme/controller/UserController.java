@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.innopolis.byme.dao.UserDao;
+import ru.innopolis.byme.exception.UserLoginAlreadyExistsExeption;
 import ru.innopolis.byme.entity.User;
 
 @Controller
@@ -38,7 +39,11 @@ public class UserController {
         LOGGER.info("registration обработан userController post");
         user.setPassword(encoder.encode(user.getPassword()));
         LOGGER.info("Новый пользователь: {}", user);
-        dao.create(user);
+        try {
+            dao.create(user);
+        } catch (UserLoginAlreadyExistsExeption userLoginAlreadyExistsExeption) {
+            userLoginAlreadyExistsExeption.printStackTrace();
+        }
         return "redirect:/authorization";
     }
 

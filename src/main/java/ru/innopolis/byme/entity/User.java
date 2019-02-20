@@ -29,7 +29,7 @@ public class User {
     private String name;
 
     @NotEmpty
-    @Pattern(regexp = ".*@.*\\..+", message = "Введите корректный адрес электронной почты")
+    @Pattern(regexp = ".*@.*\\..+", message = "Некорректный адрес электронной почты")
     private String email;
 
     private String phoneNumber;

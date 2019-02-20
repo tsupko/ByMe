@@ -5,13 +5,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.innopolis.byme.dao.UserDao;
-import ru.innopolis.byme.exception.UserLoginAlreadyExistsExeption;
 import ru.innopolis.byme.entity.User;
+import ru.innopolis.byme.exception.UserLoginAlreadyExistsExeption;
+
+import javax.validation.Valid;
 
 @Controller
 public class UserController {
@@ -35,8 +38,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("user") User user) {
+    public String registration(@ModelAttribute("user") @Valid User user, BindingResult result) {
         LOGGER.info("registration обработан userController post");
+        if (result.hasErrors()) {
+            return "registration";
+        }
         user.setPassword(encoder.encode(user.getPassword()));
         LOGGER.info("Новый пользователь: {}", user);
         try {
@@ -44,7 +50,9 @@ public class UserController {
         } catch (UserLoginAlreadyExistsExeption userLoginAlreadyExistsExeption) {
             userLoginAlreadyExistsExeption.printStackTrace();
         }
-        return "redirect:/authorization";
+        return "redirect:/";
+        // TODO: 2019-02-20 Задача Насти: сделать контроллер, принимающий маппинг /user/{id}
+        //                                для личной страницы пользователя
     }
 
     @RequestMapping(value = "/authorization", method = RequestMethod.GET)
@@ -61,7 +69,9 @@ public class UserController {
         LOGGER.info("login {}", login);
         LOGGER.info("password {}", password);
 
-        return "authorization";
+        // TODO: 2019-02-20 Задача Димы: если пользователь существует, перейти на главную (или в ЛК);
+        //                               если пользователя нет, снова запросить авторизацию
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

@@ -5,9 +5,6 @@
     <link href="css/home.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-
-<h2>Привет ${user}</h2>
-
 <div class="head">
     <select>
         <option selected disabled>${city}</option>
@@ -22,9 +19,6 @@
         <option label="technique" value="2" selected>Бытовая техника</option>
         <option label="additionally" value="3" selected>Всякая всячина</option>
     </select>
-<%--    <button class="headButton" onclick="location.href='/registration'">Зарегистрироваться</button>--%>
-
-<span style="color: ${cookie.color.value}">Hello</span>
-
+</div>
 </body>
 </html>

@@ -2,6 +2,10 @@ package ru.innopolis.byme.entity;
 
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 /**
  * POJO класс для таблицы user
  *
@@ -11,10 +15,23 @@ import org.springframework.stereotype.Component;
 public class User {
 
     private int id;
+
+    @NotEmpty
+    @Size(min = 5, max = 30, message = "Логин должен быть от 5 до 30 символов")
     private String login;
+
+    @NotEmpty
+    @Size(min = 5, max = 15, message = "Пароль должен быть от 5 до 15 символов")
     private String password;
+
+    @NotEmpty
+    @Size(min = 5, max = 30, message = "Имя должно быть от 5 до 30 символов")
     private String name;
+
+    @NotEmpty
+    @Pattern(regexp = ".*@.*\\..+", message = "Введите корректный адрес электронной почты")
     private String email;
+
     private String phoneNumber;
     private int roleId;
     private int cityId;

@@ -8,9 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.sql.DataSource;
+import ru.innopolis.byme.service.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -18,12 +16,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
 
-    private final PasswordEncoder encoder;
-    private final DataSource dataSource;
+    private final UserService service;
 
-    public SecurityConfig(PasswordEncoder encoder, DataSource dataSource) {
-        this.encoder = encoder;
-        this.dataSource = dataSource;
+    public SecurityConfig(UserService service) {
+        this.service = service;
     }
 
     @Autowired
@@ -31,10 +27,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         LOGGER.info("попытка идентифицировать пользователя");
         auth
                 .jdbcAuthentication()
-                .dataSource(dataSource)
+                .dataSource(service.getDataSource())
                 .usersByUsernameQuery("SELECT login, password, true as enabled FROM public.user WHERE login = ?")
                 .authoritiesByUsernameQuery("SELECT login, 'USER' FROM public.user WHERE login = ?")
-                .passwordEncoder(encoder);
+                .passwordEncoder(service.getEncoder());
     }
 
     @Override

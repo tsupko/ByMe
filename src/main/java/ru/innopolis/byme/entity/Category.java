@@ -1,5 +1,7 @@
 package ru.innopolis.byme.entity;
 
+import java.util.Objects;
+
 /**
  * POJO класс для таблицы category
  *
@@ -42,6 +44,21 @@ public class Category {
                 ", name='" + name + '\'' +
                 ", parentId=" + parentId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return id == category.id &&
+                parentId == category.parentId &&
+                name.equals(category.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, parentId);
     }
 }
 

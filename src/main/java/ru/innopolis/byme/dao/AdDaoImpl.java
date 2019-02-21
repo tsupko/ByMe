@@ -195,8 +195,8 @@ public class AdDaoImpl implements AdDao {
                 while (rs.next()) {
                     Ad ad = new Ad();
                     assignResultSetToAdFields(rs, ad);
-
                     LOGGER.info(ad.toString());
+                    ads.add(ad);
                 }
             } catch (SQLException e) {
                 LOGGER.error("Исключение при получении всех объявлений из таблицы ad ", e);

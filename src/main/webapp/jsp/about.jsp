@@ -92,7 +92,7 @@
                 <div class="[ info-card-details ] animate">
                     <div class="[ info-card-header ]">
                         <h1> Dog Developer </h1>
-                        <h3> DevDat </h3>
+                        <h3> DevDog </h3>
                     </div>
                     <div class="[ info-card-detail ]">
                         <p>

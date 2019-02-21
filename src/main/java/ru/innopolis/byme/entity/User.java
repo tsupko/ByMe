@@ -15,10 +15,10 @@ public class User {
 
     private int id;
 
-    @Size(min = 5, max = 30, message = "Логин должен быть от 5 до 30 символов")
+//    @Size(min = 5, max = 30, message = "Логин должен быть от 5 до 30 символов")
     private String login;
 
-    @Size(min = 5, max = 15, message = "Пароль должен быть от 5 до 15 символов")
+//    @Size(min = 5, max = 15, message = "Пароль должен быть от 5 до 15 символов")
     private String password;
 
     private String confirmPassword;
@@ -31,10 +31,10 @@ public class User {
         this.confirmPassword = confirmPassword;
     }
 
-    @Size(min = 5, max = 30, message = "Имя должно быть от 5 до 30 символов")
+//    @Size(min = 5, max = 30, message = "Имя должно быть от 5 до 30 символов")
     private String name;
 
-    @Pattern(regexp = ".*@.*\\..+", message = "Некорректный адрес электронной почты")
+//    @Pattern(regexp = ".*@.*\\..+", message = "Некорректный адрес электронной почты")
     private String email;
 
     private String phoneNumber;

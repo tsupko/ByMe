@@ -11,7 +11,7 @@
 <div class="head">
 </div>
 
-<form method="post" action="${pageContext.request.contextPath}/ad">
+<form method="post" action="/ad">
     <table class="table">
         <tr>
             <td>Категория</td>

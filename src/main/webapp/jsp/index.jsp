@@ -1,78 +1,112 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <html>
 <head>
-  <title>Главная страница</title>
-  <link href="css/index.css" rel="stylesheet" type="text/css">
+    <%--    some magic meta--%>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <script>
-        $(function() {
-            $("#add").change(function(){
-                var option = $('option:selected', this).attr('stud_name');
-                $('#stud_name').val(option);
-            });
-        });
-    </script>
+    <title>Главная страница</title>
 
+    <%--    from bootsnipp--%>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <%--    css styles--%>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #EEE;
+            font: 17px/23px 'Lucida Sans', sans-serif;
+        }
+        .wrap {
+            padding-top: 50px;
+            overflow: hidden;
+            margin: 10px;
+        }
+        .box {
+            float: left;
+            position: relative;
+            width: 20%;
+            padding-bottom: 20%;
+        }
+        .boxInner {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            top: 10px;
+            bottom: 10px;
+            overflow: hidden;
+        }
+        .boxInner img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+
+        .boxInner .titleBox {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin-bottom: -50px;
+            background: #000;
+            background: rgba(0, 0, 0, 0.5);
+            color: #FFF;
+            padding: 10px;
+            text-align: center;
+            -webkit-transition: all 0.3s ease-out;
+            -moz-transition: all 0.3s ease-out;
+            -o-transition: all 0.3s ease-out;
+            transition: all 0.3s ease-out;
+        }
+        body.no-touch .boxInner:hover .titleBox,
+        body.touch .boxInner.touchFocus .titleBox {
+            margin-bottom: 0;
+        }
+        .container {
+
+        }
+    </style>
 </head>
 
-<body>
-<div class="head">
+<body class="no-touch">
 
-    <div class="loginButtons">
+<!-- новая шапка -->
+<div class="container">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">ByMeService</a>
+        </div>
+        <div class="navbar-collapse collapse">
 
-    <select id = "city" name="city" onchange="getCity(this)">
-        <option selected disabled>${city}</option>
-        <option name="Kazan"    value="1" selected>Казань</option>
-        <option name="Moscow"   value="2" selected>Москва</option>
-        <option name="Samara"   value="3" selected>Самара</option>
-    </select>
+            <ul class="nav navbar-nav">
+                <li><a href="/about">About</a></li>
+                <li><a href="/ad">Add</a></li>
+                <li><a href="/account">Account</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
 
-    <select name="category">
-        <option selected disabled>${category}</option>
-        <option label="electronics" value="1" selected>Электроника</option>
-        <option label="technique" value="2" selected>Бытовая техника</option>
-        <option label="additionally" value="3" selected>Всякая всячина</option>
-    </select>
-
-    <button class="headButton" onclick="location.href='/ad'">Добавить объявление</button>
-    <button class="headButton" onclick="location.href='/authorization'">Выйти</button>
-    <button class="headButton" onclick="location.href='/registration'">Зарегистрироваться</button>
-    <button class="headButton" onclick="location.href='/authorization'">Войти</button>
-  </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/registration">Registration</a></li>
+                <li><a href="/login">LogIn</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
 
-<div class="context">
-  <div class="tableContext">
-    <table class="table">
-      <tr><td background="../static/testImg/cat0.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat1.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat2.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat3.jpeg" onclick="location.href='/authorization'"></td></tr>
-      <tr><td background="../static/testImg/cat4.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat5.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat6.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat7.jpeg" onclick="location.href='/authorization'"></td></tr>
-      <tr><td background="../static/testImg/cat8.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat0.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat1.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat2.jpeg" onclick="location.href='/authorization'"></td></tr>
-      <tr><td background="../static/testImg/cat3.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat4.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat5.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat6.jpeg" onclick="location.href='/authorization'"></td></tr>
-      <tr><td background="../static/testImg/cat7.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat8.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat0.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat1.jpeg" onclick="location.href='/authorization'"></td></tr>
-      <tr><td background="../static/testImg/cat2.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat3.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat4.jpeg" onclick="location.href='/authorization'"></td>
-          <td background="../static/testImg/cat5.jpeg" onclick="location.href='/authorization'"></td></tr>
-    </table>
-  </div>
-  <div class="head">
-    <button class="headButton" onclick="location.href='..'">Иннополис</button>
-  </div>
+<!-- динамическая таблица картинок -->
+<div class="wrap">
+    <c:forEach items="${list}" var="item">
+        <div class="box">
+            <div class="boxInner">
+                <a href="/"><img src=${item}/></a>
+                <div class="titleBox">${item}</div>
+            </div>
+        </div>
+    </c:forEach>
 </div>
 </body>
 </html>

@@ -2,13 +2,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <%--    some magic meta--%>
+    <%--***************************************************--%>
+    <%--             мета Bootstrapp                       --%>
+    <%--***************************************************--%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
     <title>about</title>
-
-    <%--    from bootsnipp--%>
+    <%--***************************************************--%>
+    <%--            магия Bootstrapp                       --%>
+    <%--***************************************************--%>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -52,7 +55,6 @@
                         <h3> DevCat </h3>
                     </div>
                     <div class="[ info-card-detail ]">
-                        <!-- Description -->
                         <p>
                             Привет всем! Я обычный кот - девелопер.
                             Тружусь на благо компании, занимаюсь разработкой

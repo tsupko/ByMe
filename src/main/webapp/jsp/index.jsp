@@ -1,14 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <%--    some magic meta--%>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%--***************************************************--%>
+    <%--             мета Bootstrapp                       --%>
+    <%--***************************************************--%>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
     <title>Главная страница</title>
-
-    <%--    from bootsnipp--%>
+    <%--***************************************************--%>
+    <%--            магия Bootstrapp                       --%>
+    <%--***************************************************--%>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -21,17 +24,20 @@
             background: #EEE;
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
+
         .wrap {
             padding-top: 50px;
             overflow: hidden;
             margin: 10px;
         }
+
         .box {
             float: left;
             position: relative;
             width: 20%;
             padding-bottom: 20%;
         }
+
         .boxInner {
             position: absolute;
             left: 10px;
@@ -40,6 +46,7 @@
             bottom: 10px;
             overflow: hidden;
         }
+
         .boxInner img {
             object-fit: cover;
             width: 100%;
@@ -62,10 +69,12 @@
             -o-transition: all 0.3s ease-out;
             transition: all 0.3s ease-out;
         }
+
         body.no-touch .boxInner:hover .titleBox,
         body.touch .boxInner.touchFocus .titleBox {
             margin-bottom: 0;
         }
+
         .container {
 
         }

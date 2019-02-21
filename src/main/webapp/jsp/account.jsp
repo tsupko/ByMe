@@ -2,13 +2,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <%--    some magic meta--%>
+    <%--***************************************************--%>
+    <%--             мета Bootstrapp                       --%>
+    <%--***************************************************--%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
     <title>account</title>
 
-    <%--    from bootsnipp--%>
+    <%--***************************************************--%>
+    <%--            магия Bootstrapp                       --%>
+    <%--***************************************************--%>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -21,12 +25,16 @@
             background: #EEE;
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
-        .container-target{
+
+        .container-target {
             padding-top: 70px;
         }
     </style>
 </head>
 <body>
+<%--***************************************************--%>
+<%--            это шапка, не трогаем                  --%>
+<%--***************************************************--%>
 <div class="container">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
@@ -45,8 +53,11 @@
         </div>
     </div>
 </div>
-
-<%--*****************************************************************--%>
-
+<%--***************************************************--%>
+<%--       тут пишим код для аккаунта пользователя     --%>
+<%--***************************************************--%>
+<div class="container-target">
+    //TODO тут вставить код для клиента
+</div>
 </body>
 </html>

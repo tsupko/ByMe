@@ -5,6 +5,8 @@ package ru.innopolis.byme.entity;
  *
  * @author Kuzina Anastasia
  */
+
+
 public class Image {
 
     private int id;

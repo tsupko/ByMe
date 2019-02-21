@@ -1,15 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <%--    some magic meta--%>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%--***************************************************--%>
+    <%--             мета Bootstrapp                       --%>
+    <%--***************************************************--%>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
     <title>contact</title>
-
-    <%--    from bootsnipp--%>
+    <%--***************************************************--%>
+    <%--            магия Bootstrapp                       --%>
+    <%--***************************************************--%>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -20,9 +23,10 @@
             margin: 0;
             padding: 0;
             background-image: url(https://png.pngtree.com/element_origin_min_pic/16/12/09/77619c843826cf8c9184bcf626d14f49.jpg);
-            font: 17px/23px 'Lucida Sans',sans-serif;
+            font: 17px/23px 'Lucida Sans', sans-serif;
         }
-        .padding_div_some{
+
+        .padding_div_some {
             padding-top: 70px;
         }
     </style>

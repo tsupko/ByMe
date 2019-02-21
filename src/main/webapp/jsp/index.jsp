@@ -34,7 +34,7 @@
         <option label="additionally" value="3" selected>Всякая всячина</option>
     </select>
 
-    <button class="headButton" onclick="location.href='/home'">Добавить объявление</button>
+    <button class="headButton" onclick="location.href='/ad'">Добавить объявление</button>
     <button class="headButton" onclick="location.href='/authorization'">Выйти</button>
     <button class="headButton" onclick="location.href='/registration'">Зарегистрироваться</button>
     <button class="headButton" onclick="location.href='/authorization'">Войти</button>

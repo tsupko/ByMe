@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 import ru.innopolis.byme.entity.User;
-import ru.innopolis.byme.exception.UserLoginAlreadyExistsExeption;
+import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -62,13 +62,13 @@ public class UserDaoImpl implements UserDao {
      * @param user объект, для которого будет создана запись в БД
      */
     @Override
-    public void create(User user) throws UserLoginAlreadyExistsExeption {
+    public void create(User user) throws UserLoginAlreadyExistsException {
         if (user == null) {
             LOGGER.error("Попытка создавать запись в БД для user == null ");
             return;
         }
         if (exists(user.getLogin())) {
-            throw new UserLoginAlreadyExistsExeption("Пользователь c данным логином уже зарегистрирован: login = " + user.getLogin());
+            throw new UserLoginAlreadyExistsException("Пользователь c данным логином уже зарегистрирован: login = " + user.getLogin());
         } else {
             LOGGER.debug("Создание пользователя {}", user);
             this.jdbcTemplate.execute(INSERT_USER, (PreparedStatementCallback<User>) stmt -> {
@@ -107,7 +107,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> selectById(int id) {
         if (id <= 0) {
-            LOGGER.error("Некорректный id={}: {}", id);
+            LOGGER.error("Некорректный id={}", id);
             return Optional.empty ();
         }
         LOGGER.debug("Выбор пользователя по id={}", id);
@@ -220,7 +220,7 @@ public class UserDaoImpl implements UserDao {
                     return true;
                 }
             } catch (SQLException e) {
-                LOGGER.error("Исключение при проверке наличия пользователя по login={}: {}, password={}: {}",
+                LOGGER.error("Исключение при проверке наличия пользователя по login={} , password={}",
                         login, password, e);
             }
             return false;
@@ -257,6 +257,11 @@ public class UserDaoImpl implements UserDao {
             return false;
         });
         return exists;
+    }
+
+    @Override
+    public DataSource getDataSource() {
+        return jdbcTemplate.getDataSource();
     }
 
     /**

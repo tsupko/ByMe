@@ -10,9 +10,62 @@ import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * слой сервиса для User Controller
+ * реализует логику работы с пользователем
+ *
+ * @author Komovskiy Dmitriy
+ * @since 21.02.2019
+ */
 @Component
 public class UserService {
+
+    // TODO: 2019-02-21 for testing only
+    private static final List<String> images = new ArrayList<>();
+
+    static  {
+        images.add("static/cat0.jpeg");
+        images.add("static/cat1.jpeg");
+        images.add("static/cat2.jpeg");
+        images.add("static/cat3.jpeg");
+        images.add("static/cat4.jpeg");
+        images.add("static/cat5.jpeg");
+        images.add("static/cat6.jpeg");
+        images.add("static/cat7.jpeg");
+        images.add("static/cat8.jpeg");
+        images.add("static/cat0.jpeg");
+        images.add("static/cat1.jpeg");
+        images.add("static/cat2.jpeg");
+        images.add("static/cat3.jpeg");
+        images.add("static/cat4.jpeg");
+        images.add("static/cat5.jpeg");
+        images.add("static/cat6.jpeg");
+        images.add("static/cat7.jpeg");
+        images.add("static/cat8.jpeg");
+    }
+
+    // TODO: 2019-02-21 for testing only
+    private static final List<String> cityList = new ArrayList<>();
+
+    static  {
+        cityList.add("Казань");
+        cityList.add("Москва");
+        cityList.add("Санкт-Петербург");
+        cityList.add("Новосибирск");
+    }
+
+    // TODO: 2019-02-21 for testing only
+    private static final List<String> categoryList = new ArrayList<>();
+
+    static  {
+        categoryList.add("пылесосы");
+        categoryList.add("утюги");
+        categoryList.add("консервы");
+        categoryList.add("разносол");
+    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
@@ -46,5 +99,18 @@ public class UserService {
         return dao.getDataSource();
     }
 
+    public List<String> getCategoryList() {
+        // TODO: 2019-02-21 create this list from DB exists list
+        return categoryList;
+    }
 
+    public List<String> getImages(){
+        // TODO: 2019-02-21 create this list from DB images list
+        return images;
+    }
+
+    public List<String> getCityList(){
+        // TODO: 2019-02-21 create this list from cities in DB
+        return cityList;
+    }
 }

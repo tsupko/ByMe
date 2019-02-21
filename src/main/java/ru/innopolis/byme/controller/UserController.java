@@ -8,12 +8,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 import ru.innopolis.byme.service.UserService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -34,44 +35,32 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("user") @Valid User user, BindingResult result) {
-        if (result.hasErrors()) {
-            return "/registration";
-        }
+    public String registration(@ModelAttribute("user") User user) {
+        LOGGER.info("registration обработан userController POST");
         try {
             service.saveUser(user);
+            LOGGER.info("добавление USER в БД");
         } catch (UserLoginAlreadyExistsException e) {
             LOGGER.info("пользователь уже зарегистрирован");
             return "/registration";
         }
-        return "redirect:/authorization";
-    }
-
-    @RequestMapping(value = "/authorization", method = RequestMethod.GET)
-    public String authorization(){
-        LOGGER.info("authorization обработан userController get");
-        return "authorization";
-    }
-
-    @RequestMapping(value = "/authorization", method = RequestMethod.POST)
-    public String authorization(@RequestParam String login, @RequestParam String password) {
-        LOGGER.info("authorization обработан userController post");
-        LOGGER.info("login {}", login);
-        LOGGER.info("password {}", password);
-        return "authorization";
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(){
+    public String index(Model model){
         LOGGER.info("index обработан userController get");
+        model.addAttribute("list", service.getImages());
+        model.addAttribute("city", service.getCityList());
+        model.addAttribute("category", service.getCategoryList());
         return "index";
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public String index(@RequestParam String city, @RequestParam String category){
-        LOGGER.info("index обработан userController post");
-        LOGGER.info("city {}", city);
-        LOGGER.info("category {}", category);
-        return "index";
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String home(){
+        LOGGER.info("home обработан userController get");
+        return "home";
     }
+
+
 }

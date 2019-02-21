@@ -23,6 +23,7 @@ import java.util.Optional;
  */
 @Repository
 public class UserDaoImpl implements UserDao {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
     private JdbcTemplate jdbcTemplate;
 
@@ -88,6 +89,7 @@ public class UserDaoImpl implements UserDao {
                     }
                 } catch (SQLException e) {
                     LOGGER.error("Исключение при создании пользователя: ", e);
+                    throw e;
                 }
                 return user;
             });
@@ -141,7 +143,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> selectByLogin(String login) {
         if (login.trim().isEmpty()) {
-            LOGGER.error("Некорректный login={}: {}", login);
+            LOGGER.error("Некорректный login={}", login);
             return Optional.empty ();
         }
         LOGGER.debug("Выбор пользователя по login={}", login);

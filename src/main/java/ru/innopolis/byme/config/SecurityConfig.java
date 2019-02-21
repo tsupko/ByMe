@@ -16,6 +16,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
 
+    // TODO: 2019-02-21 реализовать данные запросы в DAO
+    private static final String USER_BY_USER = "SELECT login, password, true as enabled FROM public.user WHERE login = ?";
+    private static final String USER_BT_ROLE = "SELECT login, 'USER' FROM public.user WHERE login = ?";
+
     private final UserService service;
 
     public SecurityConfig(UserService service) {
@@ -28,8 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .jdbcAuthentication()
                 .dataSource(service.getDataSource())
-                .usersByUsernameQuery("SELECT login, password, true as enabled FROM public.user WHERE login = ?")
-                .authoritiesByUsernameQuery("SELECT login, 'USER' FROM public.user WHERE login = ?")
+                .usersByUsernameQuery(USER_BY_USER)
+                .authoritiesByUsernameQuery(USER_BT_ROLE)
                 .passwordEncoder(service.getEncoder());
     }
 
@@ -44,7 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
-//                .loginPage("/authorization")
                 .usernameParameter("login").passwordParameter("password")
                 .permitAll()
                 .and()

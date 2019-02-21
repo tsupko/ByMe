@@ -13,12 +13,12 @@ import ru.innopolis.byme.dao.UserDao;
 import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.User;
 
-
 import java.security.Principal;
 
 @Controller
 public class AdController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdController.class);
+
     private final AdDao adDao;
     private final UserDao userDao;
     private final CategoryDao categoryDao;

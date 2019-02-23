@@ -13,8 +13,8 @@
     <%--            магия Bootstrapp                       --%>
     <%--***************************************************--%>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
     <%--    css styles--%>
     <style>
@@ -96,6 +96,32 @@
                 <li><a href="/ad">Add</a></li>
                 <li><a href="/account">Account</a></li>
                 <li><a href="/contact">Contact</a></li>
+
+                <li class="dropdown">
+                    <a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Select location...
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <c:forEach var="city" items="${cityList}">
+                            <li><a href="#">${city}</a></li>
+                        </c:forEach>
+                    </ul>
+                </li>
+
+
+                <li class="dropdown">
+                    <a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        All Ads
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <c:forEach var="category" items="${categoryList}">
+                            <option>${category}</option>
+                        </c:forEach>
+                    </ul>
+                </li>
+
             </ul>
 
             <ul class="nav navbar-nav navbar-right">

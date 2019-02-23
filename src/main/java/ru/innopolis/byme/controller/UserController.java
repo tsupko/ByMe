@@ -51,8 +51,8 @@ public class UserController {
     public String index(Model model){
         LOGGER.info("index обработан userController get");
         model.addAttribute("list", service.getImages());
-        model.addAttribute("city", service.getCityList());
-        model.addAttribute("category", service.getCategoryList());
+        model.addAttribute("cityList", service.getCityList());
+        model.addAttribute("categoryList", service.getCategoryList());
         return "index";
     }
 

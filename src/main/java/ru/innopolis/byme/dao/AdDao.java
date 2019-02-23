@@ -8,6 +8,8 @@ public interface AdDao {
 
     Ad selectById(int id);
 
+    Collection<Ad> selectByUserId(int userId);
+
     void create(Ad ad);
 
     void update(Ad ad);

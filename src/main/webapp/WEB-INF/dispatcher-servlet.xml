@@ -35,7 +35,7 @@
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
     <mvc:annotation-driven/>
-    <mvc:resources mapping="/static/**" location="static/testImg" cache-period="31556926"/>
+    <mvc:resources mapping="/static/**" location="static/testImg/" cache-period="31556926"/>
 <!--    <mvc:resources mapping="/jsp/css/**" location="jsp/css/" cache-period="31556926"/>-->
 <!--    <mvc:resources mapping="/css/**" location="jsp/css/" cache-period="31556926"/>-->
 

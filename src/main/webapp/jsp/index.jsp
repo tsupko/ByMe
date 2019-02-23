@@ -111,7 +111,7 @@
     <c:forEach items="${list}" var="item">
         <div class="box">
             <div class="boxInner">
-                <a href="/"><img src=${item}/></a>
+                <a href="/"><img src=${item}></a>
                 <div class="titleBox">${item}</div>
             </div>
         </div>

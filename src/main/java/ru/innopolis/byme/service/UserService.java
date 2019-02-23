@@ -26,31 +26,31 @@ public class UserService {
     // TODO: 2019-02-21 for testing only
     private static final List<String> images = new ArrayList<>();
 
-    static  {
-        images.add("static/cat0.jpeg");
-        images.add("static/cat1.jpeg");
-        images.add("static/cat2.jpeg");
-        images.add("static/cat3.jpeg");
-        images.add("static/cat4.jpeg");
-        images.add("static/cat5.jpeg");
-        images.add("static/cat6.jpeg");
-        images.add("static/cat7.jpeg");
-        images.add("static/cat8.jpeg");
-        images.add("static/cat0.jpeg");
-        images.add("static/cat1.jpeg");
-        images.add("static/cat2.jpeg");
-        images.add("static/cat3.jpeg");
-        images.add("static/cat4.jpeg");
-        images.add("static/cat5.jpeg");
-        images.add("static/cat6.jpeg");
-        images.add("static/cat7.jpeg");
-        images.add("static/cat8.jpeg");
+    static {
+        images.add("static/testImg/cat0.jpeg");
+        images.add("static/testImg/cat1.jpeg");
+        images.add("static/testImg/cat2.jpeg");
+        images.add("static/testImg/cat3.jpeg");
+        images.add("static/testImg/cat4.jpeg");
+        images.add("static/testImg/cat5.jpeg");
+        images.add("static/testImg/cat6.jpeg");
+        images.add("static/testImg/cat7.jpeg");
+        images.add("static/testImg/cat8.jpeg");
+        images.add("static/testImg/cat0.jpeg");
+        images.add("static/testImg/cat1.jpeg");
+        images.add("static/testImg/cat2.jpeg");
+        images.add("static/testImg/cat3.jpeg");
+        images.add("static/testImg/cat4.jpeg");
+        images.add("static/testImg/cat5.jpeg");
+        images.add("static/testImg/cat6.jpeg");
+        images.add("static/testImg/cat7.jpeg");
+        images.add("static/testImg/cat8.jpeg");
     }
 
     // TODO: 2019-02-21 for testing only
     private static final List<String> cityList = new ArrayList<>();
 
-    static  {
+    static {
         cityList.add("Казань");
         cityList.add("Москва");
         cityList.add("Санкт-Петербург");
@@ -60,7 +60,7 @@ public class UserService {
     // TODO: 2019-02-21 for testing only
     private static final List<String> categoryList = new ArrayList<>();
 
-    static  {
+    static {
         categoryList.add("пылесосы");
         categoryList.add("утюги");
         categoryList.add("консервы");
@@ -85,17 +85,17 @@ public class UserService {
         dao.create(user);
     }
 
-    public User newUser(){
+    public User newUser() {
         LOGGER.info("создаем пользователя");
         return new User();
     }
 
-    public PasswordEncoder getEncoder(){
+    public PasswordEncoder getEncoder() {
         LOGGER.info("запрос на получение кодировки");
         return encoder;
     }
 
-    public DataSource getDataSource(){
+    public DataSource getDataSource() {
         return dao.getDataSource();
     }
 
@@ -104,12 +104,12 @@ public class UserService {
         return categoryList;
     }
 
-    public List<String> getImages(){
+    public List<String> getImages() {
         // TODO: 2019-02-21 create this list from DB images list
         return images;
     }
 
-    public List<String> getCityList(){
+    public List<String> getCityList() {
         // TODO: 2019-02-21 create this list from cities in DB
         return cityList;
     }

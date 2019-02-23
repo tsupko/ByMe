@@ -84,6 +84,40 @@ public class AdDaoImpl implements AdDao {
     }
 
     /**
+     * sql-скрипт для выбора объявлений по автору (user_id)
+     */
+    private static final String SELECT_AD_BY_USER_ID = "select * from ad" +
+            " where user_id = ? and is_actual = true order by id";
+
+    /**
+     * выбор объявлений из таблицы ad,
+     * принадлежащих одному автору (user_id)
+     *
+     * @param userId внешний ключ для связи таблиц ad и user
+     */
+    @Override
+    public Collection<Ad> selectByUserId(int userId) {
+        LOGGER.info("selectByUserId");
+        Collection<Ad> ads = new ArrayList<>();
+        this.jdbcTemplate.execute(SELECT_AD_BY_USER_ID, (PreparedStatementCallback<Collection<Ad>>) stmt -> {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Ad ad = new Ad();
+                    assignResultSetToAdFields(rs, ad);
+                    LOGGER.info(ad.toString());
+                    ads.add(ad);
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Исключение при получении объявлений по автору user_id={}", userId, e);
+            }
+            LOGGER.info(ads.toString());
+            return (ads);
+        });
+        return (ads);
+    }
+
+    /**
      * sql-скрипт для создания записи в соответствующей таблице
      */
     private static final String INSERT_AD = "insert into ad" +

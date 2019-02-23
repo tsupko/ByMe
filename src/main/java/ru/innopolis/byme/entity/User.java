@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 /**
  * POJO класс для таблицы user
@@ -126,5 +127,26 @@ public class User {
                 ", cityId='" + cityId + '\'' +
                 ", isActual='" + isActual + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                roleId == user.roleId &&
+                cityId == user.cityId &&
+                isActual == user.isActual &&
+                login.equals(user.login) &&
+                password.equals(user.password) &&
+                name.equals(user.name) &&
+                email.equals(user.email) &&
+                phoneNumber.equals(user.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, password, name, email, phoneNumber, roleId, cityId, isActual);
     }
 }

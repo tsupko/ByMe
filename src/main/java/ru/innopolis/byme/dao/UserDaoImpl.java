@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
@@ -111,15 +110,15 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> selectById(int id) {
         if (id <= 0) {
             LOGGER.error("Некорректный id={}", id);
-            return Optional.empty ();
+            return Optional.empty();
         }
         LOGGER.debug("Выбор пользователя по id={}", id);
         User user = new User();
         this.jdbcTemplate.execute(SELECT_USER_BY_ID, (PreparedStatementCallback<User>) stmt -> {
-            stmt.setInt(1,id);
+            stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    assignResultSetToUserFields(user,rs);
+                    assignResultSetToUserFields(user, rs);
                     LOGGER.info("Пользователь с id={} выбран успешно. Инфо: {}", user.getId(), user.toString());
                 }
             } catch (SQLException e) {
@@ -135,6 +134,7 @@ public class UserDaoImpl implements UserDao {
      */
     private static final String SELECT_USER_BY_LOGIN = "select * from public.user" +
             " where login = ? and is_actual = true ";
+
     /**
      * создание объекта user по переданному login
      *
@@ -144,15 +144,15 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> selectByLogin(String login) {
         if (login.trim().isEmpty()) {
             LOGGER.error("Некорректный login={}", login);
-            return Optional.empty ();
+            return Optional.empty();
         }
         LOGGER.debug("Выбор пользователя по login={}", login);
         User user = new User();
         this.jdbcTemplate.execute(SELECT_USER_BY_LOGIN, (PreparedStatementCallback<User>) stmt -> {
-            stmt.setString(1,login);
+            stmt.setString(1, login);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    assignResultSetToUserFields(user,rs);
+                    assignResultSetToUserFields(user, rs);
                     LOGGER.info("Пользователь по login={} выбран успешно. Инфо: {}", user.getLogin(), user.toString());
                 }
             } catch (SQLException e) {
@@ -282,7 +282,7 @@ public class UserDaoImpl implements UserDao {
     /**
      * проверка наличия актуального пользователя с указанными параметрами в таблице user
      *
-     * @param login    логин пользователся
+     * @param login логин пользователся
      */
     @Override
     public boolean exists(String login) {
@@ -297,7 +297,7 @@ public class UserDaoImpl implements UserDao {
                     return true;
                 }
             } catch (SQLException e) {
-                LOGGER.error("Исключение при проверке наличия пользователя по login={}: {}", login,  e);
+                LOGGER.error("Исключение при проверке наличия пользователя по login={}: {}", login, e);
             }
             return false;
         });
@@ -320,9 +320,9 @@ public class UserDaoImpl implements UserDao {
         user.setId(resultSet.getInt(USER_ID));
         user.setLogin(resultSet.getString(USER_LOGIN));
         user.setPassword(resultSet.getString(USER_PASSWORD));
-        user.setName(resultSet.getString(USER_NAME));
-        user.setEmail(resultSet.getString(USER_EMAIL));
-        user.setPhoneNumber(resultSet.getString(USER_PHONE_NUMBER));
+        user.setName("\"" + resultSet.getString(USER_NAME) + "\"");
+        user.setEmail("\"" + resultSet.getString(USER_EMAIL) + "\"");
+        user.setPhoneNumber("\"" + resultSet.getString(USER_PHONE_NUMBER) + "\"");
         user.setRoleId(resultSet.getInt(USER_ROLE_ID));
         user.setCityId(resultSet.getInt(USER_CITY_ID));
         user.setActual(resultSet.getBoolean(USER_IS_ACTUAL));

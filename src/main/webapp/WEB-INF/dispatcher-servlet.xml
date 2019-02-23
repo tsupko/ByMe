@@ -20,7 +20,7 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <context:property-placeholder location="classpath:jdbc.properties, classpath:application.properties"/>
 
     <bean id="dataSource"
           class="org.apache.commons.dbcp.BasicDataSource"
@@ -33,6 +33,9 @@
 
     <bean id="passwordEncoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+    <bean  class="org.springframework.web.multipart.support.StandardServletMultipartResolver"
+            id="multipartResolver"/>
 
     <mvc:annotation-driven/>
     <mvc:resources mapping="/static/**" location="static/testImg" cache-period="31556926"/>

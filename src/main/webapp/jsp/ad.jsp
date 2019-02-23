@@ -52,7 +52,7 @@
 <div class="container">
     <div class="navPadding">
 
-        <form method="post" action="/ad">
+        <form method="post" action="/ad" enctype="multipart/form-data">
             <table class="table">
                 <tr>
                     <td>Категория</td>
@@ -69,13 +69,10 @@
                     <td>Название объявления</td>
                     <td><input type="text" name="title" required autofocus></td>
                 </tr>
-
-                <tr>
                 <tr>
                     <td>Описание объявления</td>
                     <td><textarea name="text" rows="6" maxlength="3000" required></textarea></td>
                 </tr>
-                <tr>
                 <tr>
                     <td>Цена</td>
                     <td><input type="text" name="price" required pattern="\d+(\.\d{2})?"></td>
@@ -85,7 +82,13 @@
                     <td><input type="text" name="priceMin" required pattern="\d+(\.\d{2})?"></td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>Фотография</td>
+                    <td>
+                        <input name="image" type="file"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td/>
                     <td>
                         <button class="headButton" type="submit">Добавить объявление</button>
                     </td>

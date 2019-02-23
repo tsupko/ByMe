@@ -34,7 +34,7 @@ public class Image {
         return isMain;
     }
 
-    public void setMain(boolean is_main) {
+    public void setMain(boolean isMain) {
         this.isMain = isMain;
     }
 

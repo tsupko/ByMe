@@ -1,9 +1,8 @@
 package ru.innopolis.byme.controller;
 
-import org.apache.commons.io.FileUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,9 +18,8 @@ import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.Image;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.ImageUploadException;
+import ru.innopolis.byme.service.ImageService;
 
-import java.io.File;
-import java.io.IOException;
 import java.security.Principal;
 
 @Controller
@@ -32,14 +30,15 @@ public class AdController {
     private final UserDao userDao;
     private final CategoryDao categoryDao;
     private final ImageDao imageDao;
-    @Value("${upload.location}")
-    private String fileUpload;
+    private final ImageService imageService;
 
-    public AdController(AdDao adDao, UserDao userDao, CategoryDao categoryDao, ImageDao imageDao) {
+    public AdController(AdDao adDao, UserDao userDao, CategoryDao categoryDao, ImageDao imageDao,
+                        ImageService imageService) {
         this.adDao = adDao;
         this.userDao = userDao;
         this.categoryDao = categoryDao;
         this.imageDao = imageDao;
+        this.imageService = imageService;
     }
 
     @RequestMapping(value = "/ad", method = RequestMethod.GET)
@@ -67,9 +66,9 @@ public class AdController {
         LOGGER.info("image.isEmpty(): " + image.isEmpty());
         try {
             if (!image.isEmpty()) {
-                validateImage(image);
+                imageService.validateImage(image);
                 String imageName = ad.getId() + ".jpg";
-                saveImage(imageName, image);
+                imageService.saveImage(imageName, image);
                 Image img = new Image();
                 img.setImg(imageName);
                 img.setAdId(ad.getId());
@@ -82,22 +81,5 @@ public class AdController {
             return "ad";
         }
         return "redirect:/";
-    }
-
-    private void validateImage(MultipartFile image) throws ImageUploadException {
-        if (!image.getContentType().equals("image/jpeg")) {
-            LOGGER.error("Only JPG images accepted");
-            throw new ImageUploadException("Only JPG images accepted");
-        }
-    }
-
-    private void saveImage(String filename, MultipartFile image) throws ImageUploadException {
-        try {
-            File file = new File(fileUpload + filename);
-            FileUtils.writeByteArrayToFile(file, image.getBytes());
-        } catch (IOException e) {
-            LOGGER.error("File save error ", e);
-            throw new ImageUploadException("Unable to save image", e);
-        }
     }
 }

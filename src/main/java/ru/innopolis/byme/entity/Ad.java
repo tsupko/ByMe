@@ -2,6 +2,7 @@ package ru.innopolis.byme.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * POJO класс для таблицы ad (advertisement)
@@ -58,7 +59,7 @@ public class Ad {
         return categoryId;
     }
 
-    public void setCategoryId(int category_id) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -74,7 +75,7 @@ public class Ad {
         return priceMin;
     }
 
-    public void setPriceMin(BigDecimal price_min) {
+    public void setPriceMin(BigDecimal priceMin) {
         this.priceMin = priceMin;
     }
 
@@ -126,5 +127,28 @@ public class Ad {
                 ", confirm=" + confirm +
                 ", isActual=" + isActual +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ad ad = (Ad) o;
+        return id == ad.id &&
+                userId == ad.userId &&
+                categoryId == ad.categoryId &&
+                dayCount == ad.dayCount &&
+                confirm == ad.confirm &&
+                isActual == ad.isActual &&
+                title.equals(ad.title) &&
+                text.equals(ad.text) &&
+                price.equals(ad.price) &&
+                priceMin.equals(ad.priceMin) &&
+                date.equals(ad.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, text, userId, categoryId, price, priceMin, date, dayCount, confirm, isActual);
     }
 }

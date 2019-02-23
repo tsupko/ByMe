@@ -5,6 +5,8 @@ package ru.innopolis.byme.entity;
  *
  * @author Kuzina Anastasia
  */
+
+
 public class Image {
 
     private int id;
@@ -32,7 +34,7 @@ public class Image {
         return isMain;
     }
 
-    public void setMain(boolean is_main) {
+    public void setMain(boolean isMain) {
         this.isMain = isMain;
     }
 

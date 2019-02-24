@@ -36,7 +36,7 @@
 
             <ul class="nav navbar-nav">
                 <li><a href="/about">About</a></li>
-                <li><a href="/ad">Add</a></li>
+                <li><a href="/ad/new">Add</a></li>
                 <li><a href="/account">Account</a></li>
                 <li><a href="/contact">Contact</a></li>
             </ul>
@@ -52,34 +52,34 @@
 <div class="container">
     <div class="navPadding">
 
-        <form method="post" action="/ad" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
             <table class="table">
                 <tr>
                     <td>Категория</td>
                     <td>
-
                         <select name="categoryId">
                             <c:forEach var="item" items="${categories}">
-                                <option value="${item.id}">${item.name}</option>
+                                <option value="${item.id}" ${item.id == selected ? 'selected' : ''}>${item.name}</option>
                             </c:forEach>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td>Название объявления</td>
-                    <td><input type="text" name="title" required autofocus></td>
+                    <td><input type="text" name="title" required autofocus value="${ad.title}">
+                        <input type=text hidden name="hidden"></td>
                 </tr>
                 <tr>
                     <td>Описание объявления</td>
-                    <td><textarea name="text" rows="6" maxlength="3000" required></textarea></td>
+                    <td><textarea name="text" rows="6" maxlength="3000" required>${ad.text}</textarea></td>
                 </tr>
                 <tr>
                     <td>Цена</td>
-                    <td><input type="text" name="price" required pattern="\d+(\.\d{2})?"></td>
+                    <td><input type="text" name="price" required pattern="\d+(\.\d{2})?" value="${ad.price}"></td>
                 </tr>
                 <tr>
                     <td>Минимальная цена</td>
-                    <td><input type="text" name="priceMin" required pattern="\d+(\.\d{2})?"></td>
+                    <td><input type="text" name="priceMin" required pattern="\d+(\.\d{2})?" value="${ad.priceMin}"></td>
                 </tr>
                 <tr>
                     <td>Фотография</td>
@@ -90,7 +90,7 @@
                 <tr>
                     <td/>
                     <td>
-                        <button class="headButton" type="submit">Добавить объявление</button>
+                        <button class="headButton" type="submit">${submit}</button>
                     </td>
                 </tr>
             </table>

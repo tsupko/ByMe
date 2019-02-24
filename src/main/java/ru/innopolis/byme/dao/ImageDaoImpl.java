@@ -59,4 +59,31 @@ public class ImageDaoImpl implements ImageDao {
             return image;
         });
     }
+
+    /**
+     * sql-скрипт для проверки наличия фото с укзанным ad_id
+     */
+    private static final String SELECT_BY_AD_ID = "SELECT * FROM image WHERE ad_id = ?";
+
+    /**
+     * проверка наличия фото у объявления с указанным id
+     *
+     * @param adId id объявления к которому относится фото
+     */
+    @Override
+    public boolean exists(int adId) {
+
+        Boolean exists = this.jdbcTemplate.execute(SELECT_BY_AD_ID, (PreparedStatementCallback<Boolean>) stmt -> {
+            stmt.setInt(1, adId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Исключение при проверке наличия image по id={}: {}", adId, e);
+            }
+            return false;
+        });
+        return exists;
+    }
 }

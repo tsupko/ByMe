@@ -107,20 +107,22 @@
                     </td>
                 </tr>
 
-                <td>Объявления</td>
-                <table border="1">
-                    <td>Title</td>
-                    <td>Text</td>
-                    <td>Price</td>
-                    <td>Price_min</td>
-                    <c:forEach items="${ads}" var="item">
-                        <tr>
-                            <td> ${ item.title } </td>
-                            <td> ${ item.text } </td>
-                            <td> ${ item.price } </td>
-                            <td> ${ item.priceMin } </td>
-                        </tr>
-                    </c:forEach>
+                
+                    <td>Объявления</td>
+                    <table border="1">
+                        <td>Title</td>
+                        <td>Text</td>
+                        <td>Price</td>
+                        <td>Price_min</td>
+                        <c:forEach items="${ads}" var="item">
+                            <tr>
+                                <td> <a href="/ad/edit/${item.id}">${ item.title }</a>  </td>
+                                <td> ${ item.text } </td>
+                                <td> ${ item.price } </td>
+                                <td> ${ item.priceMin } </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
                 </table>
             </table>
         </form>

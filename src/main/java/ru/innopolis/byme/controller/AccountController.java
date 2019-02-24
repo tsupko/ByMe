@@ -35,10 +35,12 @@ public class AccountController {
     public String showUserAccount(Model model, Principal principal) {
         String login = principal.getName();
         User user = userDao.selectByLogin(login).get();
+        Collection<City> cities = cityDao.getAllCities();
         City city = cityDao.selectById(user.getCityId()).get();
         Collection<Ad> ads = adDao.selectByUserId(user.getId());
         model.addAttribute("account", user);
         model.addAttribute("city", city);
+        model.addAttribute("cities", cities);
         model.addAttribute("ads", ads);
         return "/account";
     }

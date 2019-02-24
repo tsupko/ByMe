@@ -49,7 +49,6 @@ public class AdController {
         model.addAttribute("categories", categoryDao.getAll());
         model.addAttribute("ad", new Ad());
         model.addAttribute("submit", "Добавить объявление");
-//        model.addAttribute("action", "/ad/new");
         return "ad";
     }
 
@@ -62,8 +61,8 @@ public class AdController {
         ad.setUserId(user.getId());
         ad.setConfirm(true);
         ad.setActual(true);
-        LOGGER.info("Новое объявление: {}", ad);
         adDao.create(ad);
+        LOGGER.info("Новое объявление: {}", ad);
         LOGGER.info("image.isEmpty(): " + image.isEmpty());
         try {
             if (!image.isEmpty()) {
@@ -76,8 +75,8 @@ public class AdController {
                 img.setImg(imageName);
                 img.setAdId(ad.getId());
                 img.setMain(true);
-                LOGGER.info("Новое фото объявления: {}", img);
                 imageDao.create(img);
+                LOGGER.info("Новое фото объявления: {}", img);
             }
         } catch (ImageUploadException e) {
             bindingResult.reject(e.getMessage());
@@ -98,7 +97,8 @@ public class AdController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad) {
+    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad, MultipartFile image,
+                           BindingResult bindingResult) {
         LOGGER.info("mapping post /edit/" + id);
         Ad newAd = adDao.selectById(id);
         newAd.setTitle(ad.getTitle());
@@ -106,8 +106,29 @@ public class AdController {
         newAd.setCategoryId(ad.getCategoryId());
         newAd.setPrice(ad.getPrice());
         newAd.setPriceMin(ad.getPriceMin());
-        LOGGER.info("объявление изменено: {}", ad);
         adDao.update(newAd);
+        LOGGER.info("объявление изменено: {}", newAd);
+        LOGGER.info("image.isEmpty(): " + image.isEmpty());
+        try {
+            if (!image.isEmpty()) {
+                LOGGER.info("Image size: " + image.getSize());
+                LOGGER.info("Image content type: " + image.getContentType());
+                imageService.validateImage(image);
+                String imageName = id + ".jpg";
+                imageService.saveImage(imageName, image);
+                if (!imageDao.exists(id)) {
+                    Image img = new Image();
+                    img.setImg(imageName);
+                    img.setAdId(id);
+                    img.setMain(true);
+                    imageDao.create(img);
+                    LOGGER.info("Новое фото объявления: {}", img);
+                }
+            }
+        } catch (ImageUploadException e) {
+            bindingResult.reject(e.getMessage());
+            return "ad";
+        }
         return "redirect:/";
     }
 }

@@ -129,6 +129,6 @@ public class AdController {
             bindingResult.reject(e.getMessage());
             return "ad";
         }
-        return "redirect:/";
+        return "redirect:/account";
     }
 }

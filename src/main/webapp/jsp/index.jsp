@@ -93,7 +93,7 @@
 
             <ul class="nav navbar-nav">
                 <li><a href="/about">About</a></li>
-                <li><a href="/ad">Add</a></li>
+                <li><a href="/ad/new">Add</a></li>
                 <li><a href="/account">Account</a></li>
                 <li><a href="/contact">Contact</a></li>
             </ul>

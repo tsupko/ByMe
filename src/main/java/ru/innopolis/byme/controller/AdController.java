@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,7 @@ import ru.innopolis.byme.service.ImageService;
 import java.security.Principal;
 
 @Controller
+@RequestMapping("/ad")
 public class AdController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdController.class);
 
@@ -41,31 +43,31 @@ public class AdController {
         this.imageService = imageService;
     }
 
-    @RequestMapping(value = "/ad", method = RequestMethod.GET)
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String ad(Model model) {
-        LOGGER.info("mapping get /ad");
+        LOGGER.info("mapping get /ad/new");
         model.addAttribute("categories", categoryDao.getAll());
         model.addAttribute("ad", new Ad());
+        model.addAttribute("submit", "Добавить объявление");
         return "ad";
     }
 
-    @RequestMapping(value = "/ad", method = RequestMethod.POST)
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String addAd(@ModelAttribute("ad") Ad ad, MultipartFile image,
                         BindingResult bindingResult, Principal principal) {
         String login = principal.getName();
-        LOGGER.info("mapping post /ad, login: {}", login);
+        LOGGER.info("mapping post /ad/new, login: {}", login);
         User user = userDao.selectByLogin(login).get();
         ad.setUserId(user.getId());
         ad.setConfirm(true);
         ad.setActual(true);
-        LOGGER.info("Новое объявление: {}", ad);
         adDao.create(ad);
-        LOGGER.info("File name: " + image.getName());
-        LOGGER.info("File size: " + image.getSize());
-        LOGGER.info("File content type: " + image.getContentType());
+        LOGGER.info("Новое объявление: {}", ad);
         LOGGER.info("image.isEmpty(): " + image.isEmpty());
         try {
             if (!image.isEmpty()) {
+                LOGGER.info("Image size: " + image.getSize());
+                LOGGER.info("Image content type: " + image.getContentType());
                 imageService.validateImage(image);
                 String imageName = ad.getId() + ".jpg";
                 imageService.saveImage(imageName, image);
@@ -73,13 +75,60 @@ public class AdController {
                 img.setImg(imageName);
                 img.setAdId(ad.getId());
                 img.setMain(true);
-                LOGGER.info("Новое фото объявление: {}", img);
                 imageDao.create(img);
+                LOGGER.info("Новое фото объявления: {}", img);
             }
         } catch (ImageUploadException e) {
             bindingResult.reject(e.getMessage());
             return "ad";
         }
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String editAd(@PathVariable int id, Model model) {
+        LOGGER.info("mapping get /edit/" + id);
+        Ad ad = adDao.selectById(id);
+        model.addAttribute("categories", categoryDao.getAll());
+        model.addAttribute("ad", ad);
+        model.addAttribute("selected", ad.getCategoryId());
+        model.addAttribute("submit", "Сохранить изменения");
+        return "ad";
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad, MultipartFile image,
+                           BindingResult bindingResult) {
+        LOGGER.info("mapping post /edit/" + id);
+        Ad newAd = adDao.selectById(id);
+        newAd.setTitle(ad.getTitle());
+        newAd.setText(ad.getText());
+        newAd.setCategoryId(ad.getCategoryId());
+        newAd.setPrice(ad.getPrice());
+        newAd.setPriceMin(ad.getPriceMin());
+        adDao.update(newAd);
+        LOGGER.info("объявление изменено: {}", newAd);
+        LOGGER.info("image.isEmpty(): " + image.isEmpty());
+        try {
+            if (!image.isEmpty()) {
+                LOGGER.info("Image size: " + image.getSize());
+                LOGGER.info("Image content type: " + image.getContentType());
+                imageService.validateImage(image);
+                String imageName = id + ".jpg";
+                imageService.saveImage(imageName, image);
+                if (!imageDao.exists(id)) {
+                    Image img = new Image();
+                    img.setImg(imageName);
+                    img.setAdId(id);
+                    img.setMain(true);
+                    imageDao.create(img);
+                    LOGGER.info("Новое фото объявления: {}", img);
+                }
+            }
+        } catch (ImageUploadException e) {
+            bindingResult.reject(e.getMessage());
+            return "ad";
+        }
+        return "redirect:/account";
     }
 }

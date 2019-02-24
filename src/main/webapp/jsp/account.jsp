@@ -105,7 +105,7 @@
                         <td>Price_min</td>
                         <c:forEach items="${ads}" var="item">
                             <tr>
-                                <td> ${ item.title } </td>
+                                <td> <a href="/ad/edit/${item.id}">${ item.title }</a>  </td>
                                 <td> ${ item.text } </td>
                                 <td> ${ item.price } </td>
                                 <td> ${ item.priceMin } </td>

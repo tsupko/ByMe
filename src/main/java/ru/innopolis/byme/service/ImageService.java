@@ -28,6 +28,7 @@ public class ImageService {
         try {
             File file = new File(uploadDir + filename);
             FileUtils.writeByteArrayToFile(file, image.getBytes());
+            LOGGER.info("File saved {}", filename);
         } catch (IOException e) {
             LOGGER.error("File save error ", e);
             throw new ImageUploadException("Unable to save image", e);

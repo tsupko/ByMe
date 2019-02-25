@@ -89,17 +89,24 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="/">ByMeService</a>
         </div>
+
         <div class="navbar-collapse collapse">
-
             <ul class="nav navbar-nav">
-                <li><a href="/about">About</a></li>
-                <li><a href="/ad/new">Add</a></li>
-                <li><a href="/account">Account</a></li>
-                <li><a href="/contact">Contact</a></li>
+                <c:if test="${not empty user}">
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/ad/new">Add</a></li>
+                    <li><a href="/account">Account</a></li>
+                </c:if>
+                <%--                <li><a href="/account">Account</a></li>--%>
+                <%--                <li><a href="/contact">Contact</a></li>--%>
             </ul>
-
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/registration">Registration</a></li>
+                <c:if test="${not empty user}">
+                    <li><a href="#">Hello, ${user}</a></li>
+                </c:if>
+                <c:if test="${empty user}">
+                    <li><a href="/registration">Registration</a></li>
+                </c:if>
                 <li><a href="${urlSome}">${some}</a></li>
             </ul>
         </div>

@@ -74,6 +74,7 @@
 
 <div class="register">
     <form id="details" method="post" action="/registration" modelAttribute="user">
+<%--        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
         <div class="container">
             <div class="row centered-form">
                 <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
@@ -84,9 +85,14 @@
                             </h3>
                         </div>
                         <div class="panel-body">
+                            <c:if test="${not empty error}">
+                                <div class="alert alert-danger" role="alert">
+                                    User have already registered
+                                </div>
+                            </c:if>
                             <form role="form">
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             class="form-control"
                                             type="text"
                                             name="login"
@@ -98,7 +104,7 @@
                                 </div>
                                 <%--валидация пароля--%>
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             type="password"
                                             name="password"
                                             id="pass1"
@@ -107,7 +113,7 @@
                                             placeholder="password"/>
                                 </div>
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             type="password"
                                             id="pass2"
                                             class="form-control password-field"
@@ -116,7 +122,7 @@
                                     <span id="confirmMessage" class="confirmMessage"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             type="text"
                                             name="name"
                                             id="name"
@@ -125,7 +131,7 @@
                                             placeholder="name">
                                 </div>
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             type="number"
                                             name="phoneNumber"
                                             id="phoneNumber"
@@ -133,7 +139,7 @@
                                             placeholder="phone">
                                 </div>
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             type="text"
                                             name="email"
                                             id="email"

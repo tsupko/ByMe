@@ -58,9 +58,19 @@
                             <h3 class="panel-title">Login</h3>
                         </div>
                         <div class="panel-body">
+                            <c:if test="${param.error != null}">
+                                <div class="alert alert-danger" role="alert">
+                                    Invalid username or password.
+                                </div>
+                            </c:if>
+<%--                            <c:if test="${param.logout != null}">--%>
+<%--                                <div class="alert alert-success" role="alert">--%>
+<%--                                    You have been logged out.--%>
+<%--                                </div>--%>
+<%--                            </c:if>--%>
                             <form role="form">
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             class="form-control"
                                             type="text"
                                             name="login"
@@ -69,7 +79,7 @@
                                     <div id="errLast"></div>
                                 </div>
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             type="password"
                                             name="password"
                                             class="form-control password-field"

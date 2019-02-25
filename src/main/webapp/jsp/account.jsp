@@ -41,11 +41,14 @@
             <a class="navbar-brand" href="/">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
+
             <ul class="nav navbar-nav">
                 <li><a href="/about">About</a></li>
+                <li><a href="/ad/new">Add</a></li>
                 <li><a href="/account">Account</a></li>
                 <li><a href="/contact">Contact</a></li>
             </ul>
+
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/registration">Registration</a></li>
                 <li><a href="/logout">LogOut</a></li>

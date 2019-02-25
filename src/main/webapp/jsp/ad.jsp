@@ -18,6 +18,12 @@
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #EEE;
+            font: 17px/23px 'Lucida Sans', sans-serif;
+        }
         .navPadding {
             padding-top: 100px;
         }
@@ -43,7 +49,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/registration">Registration</a></li>
-                <li><a href="/login">LogIn</a></li>
+                <li><a href="/logout">LogOut</a></li>
             </ul>
         </div>
     </div>

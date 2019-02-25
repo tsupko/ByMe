@@ -2,6 +2,10 @@ package ru.innopolis.byme.entity;
 
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.Objects;
+
 /**
  * POJO класс для таблицы user
  *
@@ -11,10 +15,29 @@ import org.springframework.stereotype.Component;
 public class User {
 
     private int id;
+
+//    @Size(min = 5, max = 30, message = "Логин должен быть от 5 до 30 символов")
     private String login;
+
+//    @Size(min = 5, max = 15, message = "Пароль должен быть от 5 до 15 символов")
     private String password;
+
+    private String confirmPassword;
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+//    @Size(min = 5, max = 30, message = "Имя должно быть от 5 до 30 символов")
     private String name;
+
+//    @Pattern(regexp = ".*@.*\\..+", message = "Некорректный адрес электронной почты")
     private String email;
+
     private String phoneNumber;
     private int roleId;
     private int cityId;
@@ -97,7 +120,6 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
@@ -105,5 +127,26 @@ public class User {
                 ", cityId='" + cityId + '\'' +
                 ", isActual='" + isActual + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                roleId == user.roleId &&
+                cityId == user.cityId &&
+                isActual == user.isActual &&
+                login.equals(user.login) &&
+                password.equals(user.password) &&
+                name.equals(user.name) &&
+                email.equals(user.email) &&
+                phoneNumber.equals(user.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, password, name, email, phoneNumber, roleId, cityId, isActual);
     }
 }

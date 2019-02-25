@@ -100,7 +100,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/registration">Registration</a></li>
-                <li><a href="/login">LogIn</a></li>
+                <li><a href="${urlSome}">${some}</a></li>
             </ul>
         </div>
     </div>

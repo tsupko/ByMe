@@ -109,7 +109,6 @@
                                 <div class="form-group">
                                     <input
                                             type="password"
-                                            name="password"
                                             id="pass2"
                                             class="form-control password-field"
                                             placeholder="enter again to validate"

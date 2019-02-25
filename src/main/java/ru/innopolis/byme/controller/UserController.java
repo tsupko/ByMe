@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +12,7 @@ import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 import ru.innopolis.byme.service.UserService;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
+import java.security.Principal;
 
 @Controller
 public class UserController {
@@ -49,8 +46,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model){
+    public String index(Model model, Principal principal){
         LOGGER.info("index обработан userController get");
+        if(principal == null){
+            model.addAttribute("urlSome", "/login");
+            model.addAttribute("some", "LogIn");
+        } else{
+            model.addAttribute("urlSome", "/logout");
+            model.addAttribute("some", "LogOut");
+        }
         model.addAttribute("list", service.getImages());
         model.addAttribute("city", service.getCityList());
         model.addAttribute("category", service.getCategoryList());

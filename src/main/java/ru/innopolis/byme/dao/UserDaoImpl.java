@@ -167,7 +167,7 @@ public class UserDaoImpl implements UserDao {
      * sql-скрипт для изменения значений в таблице user
      */
     private static final String UPDATE_USER = "update public.user" +
-            " set password = ?, name = ?, email = ?, phone_number = ? where id = ?\n";
+            " set password = ?, name = ?, email = ?, phone_number = ?, city_id = ? where id = ?\n";
 
     /**
      * изменение значений  в таблице user
@@ -182,7 +182,8 @@ public class UserDaoImpl implements UserDao {
             stmt.setString(2, user.getName());
             stmt.setString(3, user.getEmail());
             stmt.setString(4, user.getPhoneNumber());
-            stmt.setInt(5, user.getId());
+            stmt.setInt(5, user.getCityId());
+            stmt.setInt(6, user.getId());
             stmt.execute();
             LOGGER.info("Пользователь с id={} изменен успешно. Инфо: {}", user.getId(), user.toString());
             return true;

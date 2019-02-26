@@ -58,8 +58,8 @@ public class UserController {
             model.addAttribute("user", principal.getName());
         }
         model.addAttribute("list", service.getImages());
-        model.addAttribute("city", service.getCityList());
-        model.addAttribute("category", service.getCategoryList());
+        model.addAttribute("cityList", service.getCityList());
+        model.addAttribute("categoryList", service.getCategoryList());
         return "index";
     }
 

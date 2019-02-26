@@ -38,7 +38,7 @@
             var message = document.getElementById('confirmMessage');
             var goodColor = "#66cc66";
             var badColor = "#ff6666";
-            if (pass1.value == pass2.value) {
+            if (pass1.value === pass2.value) {
                 pass2.style.backgroundColor = goodColor;
                 message.style.color = goodColor;
                 message.innerHTML = "Passwords Match"
@@ -47,6 +47,9 @@
                 message.style.color = badColor;
                 message.innerHTML = "Passwords Do Not Match!"
             }
+        }
+        function check_pass() {
+            document.getElementById('submit').disabled = document.getElementById('pass1').value !== document.getElementById('pass2').value;
         }
     </script>
 </head>
@@ -109,7 +112,8 @@
                                             id="pass1"
                                             minlength="5" maxlength="15"
                                             class="form-control password-field"
-                                            placeholder="password"/>
+                                            placeholder="password"
+                                            onchange='check_pass();'/>
                                 </div>
                                 <div class="form-group">
                                     <input required
@@ -117,7 +121,8 @@
                                             id="pass2"
                                             class="form-control password-field"
                                             placeholder="enter again to validate"
-                                            onkeyup="passwordEqualsValidation(); return false;"/>
+                                            onkeyup="passwordEqualsValidation(); return false;"
+                                            onchange='check_pass();'/>
                                     <span id="confirmMessage" class="confirmMessage"></span>
                                 </div>
                                 <div class="form-group">
@@ -145,7 +150,7 @@
                                             class="form-control"
                                             placeholder="Email Address"/>
                                 </div>
-                                <input type="submit" value="Register" class="btn btn-info btn-block">
+                                <input type="submit" value="Register" class="btn btn-info btn-block" id="submit" disabled>
                             </form>
                         </div>
                     </div>

@@ -48,7 +48,7 @@ public class AccountController {
     @RequestMapping(value = "/account", method = RequestMethod.POST)
     public String changeSome(@ModelAttribute("account") User user) {
         userDao.update(user);
-        return "/account";
+        return "redirect:/account";
     }
 
     @RequestMapping(value = "/contact", method = RequestMethod.GET)

@@ -33,14 +33,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("user") User user) {
+    public String registration(@ModelAttribute("user") User user, Model model) {
         LOGGER.info("registration обработан userController POST");
         try {
             service.saveUser(user);
             LOGGER.info("добавление USER в БД");
-        } catch (UserLoginAlreadyExistsException e) {
+        } catch (Exception e) {
             LOGGER.info("пользователь уже зарегистрирован");
-            return "/registration";
+            model.addAttribute("error", "notNull");
+            return "registration";
         }
         return "redirect:/login";
     }
@@ -54,6 +55,7 @@ public class UserController {
         } else{
             model.addAttribute("urlSome", "/logout");
             model.addAttribute("some", "LogOut");
+            model.addAttribute("user", principal.getName());
         }
         model.addAttribute("list", service.getImages());
         model.addAttribute("city", service.getCityList());

@@ -38,7 +38,7 @@
             var message = document.getElementById('confirmMessage');
             var goodColor = "#66cc66";
             var badColor = "#ff6666";
-            if (pass1.value == pass2.value) {
+            if (pass1.value === pass2.value) {
                 pass2.style.backgroundColor = goodColor;
                 message.style.color = goodColor;
                 message.innerHTML = "Passwords Match"
@@ -47,6 +47,9 @@
                 message.style.color = badColor;
                 message.innerHTML = "Passwords Do Not Match!"
             }
+        }
+        function check_pass() {
+            document.getElementById('submit').disabled = document.getElementById('pass1').value !== document.getElementById('pass2').value;
         }
     </script>
 </head>
@@ -84,9 +87,14 @@
                             </h3>
                         </div>
                         <div class="panel-body">
+                            <c:if test="${not empty error}">
+                                <div class="alert alert-danger" role="alert">
+                                    User have already registered
+                                </div>
+                            </c:if>
                             <form role="form">
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             class="form-control"
                                             type="text"
                                             name="login"
@@ -98,25 +106,27 @@
                                 </div>
                                 <%--валидация пароля--%>
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             type="password"
                                             name="password"
                                             id="pass1"
                                             minlength="5" maxlength="15"
                                             class="form-control password-field"
-                                            placeholder="password"/>
+                                            placeholder="password"
+                                            onchange='check_pass();'/>
                                 </div>
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             type="password"
                                             id="pass2"
                                             class="form-control password-field"
                                             placeholder="enter again to validate"
-                                            onkeyup="passwordEqualsValidation(); return false;"/>
+                                            onkeyup="passwordEqualsValidation(); return false;"
+                                            onchange='check_pass();'/>
                                     <span id="confirmMessage" class="confirmMessage"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             type="text"
                                             name="name"
                                             id="name"
@@ -125,7 +135,7 @@
                                             placeholder="name">
                                 </div>
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             type="number"
                                             name="phoneNumber"
                                             id="phoneNumber"
@@ -133,14 +143,14 @@
                                             placeholder="phone">
                                 </div>
                                 <div class="form-group">
-                                    <input
+                                    <input required
                                             type="text"
                                             name="email"
                                             id="email"
                                             class="form-control"
                                             placeholder="Email Address"/>
                                 </div>
-                                <input type="submit" value="Register" class="btn btn-info btn-block">
+                                <input type="submit" value="Register" class="btn btn-info btn-block" id="submit" disabled>
                             </form>
                         </div>
                     </div>

@@ -30,6 +30,26 @@
             padding-top: 70px;
         }
     </style>
+
+    <script type="text/javascript">
+        function passwordEqualsValidation() {
+            var pass1 = document.getElementById('pass1');
+            var pass2 = document.getElementById('pass2');
+            var message = document.getElementById('confirmMessage');
+            var goodColor = "#66cc66";
+            var badColor = "#ff6666";
+            if (pass1.value == pass2.value) {
+                pass2.style.backgroundColor = goodColor;
+                message.style.color = goodColor;
+                message.innerHTML = "Passwords Match"
+            } else {
+                pass2.style.backgroundColor = badColor;
+                message.style.color = badColor;
+                message.innerHTML = "Passwords Do Not Match!"
+            }
+        }
+    </script>
+
 </head>
 <body>
 <%--***************************************************--%>
@@ -74,6 +94,29 @@
                     <td>${account.login}</td>
                 </tr>
 
+                <%--TODO change password--%>
+                <%--<tr>--%>
+                    <%--<td>Password</td>--%>
+                    <%--<td> <input--%>
+                            <%--type="password"--%>
+                            <%--name="password"--%>
+                            <%--id="pass1"--%>
+                            <%--minlength="5" maxlength="15"--%>
+                            <%--class="form-control password-field"--%>
+                            <%--placeholder="enter password"/></td>--%>
+                <%--</tr>--%>
+
+                <%--<tr>--%>
+                    <%--<td>Password</td>--%>
+                    <%--<td><input--%>
+                            <%--type="password"--%>
+                            <%--id="pass2"--%>
+                            <%--class="form-control password-field"--%>
+                            <%--placeholder="enter password again to validate"--%>
+                            <%--onkeyup="passwordEqualsValidation(); return false;"/>--%>
+                        <%--<span id="confirmMessage" class="confirmMessage"></span></td>--%>
+                <%--</tr>--%>
+
                 <tr>
                     <td>Name</td>
                     <td><input type="text" name="name" value=${account.name} </td>
@@ -91,42 +134,45 @@
 
                 <tr>
                     <td>City</td>
-                    <td><input type="hidden" name="cityId" value=${account.cityId} </td>
-
+                    <td>
                         <select name="cityId">
                             <option value="${city.id}">${city.name}</option>
                             <c:forEach var="item" items="${cities}">
                                 <c:if test="${account.cityId!=item.id}" >
-                                    <option value="${item.id}">${item.name}</option>
+                                    <option value="${item.id}" ${item.id == selected ? 'selected' : ''}>${item.name}</option>
                                 </c:if>
                             </c:forEach>
                         </select>
+                    </td>
                 </tr>
 
                 <tr>
                     <td></td>
                     <td>
-                        <button class="headButton" type="submit" disabled>Сохранить изменения</button>
+                        <button class="headButton" type="submit" >Сохранить изменения</button>
                     </td>
                 </tr>
 
-                
-                    <td>Объявления</td>
-                    <table border="1">
-                        <td>Title</td>
-                        <td>Text</td>
-                        <td>Price</td>
-                        <td>Price_min</td>
-                        <c:forEach items="${ads}" var="item">
-                            <tr>
-                                <td> <a href="/ad/edit/${item.id}">${ item.title }</a>  </td>
-                                <td> ${ item.text } </td>
-                                <td> ${ item.price } </td>
-                                <td> ${ item.priceMin } </td>
-                            </tr>
-                        </c:forEach>
-                    </table>
+
+                <td>Объявления</td>
+                <table border="1">
+                    <td>Title</td>
+                    <td>Text</td>
+                    <td>Price</td>
+                    <td>Price_min</td>
+                    <c:forEach items="${ads}" var="item">
+                        <tr>
+                            <td> <a href="/ad/edit/${item.id}">${ item.title }</a>  </td>
+                            <td> ${ item.text } </td>
+                            <td> ${ item.price } </td>
+                            <td> ${ item.priceMin } </td>
+                            <td>
+                                <a href="/ad/delete/${item.id}">удалить</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </table>
+            </table>
             </table>
         </form>
     </div>

@@ -4,9 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ru.innopolis.byme.dao.AdDao;
 import ru.innopolis.byme.dao.CityDao;
 import ru.innopolis.byme.dao.UserDao;
@@ -48,7 +46,7 @@ public class AccountController {
     @RequestMapping(value = "/account", method = RequestMethod.POST)
     public String changeSome(@ModelAttribute("account") User user) {
         userDao.update(user);
-        return "/account";
+        return "redirect:/account";
     }
 
     @RequestMapping(value = "/contact", method = RequestMethod.GET)

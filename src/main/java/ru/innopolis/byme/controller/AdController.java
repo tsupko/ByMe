@@ -6,10 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.innopolis.byme.dao.AdDao;
 import ru.innopolis.byme.dao.CategoryDao;
@@ -129,6 +126,13 @@ public class AdController {
             bindingResult.reject(e.getMessage());
             return "ad";
         }
+        return "redirect:/account";
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String deleteAd(@PathVariable int id, Model model) {
+        Ad ad = adDao.selectById(id);
+        adDao.delete(ad);
         return "redirect:/account";
     }
 }

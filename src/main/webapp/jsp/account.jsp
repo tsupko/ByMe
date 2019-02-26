@@ -166,6 +166,9 @@
                             <td> ${ item.text } </td>
                             <td> ${ item.price } </td>
                             <td> ${ item.priceMin } </td>
+                            <td>
+                                <a href="/ad/delete/${item.id}">удалить</a>
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>

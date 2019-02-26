@@ -87,8 +87,8 @@ public class UserDaoImpl implements UserDao {
                         LOGGER.info("Пользователь с id={} создан успешно. Инфо: {}", user.getId(), user.toString());
                     }
                 } catch (SQLException e) {
-                    LOGGER.error("Исключение при создании пользователя: ", e);
-                    throw e;
+                    LOGGER.error("Исключение при создании пользователя");
+                    throw new RuntimeException(e);
                 }
                 return user;
             });

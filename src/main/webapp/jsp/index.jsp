@@ -89,44 +89,23 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="/">ByMeService</a>
         </div>
+
         <div class="navbar-collapse collapse">
-
             <ul class="nav navbar-nav">
-                <li><a href="/about">About</a></li>
-                <li><a href="/ad">Add</a></li>
-                <li><a href="/account">Account</a></li>
-                <li><a href="/contact">Contact</a></li>
-
-                <li class="dropdown">
-                    <a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        Select location...
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <c:forEach var="city" items="${cityList}">
-                            <li><a href="#">${city}</a></li>
-                        </c:forEach>
-                    </ul>
-                </li>
-
-
-                <li class="dropdown">
-                    <a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        All Ads
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <c:forEach var="category" items="${categoryList}">
-                            <option>${category}</option>
-                        </c:forEach>
-                    </ul>
-                </li>
-
+                <c:if test="${not empty user}">
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/ad/new">Add</a></li>
+                    <li><a href="/account">Account</a></li>
+                </c:if>
             </ul>
-
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/registration">Registration</a></li>
-                <li><a href="/login">LogIn</a></li>
+                <c:if test="${not empty user}">
+                    <li><a href="#">Hello, ${user}</a></li>
+                </c:if>
+                <c:if test="${empty user}">
+                    <li><a href="/registration">Registration</a></li>
+                </c:if>
+                <li><a href="${urlSome}">${some}</a></li>
             </ul>
         </div>
     </div>

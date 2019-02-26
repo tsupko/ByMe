@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,9 +12,7 @@ import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 import ru.innopolis.byme.service.UserService;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
+import java.security.Principal;
 
 @Controller
 public class UserController {
@@ -35,21 +33,30 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("user") User user) {
+    public String registration(@ModelAttribute("user") User user, Model model) {
         LOGGER.info("registration обработан userController POST");
         try {
             service.saveUser(user);
             LOGGER.info("добавление USER в БД");
-        } catch (UserLoginAlreadyExistsException e) {
+        } catch (Exception e) {
             LOGGER.info("пользователь уже зарегистрирован");
-            return "/registration";
+            model.addAttribute("error", "notNull");
+            return "registration";
         }
         return "redirect:/login";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model){
+    public String index(Model model, Principal principal){
         LOGGER.info("index обработан userController get");
+        if(principal == null){
+            model.addAttribute("urlSome", "/login");
+            model.addAttribute("some", "LogIn");
+        } else{
+            model.addAttribute("urlSome", "/logout");
+            model.addAttribute("some", "LogOut");
+            model.addAttribute("user", principal.getName());
+        }
         model.addAttribute("list", service.getImages());
         model.addAttribute("cityList", service.getCityList());
         model.addAttribute("categoryList", service.getCategoryList());
@@ -62,5 +69,8 @@ public class UserController {
         return "home";
     }
 
-
+    @GetMapping("login")
+    public String login(){
+        return "login";
+    }
 }

@@ -5,12 +5,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import ru.innopolis.byme.dao.AdDao;
+import ru.innopolis.byme.dao.ImageDao;
 import ru.innopolis.byme.dao.UserDao;
+import ru.innopolis.byme.entity.Ad;
+import ru.innopolis.byme.entity.Image;
+import ru.innopolis.byme.entity.Unity;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,29 +29,10 @@ import java.util.List;
 @Component
 public class UserService {
 
-    // TODO: 2019-02-21 for testing only
-    private static final List<String> images = new ArrayList<>();
-
-    static {
-        images.add("static/testImg/cat0.jpeg");
-        images.add("static/testImg/cat1.jpeg");
-        images.add("static/testImg/cat2.jpeg");
-        images.add("static/testImg/cat3.jpeg");
-        images.add("static/testImg/cat4.jpeg");
-        images.add("static/testImg/cat5.jpeg");
-        images.add("static/testImg/cat6.jpeg");
-        images.add("static/testImg/cat7.jpeg");
-        images.add("static/testImg/cat8.jpeg");
-        images.add("static/testImg/cat0.jpeg");
-        images.add("static/testImg/cat1.jpeg");
-        images.add("static/testImg/cat2.jpeg");
-        images.add("static/testImg/cat3.jpeg");
-        images.add("static/testImg/cat4.jpeg");
-        images.add("static/testImg/cat5.jpeg");
-        images.add("static/testImg/cat6.jpeg");
-        images.add("static/testImg/cat7.jpeg");
-        images.add("static/testImg/cat8.jpeg");
-    }
+    @Autowired
+    private ImageDao imageDao;
+    @Autowired
+    private AdDao adDao;
 
     // TODO: 2019-02-21 for testing only
     private static final List<String> cityList = new ArrayList<>();
@@ -104,13 +91,35 @@ public class UserService {
         return categoryList;
     }
 
-    public List<String> getImages() {
-        // TODO: 2019-02-21 create this list from DB images list
-        return images;
-    }
-
     public List<String> getCityList() {
         // TODO: 2019-02-21 create this list from cities in DB
         return cityList;
+    }
+
+    public List<Unity> getUnity() {
+
+        List<Image> images = getImages();
+        Collection<Ad> adverts = getAdverts();
+
+        List<Unity> unities = new ArrayList<>();
+
+        int i = 0;
+        for (Ad advert : adverts) {
+            for (Image image : images) {
+                if (advert.getId() == image.getAdId()) {
+                    unities.add(new Unity(advert, image));
+                    i++;
+                    if (i > 20) return unities;
+                }
+            }
+        }
+        return unities;
+    }
+
+    private Collection<Ad> getAdverts() {
+        return adDao.getAll();
+    }
+    private List<Image> getImages() {
+        return imageDao.getAll();
     }
 }

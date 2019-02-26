@@ -11,6 +11,8 @@ import ru.innopolis.byme.entity.Image;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class ImageDaoImpl implements ImageDao {
@@ -53,7 +55,7 @@ public class ImageDaoImpl implements ImageDao {
                     image.setId(rs.getInt("id"));
                 }
             } catch (SQLException e) {
-                LOGGER.error("Исключение при возвращении id после создания фото объявления: {}", e);
+                LOGGER.error("Исключение при возвращении id после создания фото объявления:", e);
             }
             LOGGER.info("Фото бъявления с id={} создано успешно", image.getId());
             return image;
@@ -85,5 +87,32 @@ public class ImageDaoImpl implements ImageDao {
             return false;
         });
         return exists;
+    }
+
+    @Override
+    public List<Image> getAll() {
+
+        String sql = "select * from image";
+        List<Image> images = new ArrayList<>();
+
+        this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Image>>) stmt -> {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Image image = new Image();
+                    image.setMain(true);
+                    image.setAdId(rs.getInt("ad_id"));
+                    image.setImg(rs.getString("img"));
+                    image.setId(rs.getInt("id"));
+                    LOGGER.info(image.toString());
+                    images.add(image);
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Исключение при получении всех image из таблицы image ", e);
+            }
+            LOGGER.info(images.toString());
+            return (images);
+        });
+        System.err.println(images);
+        return (images);
     }
 }

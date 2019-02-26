@@ -18,6 +18,7 @@ import java.util.Collection;
 
 @Controller
 public class AccountController {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
     private final UserDao userDao;
     private final CityDao cityDao;
@@ -55,7 +56,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/contact", method = RequestMethod.POST)
-    public String postContact(Model model) {
+    public String postContact() {
         return "redirect:/";
     }
 

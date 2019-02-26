@@ -1,5 +1,7 @@
 package ru.innopolis.byme.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,26 +12,13 @@ import java.util.Objects;
  *
  * @author Kuzina Anastasia
  */
+
+@Getter
+@Setter
 public class City {
 
     private int id;
     private String name;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public String toString() {

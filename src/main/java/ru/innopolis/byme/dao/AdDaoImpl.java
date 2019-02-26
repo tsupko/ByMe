@@ -151,7 +151,7 @@ public class AdDaoImpl implements AdDao {
                     ad.setId(rs.getInt("id"));
                 }
             } catch (SQLException e) {
-                LOGGER.error("Исключение при возвращении id после создания объявления: {}", e);
+                LOGGER.error("Исключение при возвращении id после создания объявления", e);
             }
             LOGGER.info("Объявление с id={} создано успешно", ad.getId());
             return ad;
@@ -238,6 +238,7 @@ public class AdDaoImpl implements AdDao {
             LOGGER.info(ads.toString());
             return (ads);
         });
+        System.err.println(ads);
         return (ads);
     }
 

@@ -52,13 +52,13 @@ public class AdController {
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String addAd(@ModelAttribute("ad") Ad ad, MultipartFile image,
                         BindingResult bindingResult, Principal principal) {
+
         String login = principal.getName();
+
         LOGGER.info("mapping post /ad/new, login: {}", login);
-        User user = userDao.selectByLogin(login).get();
-        ad.setUserId(user.getId());
-        ad.setConfirm(true);
-        ad.setActual(true);
-        adDao.create(ad);
+
+        createAd(ad, login);
+
         LOGGER.info("Новое объявление: {}", ad);
         LOGGER.info("image.isEmpty(): " + image.isEmpty());
         try {
@@ -68,11 +68,7 @@ public class AdController {
                 imageService.validateImage(image);
                 String imageName = ad.getId() + ".jpg";
                 imageService.saveImage(imageName, image);
-                Image img = new Image();
-                img.setImg(imageName);
-                img.setAdId(ad.getId());
-                img.setMain(true);
-                imageDao.create(img);
+                Image img = createImgByObject(ad, imageName);
                 LOGGER.info("Новое фото объявления: {}", img);
             }
         } catch (ImageUploadException e) {
@@ -80,6 +76,32 @@ public class AdController {
             return "ad";
         }
         return "redirect:/";
+    }
+
+    private Image createImgByObject(@ModelAttribute("ad") Ad ad, String imageName) {
+        Image img = new Image();
+        img.setImg(imageName);
+        img.setAdId(ad.getId());
+        img.setMain(true);
+        imageDao.create(img);
+        return img;
+    }
+
+    private Image createImgById(@PathVariable int id, String imageName) {
+        Image img = new Image();
+        img.setImg(imageName);
+        img.setAdId(id);
+        img.setMain(true);
+        imageDao.create(img);
+        return img;
+    }
+
+    private void createAd(@ModelAttribute("ad") Ad ad, String login) {
+        User user = userDao.selectByLogin(login).get();
+        ad.setUserId(user.getId());
+        ad.setConfirm(true);
+        ad.setActual(true);
+        adDao.create(ad);
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
@@ -97,13 +119,7 @@ public class AdController {
     public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad, MultipartFile image,
                            BindingResult bindingResult) {
         LOGGER.info("mapping post /edit/" + id);
-        Ad newAd = adDao.selectById(id);
-        newAd.setTitle(ad.getTitle());
-        newAd.setText(ad.getText());
-        newAd.setCategoryId(ad.getCategoryId());
-        newAd.setPrice(ad.getPrice());
-        newAd.setPriceMin(ad.getPriceMin());
-        adDao.update(newAd);
+        Ad newAd = updateAd(id, ad);
         LOGGER.info("объявление изменено: {}", newAd);
         LOGGER.info("image.isEmpty(): " + image.isEmpty());
         try {
@@ -114,11 +130,7 @@ public class AdController {
                 String imageName = id + ".jpg";
                 imageService.saveImage(imageName, image);
                 if (!imageDao.exists(id)) {
-                    Image img = new Image();
-                    img.setImg(imageName);
-                    img.setAdId(id);
-                    img.setMain(true);
-                    imageDao.create(img);
+                    Image img = createImgById(id, imageName);
                     LOGGER.info("Новое фото объявления: {}", img);
                 }
             }
@@ -127,6 +139,19 @@ public class AdController {
             return "ad";
         }
         return "redirect:/account";
+    }
+
+
+
+    private Ad updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad) {
+        Ad newAd = adDao.selectById(id);
+        newAd.setTitle(ad.getTitle());
+        newAd.setText(ad.getText());
+        newAd.setCategoryId(ad.getCategoryId());
+        newAd.setPrice(ad.getPrice());
+        newAd.setPriceMin(ad.getPriceMin());
+        adDao.update(newAd);
+        return newAd;
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)

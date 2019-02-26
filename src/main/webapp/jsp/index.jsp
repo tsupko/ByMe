@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <%--***************************************************--%>
@@ -89,7 +90,6 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="/">ByMeService</a>
         </div>
-
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <c:if test="${not empty user}">
@@ -100,7 +100,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${not empty user}">
-                    <li><a href="#">Hello, ${user}</a></li>
+                    <li><a href="/account">Hello, ${user}</a></li>
                 </c:if>
                 <c:if test="${empty user}">
                     <li><a href="/registration">Registration</a></li>
@@ -116,8 +116,9 @@
     <c:forEach items="${list}" var="item">
         <div class="box">
             <div class="boxInner">
-                <a href="/"><img src=${item}></a>
-                <div class="titleBox">${item}</div>
+                <a href="/ad/edit/${item.ad.id}">
+                    <img src="/static/repo/${item.image.img}" alt=""></a>
+                <div class="titleBox">${item.ad.price}</div>
             </div>
         </div>
     </c:forEach>

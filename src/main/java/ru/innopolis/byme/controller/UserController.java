@@ -4,15 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import ru.innopolis.byme.entity.Unity;
 import ru.innopolis.byme.entity.User;
-import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 import ru.innopolis.byme.service.UserService;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -48,7 +46,12 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model, Principal principal){
+
         LOGGER.info("index обработан userController get");
+
+        List<Unity> unity = service.getUnity();
+        model.addAttribute("list", unity);
+
         if(principal == null){
             model.addAttribute("urlSome", "/login");
             model.addAttribute("some", "LogIn");
@@ -57,16 +60,9 @@ public class UserController {
             model.addAttribute("some", "LogOut");
             model.addAttribute("user", principal.getName());
         }
-        model.addAttribute("list", service.getImages());
-        model.addAttribute("city", service.getCityList());
-        model.addAttribute("category", service.getCategoryList());
+//        model.addAttribute("city", service.getCityList());
+//        model.addAttribute("category", service.getCategoryList());
         return "index";
-    }
-
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String home(){
-        LOGGER.info("home обработан userController get");
-        return "home";
     }
 
     @GetMapping("login")

@@ -97,8 +97,6 @@
                     <li><a href="/ad/new">Add</a></li>
                     <li><a href="/account">Account</a></li>
                 </c:if>
-                <%--                <li><a href="/account">Account</a></li>--%>
-                <%--                <li><a href="/contact">Contact</a></li>--%>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${not empty user}">

@@ -63,11 +63,6 @@
                                     Invalid username or password.
                                 </div>
                             </c:if>
-<%--                            <c:if test="${param.logout != null}">--%>
-<%--                                <div class="alert alert-success" role="alert">--%>
-<%--                                    You have been logged out.--%>
-<%--                                </div>--%>
-<%--                            </c:if>--%>
                             <form role="form">
                                 <div class="form-group">
                                     <input required

@@ -74,7 +74,6 @@
 
 <div class="register">
     <form id="details" method="post" action="/registration" modelAttribute="user">
-<%--        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
         <div class="container">
             <div class="row centered-form">
                 <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">

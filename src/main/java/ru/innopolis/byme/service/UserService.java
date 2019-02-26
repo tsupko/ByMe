@@ -13,6 +13,7 @@ import ru.innopolis.byme.entity.Category;
 import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
+import ru.innopolis.byme.transfer.CategoryTree;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -109,10 +110,9 @@ public class UserService {
         return userDao.getDataSource();
     }
 
-    public List<String> getCategoryList() {
-        return categoryDao.getAll().stream()
-                                   .map(Category::getName)
-                                   .collect(Collectors.toList());
+    public List<CategoryTree> getCategoryList() {
+        List<Category> categoryList = new ArrayList<>(categoryDao.getAll());
+        return CategoryTree.categoryListToTree(categoryList);
     }
 
     public List<String> getImages() {

@@ -1,3 +1,5 @@
+<%@ page import="ru.innopolis.byme.transfer.CategoryTree" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
@@ -12,9 +14,21 @@
     <%--***************************************************--%>
     <%--            магия Bootstrapp                       --%>
     <%--***************************************************--%>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'/>    <link href="//bootstrap-combobox-test.herokuapp.com/css/bootstrap-combobox.css" media="screen" rel="stylesheet" type="text/css">
+    <link rel="canonical" href="http://bootstrapessentials.com/fulldocs/components/navbar/navbar-submenu/" />
+
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script type='text/javascript'>
+        $(document).ready(function() {
+            $(".dropdown-menu li a").click(function(){
+                var selText = $(this).text();
+                $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+            });
+        });
+    </script>
 
     <%--    css styles--%>
     <style>
@@ -97,6 +111,46 @@
                     <li><a href="/ad/new">Add</a></li>
                     <li><a href="/account">Account</a></li>
                 </c:if>
+                <li>
+                    <div class="btn-group">
+                        <ul class="nav navbar-nav">
+                            <li class="menu-item dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Any category<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Any category</a></li>
+                                    <li>
+                                        <%
+                                            List<CategoryTree> categoryTree = (List<CategoryTree>) request.getAttribute("categoryList");
+                                            for(int i = 0; i < categoryTree.size(); i += 1) { %>
+                                        <a href="#">
+                                            <% for (int j = 0; j < categoryTree.get(i).getLevel(); j += 1) {
+                                                out.print("&nbsp;");%>
+                                            <% } %>  <%=categoryTree.get(i).getName()%>
+                                        </a>
+                                        <%  } %>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="btn-group">
+                        <ul class="nav navbar-nav">
+                            <li class="menu-item dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Any location<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Any location</a></li>
+                                    <c:forEach var="city" items="${cityList}">
+                                        <li><a href="#">${city}</a></li>
+                                    </c:forEach>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${not empty user}">

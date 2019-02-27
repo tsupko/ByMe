@@ -1,4 +1,4 @@
-package ru.innopolis.byme.dao;
+package ru.innopolis.byme.dao.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
+import ru.innopolis.byme.dao.api.AdDao;
 import ru.innopolis.byme.entity.Ad;
+import ru.innopolis.byme.entity.Image;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Реализация интерфейса {@code AdDao} для работы с объектами {@code entity.Ad}.
@@ -151,7 +154,7 @@ public class AdDaoImpl implements AdDao {
                     ad.setId(rs.getInt("id"));
                 }
             } catch (SQLException e) {
-                LOGGER.error("Исключение при возвращении id после создания объявления: {}", e);
+                LOGGER.error("Исключение при возвращении id после создания объявления", e);
             }
             LOGGER.info("Объявление с id={} создано успешно", ad.getId());
             return ad;
@@ -238,7 +241,32 @@ public class AdDaoImpl implements AdDao {
             LOGGER.info(ads.toString());
             return (ads);
         });
+        System.err.println(ads);
         return (ads);
+    }
+
+    @Override
+    public List<Ad> getAdvs(int i) {
+        String sql = String.format("select * from ad join image on image.ad_id=ad.id where is_actual=true limit %d", i);
+        List<Ad> result = new ArrayList<>();
+        this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Ad>>) stmt -> {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Ad ad = new Ad();
+                    Image image = new Image();
+                    assignResultSetToAdFields(rs, ad);
+                    assignResultSetToImageFields(rs, image);
+                    ad.setImage(image);
+                    result.add(ad);
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Исключение при получении {} объявлений из таблицы ad ", i, e);
+            }
+            LOGGER.info(result.toString());
+            return (result);
+        });
+        System.err.println(result);
+        return (result);
     }
 
     private void assignResultSetToAdFields(ResultSet rs, Ad ad) throws SQLException {
@@ -251,5 +279,12 @@ public class AdDaoImpl implements AdDao {
         ad.setPriceMin(rs.getBigDecimal(AD_PRICE_MIN));
         ad.setConfirm(rs.getBoolean(AD_CONFIRM));
         ad.setActual(rs.getBoolean(AD_IS_ACTUAL));
+    }
+
+    private void assignResultSetToImageFields(ResultSet rs, Image image) throws SQLException {
+        image.setId(rs.getInt("id"));
+        image.setImg(rs.getString("img"));
+        image.setMain(rs.getBoolean("is_main"));
+        image.setAdId(rs.getInt("ad_id"));
     }
 }

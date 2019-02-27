@@ -35,9 +35,9 @@
             <a class="navbar-brand" href="/">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="/account">Account</a></li>
-                <li><a href="/contact">Contact</a></li>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/registration">Registration</a></li>
+                <li><a href="/login">LogIn</a></li>
             </ul>
         </div>
     </div>

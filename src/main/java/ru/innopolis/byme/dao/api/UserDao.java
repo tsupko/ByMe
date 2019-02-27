@@ -1,4 +1,4 @@
-package ru.innopolis.byme.dao;
+package ru.innopolis.byme.dao.api;
 
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;

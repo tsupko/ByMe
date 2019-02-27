@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.innopolis.byme.dao.AdDao;
-import ru.innopolis.byme.dao.CityDao;
-import ru.innopolis.byme.dao.UserDao;
+import ru.innopolis.byme.dao.api.AdDao;
+import ru.innopolis.byme.dao.api.CityDao;
+import ru.innopolis.byme.dao.api.UserDao;
 import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.User;
@@ -18,6 +18,7 @@ import java.util.Collection;
 
 @Controller
 public class AccountController {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
     private final UserDao userDao;
     private final CityDao cityDao;
@@ -55,7 +56,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/contact", method = RequestMethod.POST)
-    public String postContact(Model model) {
+    public String postContact() {
         return "redirect:/";
     }
 

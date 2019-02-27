@@ -8,16 +8,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.User;
-import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 import ru.innopolis.byme.service.UserService;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final int MAX_ADVERT_NUMBER = 20;
 
     private final UserService service;
 
@@ -41,32 +43,30 @@ public class UserController {
         } catch (Exception e) {
             LOGGER.info("пользователь уже зарегистрирован");
             model.addAttribute("error", "notNull");
-            return "registration";
+            return "redirect:/registration";
         }
         return "redirect:/login";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model, Principal principal){
+
         LOGGER.info("index обработан userController get");
-        if(principal == null){
+
+        List<Ad> advs = service.getAdvs(MAX_ADVERT_NUMBER);
+        model.addAttribute("list", advs);
+        model.addAttribute("cityList", service.getCityList());
+        model.addAttribute("categoryList", service.getCategoryList());
+      
+        if (principal == null) {
             model.addAttribute("urlSome", "/login");
             model.addAttribute("some", "LogIn");
-        } else{
+        } else {
             model.addAttribute("urlSome", "/logout");
             model.addAttribute("some", "LogOut");
             model.addAttribute("user", principal.getName());
         }
-        model.addAttribute("list", service.getImages());
-        model.addAttribute("cityList", service.getCityList());
-        model.addAttribute("categoryList", service.getCategoryList());
         return "index";
-    }
-
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String home(){
-        LOGGER.info("home обработан userController get");
-        return "home";
     }
 
     @GetMapping("login")

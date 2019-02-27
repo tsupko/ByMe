@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // TODO: 2019-02-21 реализовать данные запросы в DAO
     private static final String USER_BY_USER = "SELECT login, password, true as enabled FROM public.user WHERE login = ?";
-    private static final String USER_BT_ROLE = "SELECT login, 'USER' FROM public.user WHERE login = ?";
+    private static final String USER_BY_ROLE = "SELECT login, 'USER' FROM public.user WHERE login = ?";
 
     private final UserService service;
 
@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .jdbcAuthentication()
                 .dataSource(service.getDataSource())
                 .usersByUsernameQuery(USER_BY_USER)
-                .authoritiesByUsernameQuery(USER_BT_ROLE)
+                .authoritiesByUsernameQuery(USER_BY_ROLE)
                 .passwordEncoder(service.getEncoder());
     }
 
@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/", "/registration")
+                .antMatchers("/", "/registration", "/about")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()

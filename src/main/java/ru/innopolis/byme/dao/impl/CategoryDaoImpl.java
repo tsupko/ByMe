@@ -1,10 +1,11 @@
-package ru.innopolis.byme.dao;
+package ru.innopolis.byme.dao.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
+import ru.innopolis.byme.dao.api.CategoryDao;
 import ru.innopolis.byme.entity.Category;
 
 import javax.sql.DataSource;

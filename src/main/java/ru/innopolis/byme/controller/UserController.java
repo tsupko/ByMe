@@ -55,11 +55,13 @@ public class UserController {
 
         List<Ad> advs = service.getAdvs(MAX_ADVERT_NUMBER);
         model.addAttribute("list", advs);
-
-        if(principal == null){
+        model.addAttribute("cityList", service.getCityList());
+        model.addAttribute("categoryList", service.getCategoryList());
+      
+        if (principal == null) {
             model.addAttribute("urlSome", "/login");
             model.addAttribute("some", "LogIn");
-        } else{
+        } else {
             model.addAttribute("urlSome", "/logout");
             model.addAttribute("some", "LogOut");
             model.addAttribute("user", principal.getName());

@@ -5,14 +5,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
 import ru.innopolis.byme.dao.api.AdDao;
 import ru.innopolis.byme.dao.api.UserDao;
 import ru.innopolis.byme.entity.Ad;
+
+import ru.innopolis.byme.controller.UserController;
+import ru.innopolis.byme.dao.api.CategoryDao;
+import ru.innopolis.byme.dao.api.CityDao;
+import ru.innopolis.byme.entity.Category;
+import ru.innopolis.byme.entity.City;
+
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
+import ru.innopolis.byme.transfer.CategoryTree;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * слой сервиса для User Controller
@@ -30,19 +40,23 @@ public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final PasswordEncoder encoder;
-    private final UserDao dao;
+    private final UserDao userDao;
+    private final CityDao cityDao;
+    private final CategoryDao categoryDao;
 
     @Autowired
-    public UserService(PasswordEncoder encoder, UserDao dao) {
+    public UserService(PasswordEncoder encoder, UserDao userDao, CityDao cityDao, CategoryDao categoryDao) {
         LOGGER.info("создали UserService");
         this.encoder = encoder;
-        this.dao = dao;
+        this.userDao = userDao;
+        this.cityDao = cityDao;
+        this.categoryDao = categoryDao;
     }
 
     public void saveUser(User user) throws UserLoginAlreadyExistsException {
         LOGGER.info("регистрируем нового пользователя в БД");
         user.setPassword(encoder.encode(user.getPassword()));
-        dao.create(user);
+        userDao.create(user);
     }
 
     public User newUser() {
@@ -56,11 +70,21 @@ public class UserService {
     }
 
     public DataSource getDataSource() {
-        return dao.getDataSource();
+        return userDao.getDataSource();
     }
 
     public List<Ad> getAdvs(int i) {
         return adDao.getAdvs(i);
     }
 
+    public List<CategoryTree> getCategoryList() {
+        List<Category> categoryList = new ArrayList<>(categoryDao.getAll());
+        return CategoryTree.categoryListToTree(categoryList);
+    }
+
+    public List<String> getCityList() {
+        return cityDao.getAllCities().stream()
+                                     .map(City::getName)
+                                     .collect(Collectors.toList());
+    }
 }

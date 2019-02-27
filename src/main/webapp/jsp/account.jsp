@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <%--***************************************************--%>
@@ -81,7 +82,7 @@
 <%--***************************************************--%>
 <div class="container-target">
     <div class="container">
-        <form method="post" action="/account">
+        <form:form method="post" action="/account">
             <table class="table">
                 <tr>
                     <td><input type=hidden name="id" value="${account.id}"/>
@@ -94,28 +95,28 @@
                     <td>${account.login}</td>
                 </tr>
 
-                <%--TODO change password--%>
-                <%--<tr>--%>
-                    <%--<td>Password</td>--%>
-                    <%--<td> <input--%>
-                            <%--type="password"--%>
-                            <%--name="password"--%>
-                            <%--id="pass1"--%>
-                            <%--minlength="5" maxlength="15"--%>
-                            <%--class="form-control password-field"--%>
-                            <%--placeholder="enter password"/></td>--%>
-                <%--</tr>--%>
+<%--                TODO change password--%>
+<%--                <tr>--%>
+<%--                    <td>Password</td>--%>
+<%--                    <td> <input--%>
+<%--                            type="password"--%>
+<%--                            name="password"--%>
+<%--                            id="pass1"--%>
+<%--                            minlength="5" maxlength="15"--%>
+<%--                            class="form-control password-field"--%>
+<%--                            placeholder="enter password"/></td>--%>
+<%--                </tr>--%>
 
-                <%--<tr>--%>
-                    <%--<td>Password</td>--%>
-                    <%--<td><input--%>
-                            <%--type="password"--%>
-                            <%--id="pass2"--%>
-                            <%--class="form-control password-field"--%>
-                            <%--placeholder="enter password again to validate"--%>
-                            <%--onkeyup="passwordEqualsValidation(); return false;"/>--%>
-                        <%--<span id="confirmMessage" class="confirmMessage"></span></td>--%>
-                <%--</tr>--%>
+<%--                <tr>--%>
+<%--                    <td>Password</td>--%>
+<%--                    <td><input--%>
+<%--                            type="password"--%>
+<%--                            id="pass2"--%>
+<%--                            class="form-control password-field"--%>
+<%--                            placeholder="enter password again to validate"--%>
+<%--                            onkeyup="passwordEqualsValidation(); return false;"/>--%>
+<%--                        <span id="confirmMessage" class="confirmMessage"></span></td>--%>
+<%--                </tr>--%>
 
                 <tr>
                     <td>Name</td>
@@ -174,7 +175,7 @@
                 </table>
             </table>
             </table>
-        </form>
+        </form:form>
     </div>
 </div>
 </body>

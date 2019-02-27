@@ -1,8 +1,9 @@
-package ru.innopolis.byme.dao;
+package ru.innopolis.byme.dao.api;
 
 import ru.innopolis.byme.entity.Ad;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface AdDao {
 
@@ -18,4 +19,5 @@ public interface AdDao {
 
     Collection<Ad> getAll();
 
+    List<Ad> getAdvs(int i);
 }

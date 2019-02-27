@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -58,7 +59,7 @@
 <div class="container">
     <div class="navPadding">
 
-        <form method="post" enctype="multipart/form-data">
+        <form:form method="post" enctype="multipart/form-data">
             <table class="table">
                 <tr>
                     <td>Категория</td>
@@ -90,7 +91,7 @@
                 <tr>
                     <td>Фотография</td>
                     <td>
-                        <input name="image" type="file"/>
+                        <input name="imageFile" type="file"/>
                     </td>
                 </tr>
                 <tr>
@@ -100,7 +101,7 @@
                     </td>
                 </tr>
             </table>
-        </form>
+        </form:form>
     </div>
 </div>
 </body>

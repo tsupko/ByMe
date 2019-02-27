@@ -92,8 +92,8 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <c:if test="${not empty user}">
                     <li><a href="/about">About</a></li>
+                <c:if test="${not empty user}">
                     <li><a href="/ad/new">Add</a></li>
                     <li><a href="/account">Account</a></li>
                 </c:if>
@@ -116,12 +116,13 @@
     <c:forEach items="${list}" var="item">
         <div class="box">
             <div class="boxInner">
-                <a href="/ad/edit/${item.ad.id}">
+                <a href="/ad/edit/${item.id}">
                     <img src="/static/repo/${item.image.img}" alt=""></a>
-                <div class="titleBox">${item.ad.price}</div>
+                <div class="titleBox">${item.price}</div>
             </div>
         </div>
     </c:forEach>
 </div>
+
 </body>
 </html>

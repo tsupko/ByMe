@@ -4,21 +4,21 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.innopolis.byme.exception.ImageUploadException;
 
 import java.io.File;
 import java.io.IOException;
 
-@Component
+@Service
 public class ImageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
     @Value("${upload.location}")
     private String uploadDir;
 
     public void validateImage(MultipartFile image) throws ImageUploadException {
-        if (!image.getContentType().equals("image/jpeg")) {
+        if (!"image/jpeg".equals(image.getContentType())) {
             LOGGER.error("Only JPG images accepted");
             throw new ImageUploadException("Only JPG images accepted");
         }

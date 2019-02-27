@@ -39,6 +39,9 @@
             <a class="navbar-brand" href="/">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/about">About</a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">Home</a></li>
                 <li><a href="/registration">Registration</a></li>
@@ -66,19 +69,19 @@
                             <form role="form">
                                 <div class="form-group">
                                     <input required
-                                            class="form-control"
-                                            type="text"
-                                            name="login"
-                                            placeholder="login">
+                                           class="form-control"
+                                           type="text"
+                                           name="login"
+                                           placeholder="login">
 
                                     <div id="errLast"></div>
                                 </div>
                                 <div class="form-group">
                                     <input required
-                                            type="password"
-                                            name="password"
-                                            class="form-control password-field"
-                                            placeholder="password"/>
+                                           type="password"
+                                           name="password"
+                                           class="form-control password-field"
+                                           placeholder="password"/>
                                 </div>
                                 <input type="submit" value="LogIn" class="btn btn-info btn-block">
                             </form>

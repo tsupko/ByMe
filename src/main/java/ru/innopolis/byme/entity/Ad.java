@@ -27,8 +27,5 @@ public class Ad {
     private boolean confirm;
     private boolean isActual;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, text, userId, categoryId, price, priceMin, date, dayCount, confirm, isActual);
-    }
+    private Image image = new Image();
 }

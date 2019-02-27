@@ -5,18 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.innopolis.byme.dao.AdDao;
-import ru.innopolis.byme.dao.ImageDao;
-import ru.innopolis.byme.dao.UserDao;
+import ru.innopolis.byme.dao.api.AdDao;
+import ru.innopolis.byme.dao.api.UserDao;
 import ru.innopolis.byme.entity.Ad;
-import ru.innopolis.byme.entity.Image;
-import ru.innopolis.byme.entity.Unity;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,29 +25,7 @@ import java.util.List;
 public class UserService {
 
     @Autowired
-    private ImageDao imageDao;
-    @Autowired
     private AdDao adDao;
-
-    // TODO: 2019-02-21 for testing only
-    private static final List<String> cityList = new ArrayList<>();
-
-    static {
-        cityList.add("Казань");
-        cityList.add("Москва");
-        cityList.add("Санкт-Петербург");
-        cityList.add("Новосибирск");
-    }
-
-    // TODO: 2019-02-21 for testing only
-    private static final List<String> categoryList = new ArrayList<>();
-
-    static {
-        categoryList.add("пылесосы");
-        categoryList.add("утюги");
-        categoryList.add("консервы");
-        categoryList.add("разносол");
-    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
@@ -86,40 +59,8 @@ public class UserService {
         return dao.getDataSource();
     }
 
-    public List<String> getCategoryList() {
-        // TODO: 2019-02-21 create this list from DB exists list
-        return categoryList;
+    public List<Ad> getAdvs(int i) {
+        return adDao.getAdvs(i);
     }
 
-    public List<String> getCityList() {
-        // TODO: 2019-02-21 create this list from cities in DB
-        return cityList;
-    }
-
-    public List<Unity> getUnity() {
-
-        List<Image> images = getImages();
-        Collection<Ad> adverts = getAdverts();
-
-        List<Unity> unities = new ArrayList<>();
-
-        int i = 0;
-        for (Ad advert : adverts) {
-            for (Image image : images) {
-                if (advert.getId() == image.getAdId()) {
-                    unities.add(new Unity(advert, image));
-                    i++;
-                    if (i > 20) return unities;
-                }
-            }
-        }
-        return unities;
-    }
-
-    private Collection<Ad> getAdverts() {
-        return adDao.getAll();
-    }
-    private List<Image> getImages() {
-        return imageDao.getAll();
-    }
 }

@@ -4,8 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ru.innopolis.byme.entity.Unity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.service.UserService;
 
@@ -16,6 +19,7 @@ import java.util.List;
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final int MAX_ADVERT_NUMBER = 20;
 
     private final UserService service;
 
@@ -39,7 +43,7 @@ public class UserController {
         } catch (Exception e) {
             LOGGER.info("пользователь уже зарегистрирован");
             model.addAttribute("error", "notNull");
-            return "registration";
+            return "redirect:/registration";
         }
         return "redirect:/login";
     }
@@ -49,8 +53,8 @@ public class UserController {
 
         LOGGER.info("index обработан userController get");
 
-        List<Unity> unity = service.getUnity();
-        model.addAttribute("list", unity);
+        List<Ad> advs = service.getAdvs(MAX_ADVERT_NUMBER);
+        model.addAttribute("list", advs);
 
         if(principal == null){
             model.addAttribute("urlSome", "/login");
@@ -60,8 +64,6 @@ public class UserController {
             model.addAttribute("some", "LogOut");
             model.addAttribute("user", principal.getName());
         }
-//        model.addAttribute("city", service.getCityList());
-//        model.addAttribute("category", service.getCategoryList());
         return "index";
     }
 

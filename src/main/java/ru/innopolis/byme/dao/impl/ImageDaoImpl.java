@@ -83,7 +83,7 @@ public class ImageDaoImpl implements ImageDao {
                     return true;
                 }
             } catch (SQLException e) {
-                LOGGER.error("Исключение при проверке наличия image по id={}: {}", adId, e);
+                LOGGER.error("Исключение при проверке наличия image по ad_id={}: {}", adId, e);
             }
             return false;
         });
@@ -115,5 +115,27 @@ public class ImageDaoImpl implements ImageDao {
         });
         System.err.println(images);
         return (images);
+    }
+
+    @Override
+    public Image getImageByAd(int adId) {
+        Image image = new Image();
+
+        this.jdbcTemplate.execute(SELECT_BY_AD_ID, (PreparedStatementCallback<Image>) stmt -> {
+            stmt.setInt(1, adId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    image.setId(rs.getInt("id"));
+                    image.setImg(rs.getString("img"));
+                    image.setAdId(rs.getInt("ad_id"));
+                    image.setMain(rs.getBoolean("is_main"));
+                    return image;
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Исключение при проверке наличия image по ad_id={}: {}", adId, e);
+            }
+            return image;
+        });
+        return image;
     }
 }

@@ -70,6 +70,7 @@ public class AdController {
             }
         } catch (ImageUploadException e) {
             bindingResult.reject(e.getMessage());
+
             return "ad";
         }
         return "redirect:/";
@@ -95,7 +96,7 @@ public class AdController {
 
     private void createAd(@ModelAttribute("ad") Ad ad, String login) {
         Optional<User> optionalUser = userDao.selectByLogin(login);
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             ad.setUserId(user.getId());
             ad.setConfirm(true);
@@ -144,7 +145,6 @@ public class AdController {
     @PostMapping(value = "/show/{id}")
 
 
-
     private Ad updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad) {
         Ad newAd = adDao.selectById(id);
         newAd.setTitle(ad.getTitle());
@@ -161,5 +161,17 @@ public class AdController {
         Ad ad = adDao.selectById(id);
         adDao.delete(ad);
         return "redirect:/account";
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String viewAd(@PathVariable int id, Model model) {
+        LOGGER.info("mapping get /ad/" + id);
+        Ad ad = adDao.selectById(id);
+        Image image = imageDao.getImageByAd(id);
+        model.addAttribute("categories", categoryDao.getAll());
+        model.addAttribute("ad", ad);
+        model.addAttribute("selected", ad.getCategoryId());
+        model.addAttribute("image", image.getImg());
+        return "ad_view";
     }
 }

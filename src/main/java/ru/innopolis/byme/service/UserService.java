@@ -10,17 +10,16 @@ import ru.innopolis.byme.dao.api.AdDao;
 import ru.innopolis.byme.dao.api.UserDao;
 import ru.innopolis.byme.entity.Ad;
 
-import ru.innopolis.byme.controller.UserController;
 import ru.innopolis.byme.dao.api.CategoryDao;
 import ru.innopolis.byme.dao.api.CityDao;
 import ru.innopolis.byme.entity.Category;
 import ru.innopolis.byme.entity.City;
-
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 import ru.innopolis.byme.transfer.CategoryTree;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

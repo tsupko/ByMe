@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model, Principal principal){
+    public String index(Model model, Principal principal) {
 
         LOGGER.info("index обработан userController get");
 
@@ -60,11 +60,11 @@ public class UserController {
         model.addAttribute("categoryList", service.getCategoryList());
       
         if (principal == null) {
-            model.addAttribute("urlSome", "/login");
-            model.addAttribute("some", "LogIn");
+            model.addAttribute("logUrl", "/login");
+            model.addAttribute("logStatus", "Log In");
         } else {
-            model.addAttribute("urlSome", "/logout");
-            model.addAttribute("some", "LogOut");
+            model.addAttribute("logUrl", "/logout");
+            model.addAttribute("logStatus", "Log Out");
             model.addAttribute("user", principal.getName());
         }
         return "index";
@@ -76,7 +76,11 @@ public class UserController {
     }
 
     @GetMapping("login")
-    public String login(){
-        return "login";
+    public String login(Principal principal) {
+        if (principal == null) {
+            return "login";
+        } else {
+            return "redirect:/";
+        }
     }
 }

@@ -4,19 +4,18 @@
 <html>
 <head>
     <%--***************************************************--%>
-    <%--             мета Bootstrapp                       --%>
+    <%--                   мета Bootstrap                  --%>
     <%--***************************************************--%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-    <title>registration</title>
+    <title>Registration</title>
     <%--***************************************************--%>
-    <%--            магия Bootstrapp                       --%>
+    <%--                  магия Bootstrap                  --%>
     <%--***************************************************--%>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>"
+          rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
     <%--    css styles--%>
     <style>
         body {
@@ -25,13 +24,10 @@
             background-image: url(https://png.pngtree.com/element_origin_min_pic/16/12/09/77619c843826cf8c9184bcf626d14f49.jpg);
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
-
         .register {
             padding-top: 70px;
         }
-
     </style>
-
     <script type="text/javascript">
         function passwordEqualsValidation() {
             var pass1 = document.getElementById('pass1');
@@ -60,23 +56,22 @@
 <div class="container">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">ByMeService</a>
+            <a class="navbar-brand" href="<c:url value="/"/>">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/about">About</a></li>
+                <li><a href="<c:url value="/about"/>">About</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">Home</a></li>
-                <li><a href="/login">LogIn</a></li>
-                <li></li>
+                <li><a href="<c:url value="/"/>">Home</a></li>
+                <li><a href="<c:url value="/login"/>">Log In</a></li>
             </ul>
         </div>
     </div>
 </div>
 
 <div class="register">
-    <form id="details" method="post" action="/registration" modelAttribute="user">
+    <form id="details" method="post" action="<c:url value="/registration"/>">
         <div class="container">
             <div class="row centered-form">
                 <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
@@ -101,7 +96,6 @@
                                            id="login"
                                            minlength="5" maxlength="30"
                                            placeholder="login">
-
                                     <div id="errLast"></div>
                                 </div>
                                 <%--валидация пароля--%>

@@ -48,6 +48,8 @@ public class AdDaoImpl implements AdDao {
     private static final String AD_PRICE_MIN = "price_min";
     private static final String AD_CONFIRM = "confirm";
     private static final String AD_IS_ACTUAL = "is_actual";
+    private static final String AD_DATE = "date";
+    private static final String AD_DAY_COUNT = "day_count";
 
     /**
      * sql-скрипт для выборки объявления по id
@@ -124,8 +126,8 @@ public class AdDaoImpl implements AdDao {
      * sql-скрипт для создания записи в соответствующей таблице
      */
     private static final String INSERT_AD = "insert into ad" +
-            " ( title, text, user_id, category_id, price, price_min, confirm, is_actual)\n" +
-            " values (?,?,?,?,?,?,?,?) returning id";
+            " ( title, text, user_id, category_id, price, price_min, confirm, is_actual, date, day_count )\n" +
+            " values (?,?,?,?,?,?,?,?,?,?) returning id";
 
     /**
      * создание записи в БД с полями переданного экземпляра
@@ -149,6 +151,8 @@ public class AdDaoImpl implements AdDao {
             stmt.setBigDecimal(6, ad.getPriceMin());
             stmt.setBoolean(7, ad.isConfirm());
             stmt.setBoolean(8, ad.isActual());
+            stmt.setDate(9, new Date(System.currentTimeMillis()));
+            stmt.setInt(10, ad.getDayCount());
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     ad.setId(rs.getInt("id"));
@@ -279,6 +283,8 @@ public class AdDaoImpl implements AdDao {
         ad.setPriceMin(rs.getBigDecimal(AD_PRICE_MIN));
         ad.setConfirm(rs.getBoolean(AD_CONFIRM));
         ad.setActual(rs.getBoolean(AD_IS_ACTUAL));
+        ad.setDate(rs.getDate(AD_DATE));
+        ad.setDayCount(rs.getInt(AD_DAY_COUNT));
     }
 
     private void assignResultSetToImageFields(ResultSet rs, Image image) throws SQLException {

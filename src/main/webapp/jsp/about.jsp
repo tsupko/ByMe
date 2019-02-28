@@ -11,7 +11,8 @@
     <%--***************************************************--%>
     <%--                  магия Bootstrap                  --%>
     <%--***************************************************--%>
-    <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
+    <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>"
+          rel="stylesheet" id="bootstrap-css">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <%-- css styles --%>
@@ -23,7 +24,6 @@
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
     </style>
-    <link href="css/about.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="container">
@@ -32,9 +32,18 @@
             <a class="navbar-brand" href="<c:url value="/"/>">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="<c:url value="/ad/new"/>">Add</a></li>
+                <li><a href="<c:url value="/account"/>">Account</a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="<c:url value="/registration"/>">Registration</a></li>
-                <li><a href="<c:url value="/login"/>">LogIn</a></li>
+                <c:if test="${not empty user}">
+                    <li><a href="<c:url value="/account"/>">Hello, ${user}</a></li>
+                </c:if>
+                <c:if test="${empty user}">
+                    <li><a href="<c:url value="/registration"/>">Registration</a></li>
+                </c:if>
+                <li><a href="${logUrl}">${logStatus}</a></li>
             </ul>
         </div>
     </div>
@@ -62,7 +71,7 @@
                             Feel free to click <b><a href="<c:url value="/registration"/>">Registration</a></b><br/>
                             if you are not yet registered here.<br/>
                             <br/>
-                            Otherwise, click <b><a href="<c:url value="/login"/>">LogIn</a></b>
+                            Otherwise, click <b><a href="<c:url value="/login"/>">Log In</a></b>
                             <br/>
                             to start adding your ads, view other people's ads, and have a good time!
                         </p>

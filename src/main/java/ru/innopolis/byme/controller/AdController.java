@@ -33,9 +33,10 @@ public class AdController {
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public String ad(Model model) {
+    public String ad(Model model, Principal principal) {
         LOGGER.info("mapping get /ad/new");
         model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("user", principal.getName());
         model.addAttribute("ad", new Ad());
         model.addAttribute("submit", "Добавить объявление");
         return "ad";

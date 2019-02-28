@@ -4,20 +4,18 @@
 <html>
 <head>
     <%--***************************************************--%>
-    <%--             мета Bootstrapp                       --%>
+    <%--                  мета Bootstrap                   --%>
     <%--***************************************************--%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-    <title>account</title>
-
+    <title>Account</title>
     <%--***************************************************--%>
-    <%--            магия Bootstrapp                       --%>
+    <%--                 магия Bootstrap                   --%>
     <%--***************************************************--%>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>"
+          rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
     <%--    css styles--%>
     <style>
         body {
@@ -26,12 +24,10 @@
             background: #EEE;
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
-
         .container-target {
             padding-top: 70px;
         }
     </style>
-
     <script type="text/javascript">
         function passwordEqualsValidation() {
             var pass1 = document.getElementById('pass1');
@@ -39,7 +35,7 @@
             var message = document.getElementById('confirmMessage');
             var goodColor = "#66cc66";
             var badColor = "#ff6666";
-            if (pass1.value == pass2.value) {
+            if (pass1.value === pass2.value) {
                 pass2.style.backgroundColor = goodColor;
                 message.style.color = goodColor;
                 message.innerHTML = "Passwords Match"
@@ -50,7 +46,6 @@
             }
         }
     </script>
-
 </head>
 <body>
 <%--***************************************************--%>
@@ -59,26 +54,24 @@
 <div class="container">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">ByMeService</a>
+            <a class="navbar-brand" href="<c:url value="/"/>">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
 
             <ul class="nav navbar-nav">
-                <li><a href="/about">About</a></li>
-                <li><a href="/ad/new">Add</a></li>
-                <li><a href="/account">Account</a></li>
-                <li><a href="/contact">Contact</a></li>
+                <li><a href="<c:url value="/about"/>">About</a></li>
+                <li><a href="<c:url value="/ad/new"/>">Add</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/registration">Registration</a></li>
-                <li><a href="/logout">LogOut</a></li>
+                <li><a href="<c:url value="/account"/>">Hello, ${account.login}</a></li>
+                <li><a href="<c:url value="/logout"/>">Log Out</a></li>
             </ul>
         </div>
     </div>
 </div>
 <%--***************************************************--%>
-<%--       тут пишим код для аккаунта пользователя     --%>
+<%--       тут пишем код для аккаунта пользователя     --%>
 <%--***************************************************--%>
 <div class="container-target">
     <div class="container">
@@ -173,7 +166,6 @@
                         </tr>
                     </c:forEach>
                 </table>
-            </table>
             </table>
         </form:form>
     </div>

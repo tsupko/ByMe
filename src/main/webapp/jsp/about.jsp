@@ -24,7 +24,6 @@
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
     </style>
-    <%--<link href="css/about.css" rel="stylesheet" type="text/css">--%>
 </head>
 <body>
 <div class="container">

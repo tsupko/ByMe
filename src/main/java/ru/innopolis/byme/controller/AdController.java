@@ -70,6 +70,7 @@ public class AdController {
             }
         } catch (ImageUploadException e) {
             bindingResult.reject(e.getMessage());
+
             return "ad";
         }
         return "redirect:/";
@@ -95,7 +96,7 @@ public class AdController {
 
     private void createAd(@ModelAttribute("ad") Ad ad, String login) {
         Optional<User> optionalUser = userDao.selectByLogin(login);
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             ad.setUserId(user.getId());
             ad.setConfirm(true);
@@ -116,19 +117,19 @@ public class AdController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad, MultipartFile image,
+    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad, MultipartFile imageFile,
                            BindingResult bindingResult) {
         LOGGER.info("mapping post /edit/" + id);
         Ad newAd = updateAd(id, ad);
         LOGGER.info("объявление изменено: {}", newAd);
-        LOGGER.info("image.isEmpty(): " + image.isEmpty());
+        LOGGER.info("image.isEmpty(): " + imageFile.isEmpty());
         try {
-            if (!image.isEmpty()) {
-                LOGGER.info("Image size: " + image.getSize());
-                LOGGER.info("Image content type: " + image.getContentType());
-                imageService.validateImage(image);
+            if (!imageFile.isEmpty()) {
+                LOGGER.info("Image size: " + imageFile.getSize());
+                LOGGER.info("Image content type: " + imageFile.getContentType());
+                imageService.validateImage(imageFile);
                 String imageName = id + ".jpg";
-                imageService.saveImage(imageName, image);
+                imageService.saveImage(imageName, imageFile);
                 if (!imageDao.exists(id)) {
                     Image img = createImgById(id, imageName);
                     LOGGER.info("Новое фото объявления: {}", img);
@@ -142,7 +143,6 @@ public class AdController {
     }
 
     @PostMapping(value = "/show/{id}")
-
 
 
     private Ad updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad) {
@@ -161,5 +161,17 @@ public class AdController {
         Ad ad = adDao.selectById(id);
         adDao.delete(ad);
         return "redirect:/account";
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String viewAd(@PathVariable int id, Model model) {
+        LOGGER.info("mapping get /ad/" + id);
+        Ad ad = adDao.selectById(id);
+        Image image = imageDao.getImageByAd(id);
+        model.addAttribute("categories", categoryDao.getAll());
+        model.addAttribute("ad", ad);
+        model.addAttribute("selected", ad.getCategoryId());
+        model.addAttribute("image", image.getImg());
+        return "ad_view";
     }
 }

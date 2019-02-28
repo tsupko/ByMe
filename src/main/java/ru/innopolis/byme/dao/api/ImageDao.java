@@ -10,4 +10,6 @@ public interface ImageDao {
     boolean exists(int adId);
 
     List<Image> getAll();
+
+    Image getImageByAd(int adId);
 }

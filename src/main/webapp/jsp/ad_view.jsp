@@ -60,58 +60,37 @@
 <div class="container">
     <div class="navPadding">
 
-        <form:form method="post" enctype="multipart/form-data">
-            <table class="table">
-                <tr>
-                    <td>Категория</td>
-                    <td>
-                        <select name="categoryId">
-                            <c:forEach var="item" items="${categories}">
-                                <option value="${item.id}" ${item.id == selected ? 'selected' : ''}>${item.name}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Название объявления</td>
-                    <td><input type="text" name="title" required autofocus value="${ad.title}">
-                        <input type=text hidden name="hidden"></td>
-                </tr>
-                <tr>
-                    <td>Описание объявления</td>
-                    <td><textarea name="text" rows="6" maxlength="3000" required>${ad.text}</textarea></td>
-                </tr>
-                <tr>
-                    <td>Цена</td>
-                    <td><input type="text" name="price" required pattern="\d+(\.\d{2})?" value="${ad.price}"></td>
-                </tr>
-                <tr>
-                    <td>Минимальная цена</td>
-                    <td><input type="text" name="priceMin" required pattern="\d+(\.\d{2})?" value="${ad.priceMin}"></td>
-                </tr>
-                <tr>
-                    <td>Фотография</td>
-                    <td>
-                        <c:if test="${ad.id !=0}">
-                            <img src="/static/repo/${ad.id}.jpg" width="245">
-                        </c:if>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input name="imageFile" type="file"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <button class="headButton" type="submit">${submit}</button>
-                    </td>
-                </tr>
-            </table>
-        </form:form>
+        <table class="table">
+            <tr>
+                <td>Категория</td>
+                <td>
+                    <select name="categoryId">
+                        <c:forEach var="item" items="${categories}">
+                            <option value="${item.id}" ${item.id == selected ? 'selected' : ''}
+                                    disabled>${item.name}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Название объявления</td>
+                <td><input type="text" name="title" value="${ad.title}" disabled></td>
+            </tr>
+            <tr>
+                <td>Описание объявления</td>
+                <td><textarea name="text" rows="6" disabled>${ad.text}</textarea></td>
+            </tr>
+            <tr>
+                <td>Цена</td>
+                <td><input type="text" name="price" value="${ad.price}" disabled></td>
+            </tr>
+            <tr>
+                <td>Фотография</td>
+                <td>
+                        <img src="/static/repo/${image}" width="245">
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 </body>

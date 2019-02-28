@@ -18,6 +18,7 @@ import ru.innopolis.byme.transfer.CategoryTree;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,9 +80,7 @@ public class UserService {
         return CategoryTree.categoryListToTree(categoryList);
     }
 
-    public List<String> getCityList() {
-        return cityDao.getAllCities().stream()
-                                     .map(City::getName)
-                                     .collect(Collectors.toList());
+    public Collection<City> getCityList() {
+        return cityDao.getAllCities();
     }
 }

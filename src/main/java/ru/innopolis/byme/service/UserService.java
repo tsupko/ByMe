@@ -5,13 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
 import ru.innopolis.byme.dao.api.AdDao;
-import ru.innopolis.byme.dao.api.UserDao;
-import ru.innopolis.byme.entity.Ad;
-
 import ru.innopolis.byme.dao.api.CategoryDao;
 import ru.innopolis.byme.dao.api.CityDao;
+import ru.innopolis.byme.dao.api.UserDao;
+import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.Category;
 import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.User;

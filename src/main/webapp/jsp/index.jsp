@@ -16,7 +16,8 @@
     <%--            магия Bootstrapp                       --%>
     <%--***************************************************--%>
 
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'/>    <link href="//bootstrap-combobox-test.herokuapp.com/css/bootstrap-combobox.css" media="screen" rel="stylesheet" type="text/css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'/>
+    <link href="<c:url value="//bootstrap-combobox-test.herokuapp.com/css/bootstrap-combobox.css"/>" media="screen" rel="stylesheet" type="text/css">
     <link rel="canonical" href="http://bootstrapessentials.com/fulldocs/components/navbar/navbar-submenu/" />
 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
@@ -102,14 +103,14 @@
 <div class="container">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">ByMeService</a>
+            <a class="navbar-brand" href="<c:url value="/"/>">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                    <li><a href="/about">About</a></li>
+                    <li><a href="<c:url value="/about"/>">About</a></li>
                 <c:if test="${not empty user}">
-                    <li><a href="/ad/new">Add</a></li>
-                    <li><a href="/account">Account</a></li>
+                    <li><a href="<c:url value="/ad/new"/>">Add</a></li>
+                    <li><a href="<c:url value="/account"/>">Account</a></li>
                 </c:if>
                 <li>
                     <div class="btn-group">
@@ -124,7 +125,7 @@
                                             for(int i = 0; i < categoryTree.size(); i += 1) { %>
                                         <a href="#">
                                             <% for (int j = 0; j < categoryTree.get(i).getLevel(); j += 1) {
-                                                out.print("&nbsp;");%>
+                                                System.out.print("&nbsp;");%>
                                             <% } %>  <%=categoryTree.get(i).getName()%>
                                         </a>
                                         <%  } %>
@@ -154,12 +155,13 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${not empty user}">
-                    <li><a href="/account">Hello, ${user}</a></li>
+                    <li><a href="<c:url value="/account"/>">Hello, ${user}</a></li>
                 </c:if>
                 <c:if test="${empty user}">
-                    <li><a href="/registration">Registration</a></li>
+                    <li><a href="<c:url value="/registration"/>">Registration</a></li>
                 </c:if>
                 <li><a href="${urlSome}">${some}</a></li>
+                <li><a></a></li>
             </ul>
         </div>
     </div>

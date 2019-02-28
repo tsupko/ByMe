@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.innopolis.byme.dao.api.AdDao;
-import ru.innopolis.byme.dao.api.CategoryDao;
 import ru.innopolis.byme.dao.api.CityDao;
 import ru.innopolis.byme.dao.api.UserDao;
 import ru.innopolis.byme.entity.Ad;
@@ -39,10 +38,10 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final UserDao userDao;
     private final CityDao cityDao;
-    private final CategoryDao categoryDao;
+    private final CategoryService categoryDao;
 
     @Autowired
-    public UserService(PasswordEncoder encoder, UserDao userDao, CityDao cityDao, CategoryDao categoryDao) {
+    public UserService(PasswordEncoder encoder, UserDao userDao, CityDao cityDao, CategoryService categoryDao) {
         LOGGER.info("создали UserService");
         this.encoder = encoder;
         this.userDao = userDao;

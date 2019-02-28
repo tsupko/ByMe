@@ -117,9 +117,9 @@ public class AdDaoImpl implements AdDao {
                 LOGGER.error("Исключение при получении объявлений по автору user_id={}", userId, e);
             }
             LOGGER.info(ads.toString());
-            return (ads);
+            return ads;
         });
-        return (ads);
+        return ads;
     }
 
     /**
@@ -243,10 +243,9 @@ public class AdDaoImpl implements AdDao {
                 LOGGER.error("Исключение при получении всех объявлений из таблицы ad ", e);
             }
             LOGGER.info(ads.toString());
-            return (ads);
+            return ads;
         });
-        System.err.println(ads);
-        return (ads);
+        return ads;
     }
 
     @Override
@@ -267,10 +266,9 @@ public class AdDaoImpl implements AdDao {
                 LOGGER.error("Исключение при получении {} объявлений из таблицы ad ", i, e);
             }
             LOGGER.info(result.toString());
-            return (result);
+            return result;
         });
-        System.err.println(result);
-        return (result);
+        return result;
     }
 
     private void assignResultSetToAdFields(ResultSet rs, Ad ad) throws SQLException {

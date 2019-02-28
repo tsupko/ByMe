@@ -53,8 +53,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("login").passwordParameter("password")
                 .permitAll()
                 .and()
-            .logout().logoutSuccessUrl("/")
-                .permitAll();
+            .logout()
+                .logoutSuccessUrl("/")
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+                .and()
+            .rememberMe()
+                .key("ByMeKey");
     }
 
     @Override

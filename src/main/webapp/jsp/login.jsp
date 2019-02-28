@@ -83,6 +83,12 @@
                                            class="form-control password-field"
                                            placeholder="password"/>
                                 </div>
+                                <div class="check-box">
+                                    <label>
+                                        <input type="checkbox" name="remember-me" checked="checked">
+                                        <small>Remember me</small>
+                                    </label>
+                                </div>
                                 <input type="submit" value="LogIn" class="btn btn-info btn-block">
                             </form>
                         </div>

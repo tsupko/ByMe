@@ -6,16 +6,14 @@
 <html>
 <head>
     <%--***************************************************--%>
-    <%--             мета Bootstrapp                       --%>
+    <%--                 мета Bootstrap                    --%>
     <%--***************************************************--%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-    <title>Главная страница</title>
+    <title>Main Page</title>
     <%--***************************************************--%>
-    <%--            магия Bootstrapp                       --%>
+    <%--                магия Bootstrap                    --%>
     <%--***************************************************--%>
-
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'/>
     <link href="<c:url value="//bootstrap-combobox-test.herokuapp.com/css/bootstrap-combobox.css"/>" media="screen" rel="stylesheet" type="text/css">
     <link rel="canonical" href="http://bootstrapessentials.com/fulldocs/components/navbar/navbar-submenu/" />
@@ -160,7 +158,7 @@
                 <c:if test="${empty user}">
                     <li><a href="<c:url value="/registration"/>">Registration</a></li>
                 </c:if>
-                <li><a href="${urlSome}">${some}</a></li>
+                <li><a href="${logUrl}">${logStatus}</a></li>
                 <li><a></a></li>
             </ul>
         </div>

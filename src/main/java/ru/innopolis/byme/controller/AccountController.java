@@ -61,7 +61,15 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/about", method = RequestMethod.GET)
-    public String getAboutUs() {
+    public String getAboutUs(Model model, Principal principal) {
+        if (principal == null) {
+            model.addAttribute("logUrl", "/login");
+            model.addAttribute("logStatus", "Log In");
+        } else {
+            model.addAttribute("logUrl", "/logout");
+            model.addAttribute("logStatus", "Log Out");
+            model.addAttribute("user", principal.getName());
+        }
         return "about";
     }
 }

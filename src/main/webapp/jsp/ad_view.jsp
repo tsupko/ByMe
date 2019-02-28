@@ -74,8 +74,7 @@
             </tr>
             <tr>
                 <td>Название объявления</td>
-                <td><input type="text" name="title" value="${ad.title}" disabled>
-                    <input type=text hidden name="hidden"></td>
+                <td><input type="text" name="title" value="${ad.title}" disabled></td>
             </tr>
             <tr>
                 <td>Описание объявления</td>
@@ -83,15 +82,13 @@
             </tr>
             <tr>
                 <td>Цена</td>
-                <td><input type="text" name="price" pattern="\d+(\.\d{2})?" value="${ad.price}" disabled></td>
-            </tr>
-            <tr>
-                <td>Минимальная цена</td>
-                <td><input type="text" name="priceMin" pattern="\d+(\.\d{2})?" value="${ad.priceMin}" disabled></td>
+                <td><input type="text" name="price" value="${ad.price}" disabled></td>
             </tr>
             <tr>
                 <td>Фотография</td>
-                <td><img src="/static/repo/${image}" width="245"></td>
+                <td>
+                        <img src="/static/repo/${image}" width="245">
+                </td>
             </tr>
         </table>
     </div>

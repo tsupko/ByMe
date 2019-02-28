@@ -25,6 +25,7 @@
             background: #EEE;
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
+
         .navPadding {
             padding-top: 100px;
         }
@@ -91,11 +92,20 @@
                 <tr>
                     <td>Фотография</td>
                     <td>
+                        <c:if test="${ad.id !=0}">
+                            <img src="/static/repo/${ad.id}.jpg" width="245">
+                        </c:if>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
                         <input name="imageFile" type="file"/>
                     </td>
                 </tr>
                 <tr>
-                    <td/>
+                    <td>
+                    </td>
                     <td>
                         <button class="headButton" type="submit">${submit}</button>
                     </td>

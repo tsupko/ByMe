@@ -117,19 +117,19 @@ public class AdController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad, MultipartFile image,
+    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad, MultipartFile imageFile,
                            BindingResult bindingResult) {
         LOGGER.info("mapping post /edit/" + id);
         Ad newAd = updateAd(id, ad);
         LOGGER.info("объявление изменено: {}", newAd);
-        LOGGER.info("image.isEmpty(): " + image.isEmpty());
+        LOGGER.info("image.isEmpty(): " + imageFile.isEmpty());
         try {
-            if (!image.isEmpty()) {
-                LOGGER.info("Image size: " + image.getSize());
-                LOGGER.info("Image content type: " + image.getContentType());
-                imageService.validateImage(image);
+            if (!imageFile.isEmpty()) {
+                LOGGER.info("Image size: " + imageFile.getSize());
+                LOGGER.info("Image content type: " + imageFile.getContentType());
+                imageService.validateImage(imageFile);
                 String imageName = id + ".jpg";
-                imageService.saveImage(imageName, image);
+                imageService.saveImage(imageName, imageFile);
                 if (!imageDao.exists(id)) {
                     Image img = createImgById(id, imageName);
                     LOGGER.info("Новое фото объявления: {}", img);

@@ -77,21 +77,10 @@ public class UserService {
         return adDao.getAdvs(maxAdvertsNumber, categoryId, cityId);
     }
 
-    public List<CategoryTree> getCategoryList() {
-        List<CategoryTree> categoryTreeList =
-                CategoryTree.categoryListToTree(new LinkedList<>(categoryDao.getAll()));
-        ((LinkedList<CategoryTree>) categoryTreeList).addFirst(new CategoryTree(0, "Any category", 0));
-        return categoryTreeList;
-    }
-
-    public List<City> getCityList() {
-        List<City> cityList = new LinkedList<>(cityDao.getAllCities());
-        ((LinkedList<City>) cityList).addFirst(new City(0, "Any Location"));
-        return cityList;
-    }
-
     public List<City> getCityListWithSelected(int cityId) {
         List<City> cityList = getCityList();
+        ((LinkedList<City>) cityList).addFirst(new City(0, "Any Location"));
+
         Iterator<City> cityIterator = cityList.iterator();
         while (cityIterator.hasNext()){
             City city = cityIterator.next();
@@ -106,12 +95,7 @@ public class UserService {
 
     public List<CategoryTree> getCategoryListWithSelected(int categoryId) {
         List<CategoryTree> categoryTreeList = getCategoryList();
-
-        System.out.println("categoryId = " + categoryId);
-        for (CategoryTree c : categoryTreeList) {
-            System.out.println(c.getId());
-        }
-
+        ((LinkedList<CategoryTree>) categoryTreeList).addFirst(new CategoryTree(0, "Any category", 0));
 
         Iterator<CategoryTree> categoryTreeIterator = categoryTreeList.iterator();
         while (categoryTreeIterator.hasNext()){
@@ -122,12 +106,17 @@ public class UserService {
                 break;
             }
         }
-        System.out.println();
-        for (CategoryTree c : categoryTreeList) {
-            System.out.println(c.getId());
-        }
         return categoryTreeList;
     }
+
+    public List<CategoryTree> getCategoryList() {
+        return CategoryTree.categoryListToTree(new LinkedList<>(categoryDao.getAll()));
+    }
+
+    public List<City> getCityList() {
+        return new LinkedList<>(cityDao.getAllCities());
+    }
+
     public User selectByLogin(String login){
         return userDao.selectByLogin(login).get();
     }

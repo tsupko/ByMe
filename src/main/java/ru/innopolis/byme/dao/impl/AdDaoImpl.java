@@ -220,59 +220,27 @@ public class AdDaoImpl implements AdDao {
     }
 
     /**
-     * sql-скрипт для выбора всех объявлений из таблицы ad
-     */
-    private static final String SELECT_ALL_ADS = "Select * from ad where is_actual = true";
-
-    /**
-     * выбор всех объявлений из таблицы ad
+     * Метод для получения списка объявлений по заданным критериям
+     *
+     * @param maxAdvertsNumber ограничение на количество объявлений в списке
+     * @param categoryId       значение выбранной пользователем категории товара
+     * @param cityId           значение выбранного пользователем города
+     *                         если значение какого-либо параметра равно 0, то фильтр
+     *                         по данному критерию не используется
      */
     @Override
-    public Collection<Ad> getAll() {
-        LOGGER.info("getAllAds");
-        Collection<Ad> ads = new ArrayList<>();
-        this.jdbcTemplate.execute(SELECT_ALL_ADS, (PreparedStatementCallback<Collection<Ad>>) stmt -> {
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Ad ad = new Ad();
-                    assignResultSetToAdFields(rs, ad);
-                    LOGGER.info(ad.toString());
-                    ads.add(ad);
+    public List<Ad> getAdvs(int maxAdvertsNumber, int categoryId, int cityId) {
+        String sql = buildSqlForAdvs(maxAdvertsNumber, categoryId, cityId);
+        List<Ad> result = new ArrayList<>();
+        this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Ad>>) stmt -> {
+            if (cityId > 0) {
+                stmt.setInt(1, cityId);
+                if (categoryId > 0) {
+                    stmt.setInt(2, categoryId);
                 }
-            } catch (SQLException e) {
-                LOGGER.error("Исключение при получении всех объявлений из таблицы ad ", e);
+            } else if (categoryId > 0) {
+                stmt.setInt(1, categoryId);
             }
-            LOGGER.info(ads.toString());
-            return ads;
-        });
-        return ads;
-    }
-
-    @Override
-    public List<Ad> getAdvs(int i) {
-        String sql = String.format("select * from ad join image on image.ad_id=ad.id " +
-                "where is_actual=true limit %d", i);
-        List<Ad> result = new ArrayList<>();
-        this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Ad>>) stmt -> {
-            getAdvsFomPstmt(result, stmt);
-            LOGGER.info(result.toString());
-            return result;
-        });
-        return result;
-    }
-
-    private static final String SELECT_ADVS_BY_CITY = " select * from ad\n" +
-            "   join image on image.ad_id=ad.id\n" +
-            "   join public.user u on ad.user_id = u.id\n" +
-            " where ad.is_actual=true and city_id = ?" +
-            "limit %d";
-    @Override
-    public List<Ad> getAdvsByCity(int i, int cityId) {
-        LOGGER.info("getAdvsByCity");
-        String sql = String.format(SELECT_ADVS_BY_CITY, i);
-        List<Ad> result = new ArrayList<>();
-        this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Ad>>) stmt -> {
-            stmt.setInt(1, cityId);
             getAdvsFomPstmt(result, stmt);
             LOGGER.info(result.toString());
             return (result);
@@ -280,64 +248,35 @@ public class AdDaoImpl implements AdDao {
         return (result);
     }
 
-    private static final String SELECT_ADVS_BY_CATEGORY = " select * from ad\n" +
-            "   join image on image.ad_id=ad.id\n" +
-            " where ad.is_actual=true \n" +
-            "    and category_id in (\n" +
-            "       WITH RECURSIVE r AS (\n" +
-            "         SELECT id, parent_id, name, 1 AS level\n" +
-            "         FROM category\n" +
-            "         WHERE id = ? \n" +
-            "         UNION ALL\n" +
-            "         SELECT category.id, category.parent_id, category.name, r.level + 1 AS level\n" +
-            "         FROM category\n" +
-            "                JOIN r ON category.parent_id = r.id\n" +
-            "         ) SELECT id FROM r\n" +
-            "   ) limit %d";
-
-    @Override
-    public List<Ad> getAdvsByCategory(int i, int categoryId) {
-        LOGGER.info("getAdvsByCategory");
-        String sql = String.format(SELECT_ADVS_BY_CATEGORY, i);
-        List<Ad> result = new ArrayList<>();
-        this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Ad>>) stmt -> {
-            stmt.setInt(1, categoryId);
-            getAdvsFomPstmt(result, stmt);
-            LOGGER.info(result.toString());
-            return (result);
-        });
-        return (result);
-    }
-
-    private static final String SELECT_ADVS_BY_CITY_AND_CATEGORY = "select * from ad\n"+
-            "   join image on image.ad_id=ad.id\n"+
-            "   join public.user u on ad.user_id = u.id\n"+
-            " where ad.is_actual=true and city_id = ? \n"+
-            "    and category_id in (\n"+
-            "       WITH RECURSIVE r AS (\n"+
-            "         SELECT id, parent_id, name, 1 AS level\n"+
-            "         FROM category\n"+
-            "         WHERE id = ? \n"+
-            "         UNION ALL\n"+
-            "         SELECT category.id, category.parent_id, category.name, r.level + 1 AS level\n"+
-            "         FROM category\n"+
-            "                JOIN r ON category.parent_id = r.id\n"+
-            "         ) SELECT id FROM r\n"+
-            "   ) limit %d";
-
-    @Override
-    public List<Ad> getAdvsByCategoryAndCity(int i, int categoryId, int cityId) {
-        LOGGER.info("getAdvsByCategoryAndCity");
-        String sql = String.format(SELECT_ADVS_BY_CITY_AND_CATEGORY, i);
-        List<Ad> result = new ArrayList<>();
-        this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Ad>>) stmt -> {
-            stmt.setInt(1, cityId);
-            stmt.setInt(2, categoryId);
-            getAdvsFomPstmt(result, stmt);
-            LOGGER.info(result.toString());
-            return (result);
-        });
-        return (result);
+    private String buildSqlForAdvs(int i, int categoryId, int cityId) {
+        String sql = "select * from ad\n" +
+                "  join image on image.ad_id=ad.id\n";
+        if (cityId > 0) {
+            sql += "  join public.user u on ad.user_id = u.id\n";
+        }
+        sql += " where ad.is_actual=true\n";
+        if (cityId > 0) {
+            sql += "      and city_id = ?\n";
+        }
+        if (categoryId > 0) {
+            sql += "      and category_id in (\n" +
+                    "         WITH RECURSIVE r AS (\n" +
+                    "           SELECT id, parent_id, name, 1 AS level\n" +
+                    "           FROM category\n" +
+                    "           WHERE id = ?\n" +
+                    "           UNION ALL\n" +
+                    "           SELECT category.id, category.parent_id, category.name, r.level + 1 AS level\n" +
+                    "           FROM category\n" +
+                    "                  JOIN r ON category.parent_id = r.id\n" +
+                    "           ) SELECT id FROM r\n" +
+                    "     )\n";
+        }
+        if (i != 0) {
+            sql += "limit %d";
+            sql = String.format(sql, i);
+        }
+        LOGGER.info("sql =" + sql);
+        return sql;
     }
 
     private void getAdvsFomPstmt(List<Ad> result, PreparedStatement stmt) {

@@ -80,7 +80,7 @@ public class UserDaoImpl implements UserDao {
                 stmt.setString(4, user.getEmail());
                 stmt.setString(5, user.getPhoneNumber());
                 stmt.setInt(6, 3 /* role=user */);
-                stmt.setInt(7, 1 /* city=Kazan */);
+                stmt.setInt(7, user.getCityId());
                 stmt.setBoolean(8, true /* is_actual */);
                 try (ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {

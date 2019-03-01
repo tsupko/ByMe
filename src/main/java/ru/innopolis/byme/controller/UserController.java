@@ -2,6 +2,7 @@ package ru.innopolis.byme.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.form.AdFilter;
+import ru.innopolis.byme.service.CityService;
 import ru.innopolis.byme.service.UserService;
 
 import java.security.Principal;
@@ -22,16 +24,16 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private static final int MAX_ADVERT_NUMBER = 20;
 
-    private final UserService service;
-
-    public UserController(UserService service) {
-        this.service = service;
-    }
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CityService cityService;
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
         LOGGER.info("registration обработан userController get");
-        model.addAttribute("user", service.newUser());
+        model.addAttribute("user", userService.newUser());
+        model.addAttribute("cities", cityService.getAll());
         return "registration";
     }
 
@@ -39,11 +41,11 @@ public class UserController {
     public String registration(@ModelAttribute("user") User user, Model model) {
         LOGGER.info("registration обработан userController POST");
         try {
-            service.saveUser(user);
+            userService.saveUser(user);
             LOGGER.info("добавление USER в БД");
         } catch (Exception e) {
             LOGGER.info("пользователь уже зарегистрирован");
-            model.addAttribute("error", "notNull");
+            model.addAttribute("error", "user email reserved by other user");
             return "redirect:/registration";
         }
         return "redirect:/login";
@@ -54,10 +56,10 @@ public class UserController {
 
         LOGGER.info("index обработан userController get");
 
-        List<Ad> advs = service.getAdvs(MAX_ADVERT_NUMBER);
+        List<Ad> advs = userService.getAdvs(MAX_ADVERT_NUMBER);
         model.addAttribute("list", advs);
-        model.addAttribute("cityList", service.getCityList());
-        model.addAttribute("categoryList", service.getCategoryList());
+        model.addAttribute("cityList", userService.getCityList());
+        model.addAttribute("categoryList", userService.getCategoryList());
       
         if (principal == null) {
             model.addAttribute("logUrl", "/login");

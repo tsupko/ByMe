@@ -12,8 +12,8 @@
     <%--***************************************************--%>
     <%--                 магия Bootstrap                   --%>
     <%--***************************************************--%>
-    <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>"
-          rel="stylesheet" id="bootstrap-css">
+    <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>" rel="stylesheet"
+          id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <%--    css styles--%>
@@ -24,8 +24,18 @@
             background: #EEE;
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
+
         .container-target {
             padding-top: 70px;
+        }
+
+        table {
+            counter-reset: tableCount;
+        }
+
+        .counterCell:before {
+            content: counter(tableCount);
+            counter-increment: tableCount;
         }
     </style>
     <script type="text/javascript">
@@ -51,13 +61,13 @@
 <%--***************************************************--%>
 <%--            это шапка, не трогаем                  --%>
 <%--***************************************************--%>
+
 <div class="container">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
             <a class="navbar-brand" href="<c:url value="/"/>">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
-
             <ul class="nav navbar-nav">
                 <li><a href="<c:url value="/about"/>">About</a></li>
                 <li><a href="<c:url value="/ad/new"/>">Add</a></li>
@@ -73,101 +83,107 @@
 <%--***************************************************--%>
 <%--       тут пишем код для аккаунта пользователя     --%>
 <%--***************************************************--%>
+
 <div class="container-target">
     <div class="container">
-        <form:form method="post" action="/account">
-            <table class="table">
-                <tr>
-                    <td><input type=hidden name="id" value="${account.id}"/>
-                    <td><input type=hidden name="login" value="${account.login}"/>
-                    <td><input type=hidden name="password" value="${account.password}"/>
-                    <td><input type=hidden name="roleId" value="${account.roleId}"/>
-                    <td><input type=hidden name="actual" value="${account.actual}"/>
-                <tr>
-                    <td>Login</td>
-                    <td>${account.login}</td>
-                </tr>
+        <div class="row">
 
-<%--                TODO change password--%>
-<%--                <tr>--%>
-<%--                    <td>Password</td>--%>
-<%--                    <td> <input--%>
-<%--                            type="password"--%>
-<%--                            name="password"--%>
-<%--                            id="pass1"--%>
-<%--                            minlength="5" maxlength="15"--%>
-<%--                            class="form-control password-field"--%>
-<%--                            placeholder="enter password"/></td>--%>
-<%--                </tr>--%>
+            <%--            <form:form method="post" action="ava_update">--%>
+            <%--                <div class="col-12">--%>
+            <%--                    <img src="<c:url value="/static/repo/17.jpg"/>" class="img-circle" alt="Cinque Terre"--%>
+            <%--                         width="300"><br>--%>
+            <%--                    <input class="btn btn-success" type="submit" value="Update"/>--%>
+            <%--                </div>--%>
+            <%--            </form:form>--%>
 
-<%--                <tr>--%>
-<%--                    <td>Password</td>--%>
-<%--                    <td><input--%>
-<%--                            type="password"--%>
-<%--                            id="pass2"--%>
-<%--                            class="form-control password-field"--%>
-<%--                            placeholder="enter password again to validate"--%>
-<%--                            onkeyup="passwordEqualsValidation(); return false;"/>--%>
-<%--                        <span id="confirmMessage" class="confirmMessage"></span></td>--%>
-<%--                </tr>--%>
-
-                <tr>
-                    <td>Name</td>
-                    <td><input type="text" name="name" value=${account.name} </td>
-                </tr>
-
-                <tr>
-                    <td>Email</td>
-                    <td><input type="text" name="email" value=${account.email} </td>
-                </tr>
-
-                <tr>
-                    <td>Phone</td>
-                    <td><input type="text" name="phoneNumber" value=${account.phoneNumber} </td>
-                </tr>
-
-                <tr>
-                    <td>City</td>
-                    <td>
-                        <select name="cityId">
-                            <option value="${city.id}">${city.name}</option>
-                            <c:forEach var="item" items="${cities}">
-                                <c:if test="${account.cityId!=item.id}" >
-                                    <option value="${item.id}" ${item.id == selected ? 'selected' : ''}>${item.name}</option>
-                                </c:if>
-                            </c:forEach>
-                        </select>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td></td>
-                    <td>
-                        <button class="headButton" type="submit" >Сохранить изменения</button>
-                    </td>
-                </tr>
-
-
-                <td>Объявления</td>
-                <table border="1">
-                    <td>Title</td>
-                    <td>Text</td>
-                    <td>Price</td>
-                    <td>Price_min</td>
-                    <c:forEach items="${ads}" var="item">
+            <form:form method="post" action="/account">
+                <div class="col-12">
+                    <h3>Account</h3>
+                    <input type=hidden name="id" value="${account.id}"/>
+                    <input type=hidden name="login" value="${account.login}"/>
+                    <input type=hidden name="password" value="${account.password}"/>
+                    <input type=hidden name="roleId" value="${account.roleId}"/>
+                    <input type=hidden name="actual" value="${account.actual}"/>
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tbody>
                         <tr>
-                            <td> <a href="/ad/edit/${item.id}">${ item.title }</a>  </td>
-                            <td> ${ item.text } </td>
-                            <td> ${ item.price } </td>
-                            <td> ${ item.priceMin } </td>
-                            <td>
-                                <a href="/ad/delete/${item.id}">удалить</a>
+                            <td>Login</td>
+                            <td>${account.login}</td>
+                        <tr>
+                            <td>Username</td>
+                            <td><input class="form-control" type="text" name="name" value=${account.name} required></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td><input class="form-control" type="email" name="email" value=${account.email} required>
                             </td>
                         </tr>
+                        <tr>
+                            <td>Phone Number</td>
+                            <td><input class="form-control" type="number" name="phoneNumber"
+                                       value=${account.phoneNumber} required></td>
+                        </tr>
+                        <tr>
+                            <td>City</td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control" name="cityId">
+                                        <option value="${city.id}">${city.name}</option>
+                                        <c:forEach var="item" items="${cities}">
+                                            <c:if test="${account.cityId != item.id}">
+                                                <option value="${item.id}" ${item.id == selected ? 'selected' : ''}>${item.name}</option>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input class="btn btn-success" type="submit" value="Update"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form:form>
+        </div>
+    </div>
+
+    <%--***************************************************--%>
+    <%--       таблица объявлений отдельным дивом          --%>
+    <%--***************************************************--%>
+
+    <div class="row">
+        <div class="container">
+            <h3>Adverts</h3>
+            <table class="table" style="text-align: center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th style="text-align: center">#</th>
+                        <th style="text-align: center">Title</th>
+                        <th style="text-align: center">Text</th>
+                        <th style="text-align: center">Price</th>
+                        <th style="text-align: center">Price_min</th>
+                        <th style="text-align: center"></th>
+                        <th style="text-align: center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${ads}" var="item">
+                        <tr>
+                            <th class="counterCell"></th>
+                            <td>${item.title}</td>
+                            <td>${item.text}</td>
+                            <td>${item.price}</td>
+                            <td>${item.priceMin}</td>
+                            <td><a href="/ad/edit/${item.id}" type="button" class="btn btn-info">update</a></td>
+                            <td><a href="/ad/delete/${item.id}" type="button" class="btn btn-danger">delete</a></td>
+                        </tr>
                     </c:forEach>
-                </table>
+                </tbody>
             </table>
-        </form:form>
+        </div>
     </div>
 </div>
 </body>

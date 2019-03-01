@@ -24,10 +24,29 @@
             background: #EEE;
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
+
         .navPadding {
-            padding-top: 100px;
+            padding-top: 70px;
         }
     </style>
+    <script>
+        function compare_price(){
+            var max = document.getElementById('max');
+            var min = document.getElementById('min');
+            var message = document.getElementById('message');
+            var goodColor = "#66cc66";
+            var badColor = "#ff6666";
+            if (max.value < min.value) {
+                min.style.backgroundColor = badColor;
+                message.style.color = badColor;
+                message.innerHTML = "min price can't be less than max price"
+            } else {
+                min.style.backgroundColor = goodColor;
+                message.style.color = goodColor;
+                message.innerHTML = "now it's much better"
+            }
+        }
+    </script>
 </head>
 <body>
 <%--***************************************************--%>
@@ -51,56 +70,59 @@
     </div>
 </div>
 <div class="container">
+    <c:if test="${param.error != null}">
+        <div class="alert alert-danger" role="alert">
+            <strong>Oh snap!</strong> Change a few things up and try submitting again.
+        </div>
+    </c:if>
     <div class="navPadding">
         <form:form method="post" enctype="multipart/form-data">
             <table class="table">
                 <tr>
-                    <td>Категория</td>
+                    <td>Category</td>
                     <td>
-                        <select name="categoryId">
-                            <c:forEach var="item" items="${categories}">
-                                <option value="${item.id}" ${item.id == selected ? 'selected' : ''}>${item.name}</option>
-                            </c:forEach>
-                        </select>
+                        <div class="form-group">
+                            <select class="form-control" name="categoryId">
+                                <c:forEach var="item" items="${categories}">
+                                    <option value="${item.id}" ${item.id == selected ? 'selected' : ''}>${item.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                     </td>
                 </tr>
                 <tr>
-                    <td>Название объявления</td>
-                    <td><input type="text" name="title" required autofocus value="${ad.title}">
+                    <td>Title</td>
+                    <td><input class="form-control" type="text" name="title" required autofocus value="${ad.title}">
                         <input type=text hidden name="hidden"></td>
                 </tr>
                 <tr>
-                    <td>Описание объявления</td>
-                    <td><textarea name="text" rows="6" maxlength="3000" required>${ad.text}</textarea></td>
+                    <td>Subscribe</td>
+                    <td><textarea class="form-control" name="text" rows="6" maxlength="3000"
+                                  required>${ad.text}</textarea></td>
                 </tr>
                 <tr>
-                    <td>Цена</td>
-                    <td><input type="text" name="price" required pattern="\d+(\.\d{2})?" value="${ad.price}"></td>
+                    <td>Price</td>
+                    <td><input id="max" class="form-control" type="text" name="price" required pattern="\d+(\.\d{2})?" value="${ad.price}" onchange='compare_price()';></td>
                 </tr>
                 <tr>
-                    <td>Минимальная цена</td>
-                    <td><input type="text" name="priceMin" required pattern="\d+(\.\d{2})?" value="${ad.priceMin}"></td>
+                    <td>minimum Price</td>
+                    <td><input id="min" class="form-control" type="text" name="priceMin" required pattern="\d+(\.\d{2})?" value="${ad.priceMin}" onchange='compare_price()';></td>
                 </tr>
                 <tr>
-                    <td>Фотография</td>
+                    <td>Photo</td>
                     <td>
-                        <c:if test="${ad.id !=0}">
-                            <img src="/static/repo/${ad.id}.jpg" width="245">
+                        <c:if test="${ad.id != 0}">
+                            <img class="img-responsive" alt="Cinque Terre" src="/static/repo/${ad.id}.jpg" width="300">
                         </c:if>
                     </td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>
-                        <input name="imageFile" type="file"/>
-                    </td>
+                    <td><input type="file" class="form-control-file" name="imageFile"></td>
                 </tr>
                 <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <button class="headButton" type="submit">${submit}</button>
-                    </td>
+                    <td></td>
+                    <td><input class="btn btn-success" type="submit" value="${submit}"></td>
                 </tr>
             </table>
         </form:form>

@@ -84,68 +84,39 @@
                         <div class="panel-body">
                             <c:if test="${param.error != null}">
                                 <div class="alert alert-danger" role="alert">
-                                    User have already registered
+                                    <input name=error" value="error" disabled>
                                 </div>
                             </c:if>
                             <form role="form">
                                 <div class="form-group">
-                                    <input required
-                                           class="form-control"
-                                           type="text"
-                                           name="login"
-                                           id="login"
-                                           minlength="5" maxlength="30"
-                                           placeholder="login">
+                                    <input required class="form-control" type="text" name="login" minlength="1" maxlength="30" placeholder="login">
                                     <div id="errLast"></div>
                                 </div>
                                 <%--валидация пароля--%>
                                 <div class="form-group">
-                                    <input required
-                                           type="password"
-                                           name="password"
-                                           id="pass1"
-                                           minlength="5" maxlength="15"
-                                           class="form-control password-field"
-                                           placeholder="password"
-                                           onchange='check_pass();'/>
+                                    <input required type="password" name="password" id="pass1" minlength="1" maxlength="30" class="form-control password-field" placeholder="password" onkeyup="passwordEqualsValidation(); return true;" onchange='check_pass();'/>
                                 </div>
                                 <div class="form-group">
-                                    <input required
-                                           type="password"
-                                           id="pass2"
-                                           class="form-control password-field"
-                                           placeholder="enter again to validate"
-                                           onkeyup="passwordEqualsValidation(); return false;"
-                                           onchange='check_pass();'/>
+                                    <input required type="password" id="pass2" class="form-control password-field" placeholder="enter again to validate" onkeyup="passwordEqualsValidation(); return false;" onchange='check_pass();'/>
                                     <span id="confirmMessage" class="confirmMessage"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input required
-                                           type="text"
-                                           name="name"
-                                           id="name"
-                                           minlength="5" maxlength="30"
-                                           class="form-control"
-                                           placeholder="name">
+                                    <input required type="text" name="name" class="form-control" placeholder="name">
                                 </div>
                                 <div class="form-group">
-                                    <input required
-                                           type="number"
-                                           name="phoneNumber"
-                                           id="phoneNumber"
-                                           class="form-control phone"
-                                           placeholder="phone">
+                                    <input required type="number" name="phoneNumber"class="form-control phone"placeholder="phone">
                                 </div>
                                 <div class="form-group">
-                                    <input required
-                                           type="text"
-                                           name="email"
-                                           id="email"
-                                           class="form-control"
-                                           placeholder="Email Address"/>
+                                    <input required type="text" name="email" class="form-control" placeholder="Email Address"/>
                                 </div>
-                                <input type="submit" value="Register" class="btn btn-info btn-block" id="submit"
-                                       disabled>
+                                <div class="form-group">
+                                  <select class="form-control" name="cityId">
+                                      <c:forEach var="item" items="${cities}">
+                                          <option value="${item.id}"${item.id==selected?'selected':''}>${item.name}</option>
+                                      </c:forEach>
+                                  </select>
+                                </div>
+                                <input type="submit" value="Register" class="btn btn-info btn-block" id="submit" disabled>
                             </form>
                         </div>
                     </div>

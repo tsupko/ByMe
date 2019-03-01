@@ -37,7 +37,7 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final UserDao userDao;
     private final CityDao cityDao;
-    private final CategoryService categoryDao;
+    private final CategoryService categoryService;
 
     @Autowired
     public UserService(PasswordEncoder encoder, UserDao userDao, CityDao cityDao, CategoryService categoryDao) {
@@ -45,7 +45,7 @@ public class UserService {
         this.encoder = encoder;
         this.userDao = userDao;
         this.cityDao = cityDao;
-        this.categoryDao = categoryDao;
+        this.categoryService = categoryDao;
     }
 
     public void saveUser(User user) throws UserLoginAlreadyExistsException {
@@ -128,5 +128,8 @@ public class UserService {
             System.out.println(c.getId());
         }
         return categoryTreeList;
+    }
+    public User selectByLogin(String login){
+        return userDao.selectByLogin(login).get();
     }
 }

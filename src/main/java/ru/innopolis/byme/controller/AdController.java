@@ -49,11 +49,14 @@ public class AdController {
         LOGGER.info("mapping post /ad/new, login: {}", login);
         adService.createAd(ad, login);
         LOGGER.info("imageFile.isEmpty(): " + imageFile.isEmpty());
+        String imageName = "no_image.jpg";
         try {
             if (!imageFile.isEmpty()) {
                 imageService.validateImageFile(imageFile);
-                String imageName = ad.getId() + ".jpg";
+                imageName = ad.getId() + ".jpg";
                 imageService.saveImageFile(imageName, imageFile);
+                imageService.createImgById(ad.getId(), imageName);
+            } else {
                 imageService.createImgById(ad.getId(), imageName);
             }
         } catch (ImageUploadException e) {

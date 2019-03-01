@@ -16,9 +16,7 @@ import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 import ru.innopolis.byme.transfer.CategoryTree;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -74,8 +72,8 @@ public class UserService {
         return adDao.getAdvs(maxAdvertsNumber);
     }
 
-    public List<Ad> getAdvsByCity(int maxAdvertsNumber) {
-        return adDao.getAdvs(maxAdvertsNumber);
+    public List<Ad> getAdvsByCity(int maxAdvertsNumber, int cityId) {
+        return adDao.getAdvsByCity(maxAdvertsNumber, cityId);
     }
 
     public List<CategoryTree> getCategoryList() {
@@ -83,7 +81,24 @@ public class UserService {
         return CategoryTree.categoryListToTree(categoryList);
     }
 
-    public Collection<City> getCityList() {
-        return cityDao.getAllCities();
+    public List<City> getCityList() {
+        List<City> cityList = new LinkedList<>(cityDao.getAllCities());
+        ((LinkedList<City>) cityList).addFirst(new City(0, "Any Location"));
+        return cityList;
+    }
+
+    public List<City> getCityListWithSelected(int cityId) {
+        List<City> cityList = getCityList();
+        Iterator<City> cityIterator = cityList.iterator();
+        while (cityIterator.hasNext()){
+            City city = cityIterator.next();
+            if(city.getId() == cityId){
+                City currentCity = city;
+                cityIterator.remove();
+                ((LinkedList<City>) cityList).addFirst(currentCity);
+                break;
+            }
+        }
+        return cityList;
     }
 }

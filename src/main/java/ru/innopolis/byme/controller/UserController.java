@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.innopolis.byme.entity.Ad;
+import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.form.AdFilter;
 import ru.innopolis.byme.service.UserService;
 
 import java.security.Principal;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -72,7 +76,34 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String index(AdFilter filter, Model model, Principal principal){
-        return index(model, principal);
+
+        List<Ad> advs;
+        if(filter.getCityId()!=0 && filter.getCategoryId()==0)
+            advs = service.getAdvsByCity(MAX_ADVERT_NUMBER, filter.getCityId());
+/*        else if(filter.getCityId()!=0 && filter.getCategoryId()==0)
+            advs = service.getAdvsByCity(MAX_ADVERT_NUMBER, filter.getCityId());
+        else if(filter.getCityId()!=0 && filter.getCategoryId()!=0)
+            ;*/
+        else
+            advs = service.getAdvs(MAX_ADVERT_NUMBER);
+
+        model.addAttribute("list", advs);
+
+        List<City> cityList = service.getCityListWithSelected(filter.getCityId());
+
+        model.addAttribute("categoryCurrents", service.getCategoryList());
+        model.addAttribute("cityList", cityList);
+        model.addAttribute("categoryList", service.getCategoryList());
+
+        if (principal == null) {
+            model.addAttribute("logUrl", "/login");
+            model.addAttribute("logStatus", "Log In");
+        } else {
+            model.addAttribute("logUrl", "/logout");
+            model.addAttribute("logStatus", "Log Out");
+            model.addAttribute("user", principal.getName());
+        }
+        return "index";
     }
 
     @GetMapping("login")

@@ -150,7 +150,6 @@
                     </select>
 
                     <select class="form-control" name="cityId">
-                        <option value="0">Any location</option>
                         <c:forEach var="item" items="${cityList}">
                             <option value="${item.id}">${item.name}</option>
                         </c:forEach>

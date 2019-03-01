@@ -275,7 +275,7 @@ public class AdDaoImpl implements AdDao {
             sql += "limit %d";
             sql = String.format(sql, i);
         }
-        LOGGER.info("sql =" + sql);
+        LOGGER.debug("sql =" + sql);
         return sql;
     }
 

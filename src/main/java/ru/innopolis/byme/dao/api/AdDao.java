@@ -17,13 +17,5 @@ public interface AdDao {
 
     void delete(Ad ad);
 
-    Collection<Ad> getAll();
-
-    List<Ad> getAdvs(int maxAdvertsNumber);
-
-    List<Ad> getAdvsByCity(int maxAdvertsNumber, int cityId);
-
-    List<Ad> getAdvsByCategory(int maxAdvertsNumber, int categoryId);
-
-    List<Ad> getAdvsByCategoryAndCity(int maxAdvertsNumber, int categoryId, int cityId);
+    List<Ad> getAdvs(int maxAdvertsNumber, int categoryId, int cityId);
 }

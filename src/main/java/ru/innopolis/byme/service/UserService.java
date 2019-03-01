@@ -71,11 +71,11 @@ public class UserService {
     }
 
     public List<Ad> getAdvs(int maxAdvertsNumber) {
-        return adDao.getAdvs(maxAdvertsNumber);
+        return adDao.getAdvs(maxAdvertsNumber, 0, 0);
     }
 
     public List<Ad> getAdvsByCity(int maxAdvertsNumber) {
-        return adDao.getAdvs(maxAdvertsNumber);
+        return adDao.getAdvs(maxAdvertsNumber, 0, 0);
     }
 
     public List<CategoryTree> getCategoryList() {

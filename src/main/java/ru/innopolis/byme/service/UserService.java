@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.innopolis.byme.dao.api.AdDao;
+import ru.innopolis.byme.dao.api.CategoryDao;
 import ru.innopolis.byme.dao.api.CityDao;
 import ru.innopolis.byme.dao.api.UserDao;
 import ru.innopolis.byme.entity.Ad;
@@ -16,9 +17,8 @@ import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 import ru.innopolis.byme.transfer.CategoryTree;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * слой сервиса для User Controller
@@ -38,15 +38,15 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final UserDao userDao;
     private final CityDao cityDao;
-    private final CategoryService categoryService;
+    private final CategoryDao categoryDao;
 
     @Autowired
-    public UserService(PasswordEncoder encoder, UserDao userDao, CityDao cityDao, CategoryService categoryDao) {
+    public UserService(PasswordEncoder encoder, UserDao userDao, CityDao cityDao, CategoryDao categoryDao) {
         LOGGER.info("создали UserService");
         this.encoder = encoder;
         this.userDao = userDao;
         this.cityDao = cityDao;
-        this.categoryService = categoryDao;
+        this.categoryDao = categoryDao;
     }
 
     public void saveUser(User user) throws UserLoginAlreadyExistsException {
@@ -69,17 +69,64 @@ public class UserService {
         return userDao.getDataSource();
     }
 
-    public List<Ad> getAdvs(int i) {
-        return adDao.getAdvs(i);
+    public List<Ad> getAdvs(int maxAdvertsNumber) {
+        return adDao.getAdvs(maxAdvertsNumber, 0, 0);
+    }
+
+    public List<Ad> getAdvs(int maxAdvertsNumber, int categoryId, int cityId) {
+        return adDao.getAdvs(maxAdvertsNumber, categoryId, cityId);
     }
 
     public List<CategoryTree> getCategoryList() {
-        List<Category> categoryList = new ArrayList<>(categoryService.getAll());
-        return CategoryTree.categoryListToTree(categoryList);
+        List<CategoryTree> categoryTreeList =
+                CategoryTree.categoryListToTree(new LinkedList<>(categoryDao.getAll()));
+        ((LinkedList<CategoryTree>) categoryTreeList).addFirst(new CategoryTree(0, "Any category", 0));
+        return categoryTreeList;
     }
 
-    public Collection<City> getCityList() {
-        return cityDao.getAllCities();
+    public List<City> getCityList() {
+        List<City> cityList = new LinkedList<>(cityDao.getAllCities());
+        ((LinkedList<City>) cityList).addFirst(new City(0, "Any Location"));
+        return cityList;
+    }
+
+    public List<City> getCityListWithSelected(int cityId) {
+        List<City> cityList = getCityList();
+        Iterator<City> cityIterator = cityList.iterator();
+        while (cityIterator.hasNext()){
+            City city = cityIterator.next();
+            if(city.getId() == cityId){
+                City currentCity = city;
+                ((LinkedList<City>) cityList).addFirst(currentCity);
+                break;
+            }
+        }
+        return cityList;
+    }
+
+    public List<CategoryTree> getCategoryListWithSelected(int categoryId) {
+        List<CategoryTree> categoryTreeList = getCategoryList();
+
+        System.out.println("categoryId = " + categoryId);
+        for (CategoryTree c : categoryTreeList) {
+            System.out.println(c.getId());
+        }
+
+
+        Iterator<CategoryTree> categoryTreeIterator = categoryTreeList.iterator();
+        while (categoryTreeIterator.hasNext()){
+            CategoryTree category = categoryTreeIterator.next();
+            if(category.getId() == categoryId){
+                CategoryTree currentCategory = category;
+                ((LinkedList<CategoryTree>) categoryTreeList).addFirst(currentCategory);
+                break;
+            }
+        }
+        System.out.println();
+        for (CategoryTree c : categoryTreeList) {
+            System.out.println(c.getId());
+        }
+        return categoryTreeList;
     }
     public User selectByLogin(String login){
         return userDao.selectByLogin(login).get();

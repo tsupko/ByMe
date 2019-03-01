@@ -5,4 +5,3 @@ target
 *.iml
 jdbc.properties
 .DS_Store
-*.properties

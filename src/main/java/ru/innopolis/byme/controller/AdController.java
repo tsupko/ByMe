@@ -51,11 +51,14 @@ public class AdController {
         LOGGER.info("mapping post /ad/new, login: {}", login);
         adService.createAd(ad, login);
         LOGGER.info("imageFile.isEmpty(): " + imageFile.isEmpty());
+        String imageName = "no_image.jpg";
         try {
             if (!imageFile.isEmpty()) {
                 imageService.validateImageFile(imageFile);
-                String imageName = ad.getId() + ".jpg";
+                imageName = ad.getId() + ".jpg";
                 imageService.saveImageFile(imageName, imageFile);
+                imageService.createImgById(ad.getId(), imageName);
+            } else {
                 imageService.createImgById(ad.getId(), imageName);
             }
         } catch (ImageUploadException e) {
@@ -75,6 +78,7 @@ public class AdController {
         if (user.getId() == ad.getUserId() ) {
             model.addAttribute("categories", categoryService.getAll());
             model.addAttribute("ad", ad);
+            model.addAttribute("user", principal.getName());
             model.addAttribute("selected", ad.getCategoryId());
             model.addAttribute("submit", "Сохранить изменения");
             return "ad";
@@ -84,8 +88,8 @@ public class AdController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad, MultipartFile imageFile,
-                           BindingResult bindingResult) {
+    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad,
+                           MultipartFile imageFile, BindingResult bindingResult) {
         LOGGER.info("mapping post /edit/" + id);
         adService.updateAd(id, ad);
         LOGGER.info("image.isEmpty(): " + imageFile.isEmpty());

@@ -17,8 +17,8 @@ import ru.innopolis.byme.transfer.CategoryTree;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * слой сервиса для User Controller
@@ -38,7 +38,7 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final UserDao userDao;
     private final CityDao cityDao;
-    private final CategoryService categoryDao;
+    private final CategoryService categoryService;
 
     @Autowired
     public UserService(PasswordEncoder encoder, UserDao userDao, CityDao cityDao, CategoryService categoryDao) {
@@ -46,7 +46,7 @@ public class UserService {
         this.encoder = encoder;
         this.userDao = userDao;
         this.cityDao = cityDao;
-        this.categoryDao = categoryDao;
+        this.categoryService = categoryDao;
     }
 
     public void saveUser(User user) throws UserLoginAlreadyExistsException {
@@ -74,14 +74,12 @@ public class UserService {
     }
 
     public List<CategoryTree> getCategoryList() {
-        List<Category> categoryList = new ArrayList<>(categoryDao.getAll());
+        List<Category> categoryList = new ArrayList<>(categoryService.getAll());
         return CategoryTree.categoryListToTree(categoryList);
     }
 
-    public List<String> getCityList() {
-        return cityDao.getAllCities().stream()
-                                     .map(City::getName)
-                                     .collect(Collectors.toList());
+    public Collection<City> getCityList() {
+        return cityDao.getAllCities();
     }
     public User selectByLogin(String login){
         return userDao.selectByLogin(login).get();

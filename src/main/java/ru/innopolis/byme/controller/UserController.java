@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.User;
+import ru.innopolis.byme.form.AdFilter;
 import ru.innopolis.byme.service.UserService;
 
 import java.security.Principal;
@@ -67,6 +68,11 @@ public class UserController {
             model.addAttribute("user", principal.getName());
         }
         return "index";
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public String index(AdFilter filter, Model model, Principal principal){
+        return index(model, principal);
     }
 
     @GetMapping("login")

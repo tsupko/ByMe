@@ -3,6 +3,7 @@ package ru.innopolis.byme.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.Image;
+import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.ImageUploadException;
 import ru.innopolis.byme.service.AdService;
 import ru.innopolis.byme.service.CategoryService;
 import ru.innopolis.byme.service.ImageService;
+import ru.innopolis.byme.service.UserService;
 
 import java.security.Principal;
 
@@ -22,15 +25,14 @@ import java.security.Principal;
 public class AdController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdController.class);
 
-    private final CategoryService categoryService;
-    private final ImageService imageService;
-    private final AdService adService;
-
-    public AdController(CategoryService categoryService, ImageService imageService, AdService adService) {
-        this.categoryService = categoryService;
-        this.imageService = imageService;
-        this.adService = adService;
-    }
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private ImageService imageService;
+    @Autowired
+    private AdService adService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String ad(Model model, Principal principal) {
@@ -64,14 +66,21 @@ public class AdController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String editAd(@PathVariable int id, Model model) {
+    public String editAd(@PathVariable int id, Model model, Principal principal) {
         LOGGER.info("mapping get /edit/" + id);
+        User user = userService.selectByLogin(principal.getName());
+        LOGGER.info(" user = {}", user);
         Ad ad = adService.selectById(id);
-        model.addAttribute("categories", categoryService.getAll());
-        model.addAttribute("ad", ad);
-        model.addAttribute("selected", ad.getCategoryId());
-        model.addAttribute("submit", "Сохранить изменения");
-        return "ad";
+        LOGGER.info(" ad = {}", ad);
+        if (user.getId() == ad.getUserId() ) {
+            model.addAttribute("categories", categoryService.getAll());
+            model.addAttribute("ad", ad);
+            model.addAttribute("selected", ad.getCategoryId());
+            model.addAttribute("submit", "Сохранить изменения");
+            return "ad";
+        } else {
+            return "redirect:/account";
+        }
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)

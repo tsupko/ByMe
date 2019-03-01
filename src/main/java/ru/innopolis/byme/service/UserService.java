@@ -83,4 +83,7 @@ public class UserService {
                                      .map(City::getName)
                                      .collect(Collectors.toList());
     }
+    public User selectByLogin(String login){
+        return userDao.selectByLogin(login).get();
+    }
 }

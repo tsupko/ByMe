@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.innopolis.byme.dao.api.AdDao;
+import ru.innopolis.byme.dao.api.CategoryDao;
 import ru.innopolis.byme.dao.api.CityDao;
 import ru.innopolis.byme.dao.api.UserDao;
 import ru.innopolis.byme.entity.Ad;
@@ -37,15 +38,15 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final UserDao userDao;
     private final CityDao cityDao;
-    private final CategoryService categoryService;
+    private final CategoryDao categoryDao;
 
     @Autowired
-    public UserService(PasswordEncoder encoder, UserDao userDao, CityDao cityDao, CategoryService categoryDao) {
+    public UserService(PasswordEncoder encoder, UserDao userDao, CityDao cityDao, CategoryDao categoryDao) {
         LOGGER.info("создали UserService");
         this.encoder = encoder;
         this.userDao = userDao;
         this.cityDao = cityDao;
-        this.categoryService = categoryDao;
+        this.categoryDao = categoryDao;
     }
 
     public void saveUser(User user) throws UserLoginAlreadyExistsException {
@@ -96,7 +97,6 @@ public class UserService {
             City city = cityIterator.next();
             if(city.getId() == cityId){
                 City currentCity = city;
-//                cityIterator.remove();
                 ((LinkedList<City>) cityList).addFirst(currentCity);
                 break;
             }
@@ -118,7 +118,6 @@ public class UserService {
             CategoryTree category = categoryTreeIterator.next();
             if(category.getId() == categoryId){
                 CategoryTree currentCategory = category;
-//                categoryTreeIterator.remove();
                 ((LinkedList<CategoryTree>) categoryTreeList).addFirst(currentCategory);
                 break;
             }

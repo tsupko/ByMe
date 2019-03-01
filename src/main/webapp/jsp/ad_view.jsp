@@ -59,36 +59,26 @@
 
 <div class="container">
     <div class="navPadding">
-
         <table class="table">
             <tr>
-                <td>Категория</td>
-                <td>
-                    <select name="categoryId">
-                        <c:forEach var="item" items="${categories}">
-                            <option value="${item.id}" ${item.id == selected ? 'selected' : ''}
-                                    disabled>${item.name}</option>
-                        </c:forEach>
-                    </select>
-                </td>
+                <td>Category</td>
+                <td><input class="form-control" type="text" name="title" value="${item.name}" disabled></td>
             </tr>
             <tr>
-                <td>Название объявления</td>
-                <td><input type="text" name="title" value="${ad.title}" disabled></td>
+                <td>Title</td>
+                <td><input class="form-control" type="text" name="title" value="${ad.title}" disabled></td>
             </tr>
             <tr>
-                <td>Описание объявления</td>
-                <td><textarea name="text" rows="6" disabled>${ad.text}</textarea></td>
+                <td>Subscribe</td>
+                <td><textarea class="form-control" name="text" rows="6" disabled>${ad.text}</textarea></td>
             </tr>
             <tr>
-                <td>Цена</td>
-                <td><input type="text" name="price" value="${ad.price}" disabled></td>
+                <td>Price</td>
+                <td><input class="form-control" type="text" name="price" value="${ad.price}" disabled></td>
             </tr>
             <tr>
-                <td>Фотография</td>
-                <td>
-                        <img src="/static/repo/${image}" width="245">
-                </td>
+                <td>Photo</td>
+                <td><img class="img-responsive" alt="Cinque Terre" src="/static/repo/${image}" width="300"></td>
             </tr>
         </table>
     </div>

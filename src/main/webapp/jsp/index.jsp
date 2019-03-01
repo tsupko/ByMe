@@ -131,18 +131,16 @@
 
                 <ul class="nav navbar-nav">
                     <li class="divider-vertical" style=""></li>
-
                     <select class="form-control" name="categoryId">
-                        <option value="0">Any category</option>
                         <%
                             List<CategoryTree> categoryTree = (List<CategoryTree>) request.getAttribute("categoryList");
-                            for(int i = 0; i < categoryTree.size(); i += 1) {
+                            out.print("<option selected hidden value=\"" + categoryTree.get(0).getId() + "\">" + categoryTree.get(0).getName() + "</option>");
+                            for(int i = 1; i < categoryTree.size(); i += 1) {
                                 out.print(" <option value=\"" + categoryTree.get(i).getId() + "\">");%>
 
                         <% for (int j = 0; j < categoryTree.get(i).getLevel(); j += 1) {
                             out.print("&nbsp;");%>
                         <% } %>  <%=categoryTree.get(i).getName()%>
-
 
                         <%
                                 out.print("</option>");
@@ -150,8 +148,13 @@
                     </select>
 
                     <select class="form-control" name="cityId">
-                        <c:forEach var="item" items="${cityList}">
-                            <option value="${item.id}">${item.name}</option>
+                        <c:forEach var="i" begin="0" end="${cityList.size()-1}">
+                            <c:if test="${i==0}">
+                                <option selected hidden value="${cityList.get(i).id}">${cityList.get(i).name}</option>
+                            </c:if>
+                            <c:if test="${i>0}">
+                                <option value="${cityList.get(i).id}">${cityList.get(i).name}</option>
+                            </c:if>
                         </c:forEach>
                     </select>
 

@@ -1,34 +1,22 @@
 package ru.innopolis.byme.transfer;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import ru.innopolis.byme.entity.Category;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+
+@Getter
+@AllArgsConstructor
 public class CategoryTree{
     private final int id;
     private final String name;
     private final int level;
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public CategoryTree(int id, String name, int level) {
-        this.id = id;
-        this.name = name;
-        this.level = level;
-    }
-
     public static List<CategoryTree> categoryListToTree(List<Category> categoryList){
-        List<CategoryTree> categoryTree = new ArrayList<>();
+        List<CategoryTree> categoryTree = new LinkedList<>();
         int numElement = 0;
         int level = 0;
 

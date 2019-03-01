@@ -72,14 +72,15 @@ public class UserService {
         return adDao.getAdvs(maxAdvertsNumber, 0, 0);
     }
 
-    public List<Ad> getAdvsByCity(int maxAdvertsNumber, int cityId) {
-        return adDao.getAdvs(maxAdvertsNumber, cityId, 0);
-
+    public List<Ad> getAdvs(int maxAdvertsNumber, int categoryId, int cityId) {
+        return adDao.getAdvs(maxAdvertsNumber, categoryId, cityId);
     }
 
     public List<CategoryTree> getCategoryList() {
-        List<Category> categoryList = new ArrayList<>(categoryDao.getAll());
-        return CategoryTree.categoryListToTree(categoryList);
+        List<CategoryTree> categoryTreeList =
+                CategoryTree.categoryListToTree(new LinkedList<>(categoryDao.getAll()));
+        ((LinkedList<CategoryTree>) categoryTreeList).addFirst(new CategoryTree(0, "Any category", 0));
+        return categoryTreeList;
     }
 
     public List<City> getCityList() {
@@ -95,11 +96,37 @@ public class UserService {
             City city = cityIterator.next();
             if(city.getId() == cityId){
                 City currentCity = city;
-                cityIterator.remove();
+//                cityIterator.remove();
                 ((LinkedList<City>) cityList).addFirst(currentCity);
                 break;
             }
         }
         return cityList;
+    }
+
+    public List<CategoryTree> getCategoryListWithSelected(int categoryId) {
+        List<CategoryTree> categoryTreeList = getCategoryList();
+
+        System.out.println("categoryId = " + categoryId);
+        for (CategoryTree c : categoryTreeList) {
+            System.out.println(c.getId());
+        }
+
+
+        Iterator<CategoryTree> categoryTreeIterator = categoryTreeList.iterator();
+        while (categoryTreeIterator.hasNext()){
+            CategoryTree category = categoryTreeIterator.next();
+            if(category.getId() == categoryId){
+                CategoryTree currentCategory = category;
+//                categoryTreeIterator.remove();
+                ((LinkedList<CategoryTree>) categoryTreeList).addFirst(currentCategory);
+                break;
+            }
+        }
+        System.out.println();
+        for (CategoryTree c : categoryTreeList) {
+            System.out.println(c.getId());
+        }
+        return categoryTreeList;
     }
 }

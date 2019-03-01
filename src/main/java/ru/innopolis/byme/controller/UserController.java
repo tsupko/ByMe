@@ -13,11 +13,9 @@ import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.form.AdFilter;
 import ru.innopolis.byme.service.UserService;
+import ru.innopolis.byme.transfer.CategoryTree;
 
 import java.security.Principal;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -25,6 +23,8 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private static final int MAX_ADVERT_NUMBER = 20;
+    public static final int ALL_CATEGORIES_ID = 0;
+    public static final int ALL_CITIES_ID = 0;
 
     private final UserService service;
 
@@ -55,45 +55,29 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model, Principal principal) {
-
         LOGGER.info("index обработан userController get");
 
         List<Ad> advs = service.getAdvs(MAX_ADVERT_NUMBER);
-        model.addAttribute("list", advs);
-        model.addAttribute("cityList", service.getCityList());
-        model.addAttribute("categoryList", service.getCategoryList());
-      
-        if (principal == null) {
-            model.addAttribute("logUrl", "/login");
-            model.addAttribute("logStatus", "Log In");
-        } else {
-            model.addAttribute("logUrl", "/logout");
-            model.addAttribute("logStatus", "Log Out");
-            model.addAttribute("user", principal.getName());
-        }
-        return "index";
+        List<City> cityList = service.getCityListWithSelected(ALL_CITIES_ID);
+        List<CategoryTree> categoryList  = service.getCategoryListWithSelected(ALL_CATEGORIES_ID);
+
+        return buildMainModel(model, principal, advs, cityList, categoryList);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String index(AdFilter filter, Model model, Principal principal){
-
-        List<Ad> advs;
-        if(filter.getCityId()!=0 && filter.getCategoryId()==0)
-            advs = service.getAdvsByCity(MAX_ADVERT_NUMBER, filter.getCityId());
-/*        else if(filter.getCityId()!=0 && filter.getCategoryId()==0)
-            advs = service.getAdvsByCity(MAX_ADVERT_NUMBER, filter.getCityId());
-        else if(filter.getCityId()!=0 && filter.getCategoryId()!=0)
-            ;*/
-        else
-            advs = service.getAdvs(MAX_ADVERT_NUMBER);
-
-        model.addAttribute("list", advs);
-
+        List<Ad> advs = service.getAdvs(MAX_ADVERT_NUMBER, filter.getCategoryId(), filter.getCityId());
         List<City> cityList = service.getCityListWithSelected(filter.getCityId());
+        List<CategoryTree> categoryList  = service.getCategoryListWithSelected(filter.getCategoryId());
 
-        model.addAttribute("categoryCurrents", service.getCategoryList());
+        return buildMainModel(model, principal, advs, cityList, categoryList);
+    }
+
+    private String buildMainModel(Model model, Principal principal,
+                                  List<Ad> advs, List<City> cityList, List<CategoryTree> categoryList){
+        model.addAttribute("list", advs);
         model.addAttribute("cityList", cityList);
-        model.addAttribute("categoryList", service.getCategoryList());
+        model.addAttribute("categoryList", categoryList);
 
         if (principal == null) {
             model.addAttribute("logUrl", "/login");
@@ -104,6 +88,7 @@ public class UserController {
             model.addAttribute("user", principal.getName());
         }
         return "index";
+
     }
 
     @GetMapping("login")

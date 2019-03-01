@@ -136,6 +136,7 @@ public class ImageDaoImpl implements ImageDao {
             }
             return image;
         });
+        LOGGER.info("Новое фото объявления: {}", image);
         return image;
     }
 }

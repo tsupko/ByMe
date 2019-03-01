@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.User;
+import ru.innopolis.byme.form.AdFilter;
 import ru.innopolis.byme.service.UserService;
 
 import java.security.Principal;
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model, Principal principal){
+    public String index(Model model, Principal principal) {
 
         LOGGER.info("index обработан userController get");
 
@@ -59,18 +60,27 @@ public class UserController {
         model.addAttribute("categoryList", service.getCategoryList());
       
         if (principal == null) {
-            model.addAttribute("urlSome", "/login");
-            model.addAttribute("some", "LogIn");
+            model.addAttribute("logUrl", "/login");
+            model.addAttribute("logStatus", "Log In");
         } else {
-            model.addAttribute("urlSome", "/logout");
-            model.addAttribute("some", "LogOut");
+            model.addAttribute("logUrl", "/logout");
+            model.addAttribute("logStatus", "Log Out");
             model.addAttribute("user", principal.getName());
         }
         return "index";
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public String index(AdFilter filter, Model model, Principal principal){
+        return index(model, principal);
+    }
+
     @GetMapping("login")
-    public String login(){
-        return "login";
+    public String login(Principal principal) {
+        if (principal == null) {
+            return "login";
+        } else {
+            return "redirect:/";
+        }
     }
 }

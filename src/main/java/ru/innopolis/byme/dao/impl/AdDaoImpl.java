@@ -271,6 +271,36 @@ public class AdDaoImpl implements AdDao {
         return result;
     }
 
+    private static final String SELECT_ADVS_BY_CITY = " select * from ad\n" +
+            "   join image on image.ad_id=ad.id\n" +
+            "   join public.user u on ad.user_id = u.id\n" +
+            " where ad.is_actual=true and city_id = ?" +
+            "limit %d";
+    @Override
+    public List<Ad> getAdvsByCity(int i, int CityId) {
+        String sql = String.format(SELECT_ADVS_BY_CITY, i);
+        List<Ad> result = new ArrayList<>();
+        this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Ad>>) stmt -> {
+            stmt.setInt(1, CityId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Ad ad = new Ad();
+                    Image image = new Image();
+                    assignResultSetToAdFields(rs, ad);
+                    assignResultSetToImageFields(rs, image);
+                    ad.setImage(image);
+                    result.add(ad);
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Исключение при получении {} объявлений из таблицы ad ", i, e);
+            }
+            LOGGER.info(result.toString());
+            return (result);
+        });
+        LOGGER.info(result.toString());
+        return (result);
+    }
+
     private void assignResultSetToAdFields(ResultSet rs, Ad ad) throws SQLException {
         ad.setId(rs.getInt(AD_ID));
         ad.setTitle(rs.getString(AD_TITLE));

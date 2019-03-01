@@ -19,5 +19,7 @@ public interface AdDao {
 
     Collection<Ad> getAll();
 
-    List<Ad> getAdvs(int i);
+    List<Ad> getAdvs(int maxAdvertsNumber);
+
+    List<Ad> getAdvsByCity(int maxAdvertsNumber, int CityId);
 }

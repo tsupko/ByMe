@@ -70,8 +70,12 @@ public class UserService {
         return userDao.getDataSource();
     }
 
-    public List<Ad> getAdvs(int i) {
-        return adDao.getAdvs(i);
+    public List<Ad> getAdvs(int maxAdvertsNumber) {
+        return adDao.getAdvs(maxAdvertsNumber);
+    }
+
+    public List<Ad> getAdvsByCity(int maxAdvertsNumber) {
+        return adDao.getAdvs(maxAdvertsNumber);
     }
 
     public List<CategoryTree> getCategoryList() {

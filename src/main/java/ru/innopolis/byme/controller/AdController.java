@@ -67,10 +67,11 @@ public class AdController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String editAd(@PathVariable int id, Model model) {
+    public String editAd(@PathVariable int id, Model model, Principal principal) {
         LOGGER.info("mapping get /edit/" + id);
         Ad ad = adService.selectById(id);
         model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("user", principal.getName());
         model.addAttribute("ad", ad);
         model.addAttribute("selected", ad.getCategoryId());
         model.addAttribute("submit", "Сохранить изменения");
@@ -78,8 +79,8 @@ public class AdController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad, MultipartFile imageFile,
-                           BindingResult bindingResult) {
+    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad,
+                           MultipartFile imageFile, BindingResult bindingResult) {
         LOGGER.info("mapping post /edit/" + id);
         adService.updateAd(id, ad);
         LOGGER.info("image.isEmpty(): " + imageFile.isEmpty());

@@ -250,21 +250,11 @@ public class AdDaoImpl implements AdDao {
 
     @Override
     public List<Ad> getAdvs(int i) {
-        String sql = String.format("select * from ad join image on image.ad_id=ad.id where is_actual=true limit %d", i);
+        String sql = String.format("select * from ad join image on image.ad_id=ad.id " +
+                "where is_actual=true limit %d", i);
         List<Ad> result = new ArrayList<>();
         this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Ad>>) stmt -> {
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Ad ad = new Ad();
-                    Image image = new Image();
-                    assignResultSetToAdFields(rs, ad);
-                    assignResultSetToImageFields(rs, image);
-                    ad.setImage(image);
-                    result.add(ad);
-                }
-            } catch (SQLException e) {
-                LOGGER.error("Исключение при получении {} объявлений из таблицы ad ", i, e);
-            }
+            getAdvsFomPstmt(result, stmt);
             LOGGER.info(result.toString());
             return result;
         });
@@ -277,28 +267,92 @@ public class AdDaoImpl implements AdDao {
             " where ad.is_actual=true and city_id = ?" +
             "limit %d";
     @Override
-    public List<Ad> getAdvsByCity(int i, int CityId) {
+    public List<Ad> getAdvsByCity(int i, int cityId) {
+        LOGGER.info("getAdvsByCity");
         String sql = String.format(SELECT_ADVS_BY_CITY, i);
         List<Ad> result = new ArrayList<>();
         this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Ad>>) stmt -> {
-            stmt.setInt(1, CityId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Ad ad = new Ad();
-                    Image image = new Image();
-                    assignResultSetToAdFields(rs, ad);
-                    assignResultSetToImageFields(rs, image);
-                    ad.setImage(image);
-                    result.add(ad);
-                }
-            } catch (SQLException e) {
-                LOGGER.error("Исключение при получении {} объявлений из таблицы ad ", i, e);
-            }
+            stmt.setInt(1, cityId);
+            getAdvsFomPstmt(result, stmt);
             LOGGER.info(result.toString());
             return (result);
         });
-        LOGGER.info(result.toString());
         return (result);
+    }
+
+    private static final String SELECT_ADVS_BY_CATEGORY = " select * from ad\n" +
+            "   join image on image.ad_id=ad.id\n" +
+            " where ad.is_actual=true \n" +
+            "    and category_id in (\n" +
+            "       WITH RECURSIVE r AS (\n" +
+            "         SELECT id, parent_id, name, 1 AS level\n" +
+            "         FROM category\n" +
+            "         WHERE id = ? \n" +
+            "         UNION ALL\n" +
+            "         SELECT category.id, category.parent_id, category.name, r.level + 1 AS level\n" +
+            "         FROM category\n" +
+            "                JOIN r ON category.parent_id = r.id\n" +
+            "         ) SELECT id FROM r\n" +
+            "   ) limit %d";
+
+    @Override
+    public List<Ad> getAdvsByCategory(int i, int categoryId) {
+        LOGGER.info("getAdvsByCategory");
+        String sql = String.format(SELECT_ADVS_BY_CATEGORY, i);
+        List<Ad> result = new ArrayList<>();
+        this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Ad>>) stmt -> {
+            stmt.setInt(1, categoryId);
+            getAdvsFomPstmt(result, stmt);
+            LOGGER.info(result.toString());
+            return (result);
+        });
+        return (result);
+    }
+
+    private static final String SELECT_ADVS_BY_CITY_AND_CATEGORY = "select * from ad\n"+
+            "   join image on image.ad_id=ad.id\n"+
+            "   join public.user u on ad.user_id = u.id\n"+
+            " where ad.is_actual=true and city_id = ? \n"+
+            "    and category_id in (\n"+
+            "       WITH RECURSIVE r AS (\n"+
+            "         SELECT id, parent_id, name, 1 AS level\n"+
+            "         FROM category\n"+
+            "         WHERE id = ? \n"+
+            "         UNION ALL\n"+
+            "         SELECT category.id, category.parent_id, category.name, r.level + 1 AS level\n"+
+            "         FROM category\n"+
+            "                JOIN r ON category.parent_id = r.id\n"+
+            "         ) SELECT id FROM r\n"+
+            "   ) limit %d";
+
+    @Override
+    public List<Ad> getAdvsByCategoryAndCity(int i, int categoryId, int cityId) {
+        LOGGER.info("getAdvsByCategoryAndCity");
+        String sql = String.format(SELECT_ADVS_BY_CITY_AND_CATEGORY, i);
+        List<Ad> result = new ArrayList<>();
+        this.jdbcTemplate.execute(sql, (PreparedStatementCallback<List<Ad>>) stmt -> {
+            stmt.setInt(1, cityId);
+            stmt.setInt(2, categoryId);
+            getAdvsFomPstmt(result, stmt);
+            LOGGER.info(result.toString());
+            return (result);
+        });
+        return (result);
+    }
+
+    private void getAdvsFomPstmt(List<Ad> result, PreparedStatement stmt) {
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Ad ad = new Ad();
+                Image image = new Image();
+                assignResultSetToAdFields(rs, ad);
+                assignResultSetToImageFields(rs, image);
+                ad.setImage(image);
+                result.add(ad);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Исключение при получении списка объявлений из таблицы ad ", e);
+        }
     }
 
     private void assignResultSetToAdFields(ResultSet rs, Ad ad) throws SQLException {

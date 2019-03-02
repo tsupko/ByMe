@@ -2,8 +2,6 @@ package ru.innopolis.byme.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 

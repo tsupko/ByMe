@@ -191,6 +191,20 @@ public class UserDaoImpl implements UserDao {
         });
     }
 
+    private static final String UPDATE_USER_PASS = "update public.user" +
+            " set password = ? where id = ?\n";
+
+    @Override
+    public void updatePass(User user) {
+        this.jdbcTemplate.execute(UPDATE_USER_PASS, (PreparedStatementCallback<Boolean>) stmt -> {
+            stmt.setString(1, user.getPassword());
+            stmt.setInt(2, user.getId());
+            stmt.execute();
+            LOGGER.info("Пароль пользователя с id={} изменен успешно. ", user.getId(), user.toString());
+            return true;
+        });
+    }
+
     /**
      * sql-скрипт для удаления значений в таблице user
      */

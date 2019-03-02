@@ -55,6 +55,12 @@ public class UserService {
         userDao.create(user);
     }
 
+    public void changePasswUser(User user) {
+        LOGGER.info("Изменение пароля для пользователя " + user);
+        user.setPassword(encoder.encode(user.getPassword()));
+        userDao.updatePass(user);
+    }
+
     public User newUser() {
         LOGGER.info("создаем пользователя");
         return new User();

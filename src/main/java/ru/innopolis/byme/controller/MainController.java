@@ -110,4 +110,25 @@ public class MainController {
         }
         return "about";
     }
+
+    @RequestMapping(value = "/password", method = RequestMethod.GET)
+    public String changePassword(Model model, Principal principal) {
+        String login = principal.getName();
+        User user = userService.selectByLogin(login);
+        model.addAttribute("user", user);
+        return "password";
+    }
+
+    @RequestMapping(value = "/password", method = RequestMethod.POST)
+    public String changePassword(@ModelAttribute("user") User user, Model model) {
+        try {
+            LOGGER.info("изменение пароля user " + user);
+            userService.changePasswUser(user);
+        } catch (Exception e) {
+            LOGGER.info("ошибка изменения пароля");
+            model.addAttribute("error", "error changing password");
+            return "redirect:/password";
+        }
+        return "redirect:/account";
+    }
 }

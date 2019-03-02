@@ -62,15 +62,15 @@
         <table class="table">
             <tr>
                 <td>Category</td>
-                <td><input class="form-control" type="text" name="title" value="${item.name}" disabled></td>
+                <td><input class="form-control" type="text" name="title" value="${category.name}" disabled></td>
             </tr>
             <tr>
                 <td>Title</td>
                 <td><input class="form-control" type="text" name="title" value="${ad.title}" disabled></td>
             </tr>
             <tr>
-                <td>Subscribe</td>
-                <td><textarea class="form-control" name="text" rows="6" disabled>${ad.text}</textarea></td>
+                <td>Description</td>
+                <td><textarea class="form-control" name="text" rows="3" disabled>${ad.text}</textarea></td>
             </tr>
             <tr>
                 <td>Price</td>

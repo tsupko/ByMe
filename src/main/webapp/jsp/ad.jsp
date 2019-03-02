@@ -78,7 +78,7 @@
                         <input type=text hidden name="hidden"></td>
                 </tr>
                 <tr>
-                    <td>Subscribe</td>
+                    <td>Description</td>
                     <td><textarea class="form-control" name="text" rows="6" maxlength="3000"
                                   required>${ad.text}</textarea></td>
                 </tr>

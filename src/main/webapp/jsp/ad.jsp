@@ -34,16 +34,17 @@
             var max = document.getElementById('max');
             var min = document.getElementById('min');
             var message = document.getElementById('message');
-            var goodColor = "#66cc66";
-            var badColor = "#ff6666";
+            document.getElementById('submit').disabled = max.value < min.value;
+            var good = "#66cc66";
+            var bad = "#ff6666";
             if (max.value < min.value) {
-                min.style.backgroundColor = badColor;
-                message.style.color = badColor;
-                message.innerHTML = "min price can't be less than max price"
+                min.style.backgroundColor = bad;
+                message.style.color = bad;
+                message.innerHTML = "min price can't be less than max price";
             } else {
-                min.style.backgroundColor = goodColor;
-                message.style.color = goodColor;
-                message.innerHTML = "now it's much better"
+                min.style.backgroundColor = good;
+                message.style.color = good;
+                message.innerHTML = null;
             }
         }
     </script>
@@ -102,11 +103,12 @@
                 </tr>
                 <tr>
                     <td>Price</td>
-                    <td><input id="max" class="form-control" type="text" name="price" required pattern="\d+(\.\d{2})?" value="${ad.price}" onchange='compare_price()';></td>
+                    <td><input id="max" class="form-control" type="text" name="price" required pattern="\d+(\.\d{2})?" value="${ad.price}" onkeyup='compare_price()'/></td>
                 </tr>
                 <tr>
                     <td>minimum Price</td>
-                    <td><input id="min" class="form-control" type="text" name="priceMin" required pattern="\d+(\.\d{2})?" value="${ad.priceMin}" onchange='compare_price()';></td>
+                    <td><input id="min" class="form-control" type="text" name="priceMin" required pattern="\d+(\.\d{2})?" value="${ad.priceMin}" onkeyup='compare_price()'/><br>
+                    <label id="message" class="message"></label></td>
                 </tr>
                 <tr>
                     <td>Photo</td>
@@ -122,7 +124,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input class="btn btn-success" type="submit" value="${submit}"></td>
+                    <td><input id="submit" class="btn btn-success" type="submit" value="${submit}"></td>
                 </tr>
             </table>
         </form:form>

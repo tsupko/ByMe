@@ -63,19 +63,11 @@
                             </c:if>
                             <form role="form">
                                 <div class="form-group">
-                                    <input required
-                                           class="form-control"
-                                           type="text"
-                                           name="login"
-                                           placeholder="login">
+                                    <input required class="form-control" type="text" name="login" placeholder="login">
                                     <div id="errLast"></div>
                                 </div>
                                 <div class="form-group">
-                                    <input required
-                                           type="password"
-                                           name="password"
-                                           class="form-control password-field"
-                                           placeholder="password"/>
+                                    <input required type="password" name="password" class="form-control password-field" placeholder="password"/>
                                 </div>
                                 <div class="check-box">
                                     <label>

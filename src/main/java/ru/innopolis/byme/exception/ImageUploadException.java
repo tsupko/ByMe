@@ -6,6 +6,6 @@ public class ImageUploadException extends Exception {
     }
 
     public ImageUploadException(String message, Exception exception) {
-
+        super(message, exception);
     }
 }

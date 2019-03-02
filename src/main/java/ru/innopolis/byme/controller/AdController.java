@@ -18,6 +18,9 @@ import ru.innopolis.byme.service.CategoryService;
 import ru.innopolis.byme.service.ImageService;
 import ru.innopolis.byme.service.UserService;
 
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
@@ -46,40 +49,46 @@ public class AdController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String addAd(@ModelAttribute("ad") Ad ad, MultipartFile imageFile,
-                        BindingResult bindingResult, Principal principal) {
+                        BindingResult bindingResult, Principal principal, Model model) {
         String login = principal.getName();
         LOGGER.info("mapping post /ad/new, login: {}", login);
-        adService.createAd(ad, login);
         LOGGER.info("imageFile.isEmpty(): " + imageFile.isEmpty());
         String imageName = "no_image.jpg";
         try {
             if (!imageFile.isEmpty()) {
                 imageService.validateImageFile(imageFile);
+                adService.createAd(ad, login);
                 imageName = ad.getId() + ".jpg";
                 imageService.saveImageFile(imageName, imageFile);
-                imageService.createImgById(ad.getId(), imageName);
             } else {
-                imageService.createImgById(ad.getId(), imageName);
+                adService.createAd(ad, login);
             }
         } catch (ImageUploadException e) {
             bindingResult.reject(e.getMessage());
+            model.addAttribute("categories", categoryService.getAll());
+            model.addAttribute("submit", "Добавить объявление");
+            model.addAttribute("selected", ad.getCategoryId());
             return "ad";
         }
+        imageService.createImgById(ad.getId(), imageName);
         return "redirect:/";
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String editAd(@PathVariable int id, Model model, Principal principal) {
+    public String editAd(@PathVariable int id, Model model, Principal principal, HttpServletResponse response) {
+//        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         LOGGER.info("mapping get /edit/" + id);
         User user = userService.selectByLogin(principal.getName());
         LOGGER.info(" user = {}", user);
         Ad ad = adService.selectById(id);
         LOGGER.info(" ad = {}", ad);
         if (user.getId() == ad.getUserId() ) {
+            Image image = imageService.getImageByAd(id);
             model.addAttribute("categories", categoryService.getAll());
             model.addAttribute("ad", ad);
             model.addAttribute("user", principal.getName());
             model.addAttribute("selected", ad.getCategoryId());
+            model.addAttribute("image", image.getImg());
             model.addAttribute("submit", "Сохранить изменения");
             return "ad";
         } else {
@@ -88,8 +97,9 @@ public class AdController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad,
-                           MultipartFile imageFile, BindingResult bindingResult) {
+    public String updateAd(@PathVariable int id, @Valid Ad ad,
+                           MultipartFile imageFile, BindingResult bindingResult, HttpServletResponse response) {
+//        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         LOGGER.info("mapping post /edit/" + id);
         adService.updateAd(id, ad);
         LOGGER.info("image.isEmpty(): " + imageFile.isEmpty());
@@ -100,6 +110,8 @@ public class AdController {
                 imageService.saveImageFile(imageName, imageFile);
                 if (!imageService.exists(id)) {
                     imageService.createImgById(id, imageName);
+                }else {
+                    imageService.updateImgByAdId(id, imageName);
                 }
             }
         } catch (ImageUploadException e) {

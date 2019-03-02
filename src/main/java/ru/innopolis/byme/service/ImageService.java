@@ -27,7 +27,7 @@ public class ImageService {
         LOGGER.info("Image content type: " + image.getContentType());
         if (!"image/jpeg".equals(image.getContentType())) {
             LOGGER.error("Only JPG images accepted");
-            throw new ImageUploadException("Only JPG images accepted");
+            throw new ImageUploadException("image_error");
         }
     }
 
@@ -56,5 +56,11 @@ public class ImageService {
 
     public boolean exists(int adId){
         return imageDao.exists(adId);
+    }
+
+    public void updateImgByAdId(int adId, String imageName){
+        Image img = imageDao.getImageByAd(adId);
+        img.setImg(imageName);
+        imageDao.update(img);
     }
 }

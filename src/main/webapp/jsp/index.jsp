@@ -102,7 +102,9 @@
             border-right-color: #222222;
             border-left-color: #111111;
         }
-
+        .navbar-nav {
+            line-height: 50px;
+        }
         @media (max-width: 767px) {
             .navbar-collapse .nav > .divider-vertical {
                 display: none;
@@ -120,7 +122,7 @@
             <a class="navbar-brand" href="<c:url value="/"/>">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
-            <form class="form-inline" id="filter" method="post" action="/">
+            <form class="form-inline" method="post" action="/">
                 <ul class="nav navbar-nav">
                         <li><a href="<c:url value="/about"/>">About</a></li>
                     <c:if test="${not empty user}">
@@ -130,8 +132,8 @@
                 </ul>
 
                 <ul class="nav navbar-nav">
-                    <li class="divider-vertical" style=""></li>
-                    <select class="form-control" name="categoryId">
+                    <li class="divider-vertical"></li>
+                    <select class="form-control" name="categoryId" onchange="this.form.submit()">
                         <%
                             List<CategoryTree> categoryTree = (List<CategoryTree>) request.getAttribute("categoryList");
                             out.print("<option selected hidden value=\"" + categoryTree.get(0).getId() + "\">" + categoryTree.get(0).getName() + "</option>");
@@ -147,7 +149,7 @@
                             } %>
                     </select>
 
-                    <select class="form-control" name="cityId">
+                    <select class="form-control" name="cityId" onchange="this.form.submit()">
                         <c:forEach var="i" begin="0" end="${cityList.size()-1}">
                             <c:if test="${i==0}">
                                 <option selected hidden value="${cityList.get(i).id}">${cityList.get(i).name}</option>
@@ -157,8 +159,6 @@
                             </c:if>
                         </c:forEach>
                     </select>
-
-                    <input class="btn navbar-btn" type="submit" value="Search" id="submit">
                 </ul>
 
 

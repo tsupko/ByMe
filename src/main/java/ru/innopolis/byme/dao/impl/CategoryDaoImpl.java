@@ -56,6 +56,27 @@ public class CategoryDaoImpl implements CategoryDao {
         return (categories);
     }
 
+    private static final String SELECT_CATEGORY_BY_ID = "Select * from category where id = ? ";
+
+    @Override
+    public Category selectById(int id) {
+        LOGGER.debug("Выбор категории по id={}: {}", id);
+        Category category = new Category();
+        this.jdbcTemplate.execute(SELECT_CATEGORY_BY_ID, (PreparedStatementCallback<Category>) stmt -> {
+            stmt.setInt(1,id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    assignResultSetToCategoryFields(rs, category);
+                    LOGGER.info("Категория выбрана успешно по id={} Инфо: {}", id, category.toString());
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Исключение при выборе категории: ", e);
+            }
+            return category;
+        });
+        return category;
+    }
+
     private void assignResultSetToCategoryFields(ResultSet rs, Category category) throws SQLException {
         category.setId(rs.getInt(CATEGORY_ID));
         category.setName(rs.getString(CATEGORY_NAME));

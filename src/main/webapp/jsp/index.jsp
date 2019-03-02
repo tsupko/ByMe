@@ -182,7 +182,7 @@
     <c:forEach items="${list}" var="item">
         <div class="box">
             <div class="boxInner">
-                <a href="/ad/${item.id}">
+                <a href="/ad/view/${item.id}">
                     <img src="/static/repo/${item.image.img}" alt=""></a>
                 <div class="titleBox">${item.title} - ${item.price} руб.</div>
             </div>

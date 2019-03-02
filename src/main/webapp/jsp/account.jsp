@@ -163,7 +163,6 @@
                         <th style="text-align: center">Title</th>
                         <th style="text-align: center">Text</th>
                         <th style="text-align: center">Price</th>
-                        <th style="text-align: center">Price_min</th>
                         <th style="text-align: center"></th>
                         <th style="text-align: center"></th>
                     </tr>
@@ -175,7 +174,6 @@
                             <td>${item.title}</td>
                             <td>${item.text}</td>
                             <td>${item.price}</td>
-                            <td>${item.priceMin}</td>
                             <td><a href="/ad/edit/${item.id}" type="button" class="btn btn-info">update</a></td>
                             <td><a href="/ad/delete/${item.id}" type="button" class="btn btn-danger">delete</a></td>
                         </tr>

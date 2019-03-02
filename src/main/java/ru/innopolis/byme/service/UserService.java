@@ -120,4 +120,8 @@ public class UserService {
     public User selectByLogin(String login){
         return userDao.selectByLogin(login).get();
     }
+
+    public User selectById(int id){
+        return userDao.selectById(id).get();
+    }
 }

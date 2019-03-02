@@ -15,4 +15,8 @@ public class CategoryService {
     public Collection<Category> getAll(){
         return categoryDao.getAll();
     }
+
+    public Category getCategory(int id){
+        return categoryDao.selectById(id);
+    }
 }

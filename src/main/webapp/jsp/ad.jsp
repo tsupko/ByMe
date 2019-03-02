@@ -114,7 +114,7 @@
                     <td>Photo</td>
                     <td>
                         <c:if test="${ad.id != 0}">
-                            <img class="img-responsive" alt="Cinque Terre" src="/static/repo/${ad.id}.jpg" width="300">
+                            <img class="img-responsive" src="/static/repo/${ad.id}.jpg" width="300">
                         </c:if>
                     </td>
                 </tr>

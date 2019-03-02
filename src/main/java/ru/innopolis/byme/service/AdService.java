@@ -7,6 +7,7 @@ import ru.innopolis.byme.dao.api.UserDao;
 import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.User;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -23,24 +24,26 @@ public class AdService {
             ad.setUserId(user.getId());
             ad.setConfirm(true);
             ad.setActual(true);
+            ad.setPriceMin(new BigDecimal(0));
             adDao.create(ad);
         }
     }
+
     public void updateAd(int id, Ad ad) {
         Ad newAd = adDao.selectById(id);
         newAd.setTitle(ad.getTitle());
         newAd.setText(ad.getText());
         newAd.setCategoryId(ad.getCategoryId());
         newAd.setPrice(ad.getPrice());
-        newAd.setPriceMin(ad.getPriceMin());
+        newAd.setPriceMin(new BigDecimal(0));
         adDao.update(newAd);
     }
 
-    public Ad selectById(int id){
+    public Ad selectById(int id) {
         return adDao.selectById(id);
     }
 
-    public  void delete(Ad ad){
+    public void delete(Ad ad) {
         adDao.delete(ad);
     }
 

@@ -116,7 +116,7 @@ public class AdController {
         return "redirect:/account";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String viewAd(@PathVariable int id, Model model) {
         LOGGER.info("mapping get /ad/" + id);
         Ad ad = adService.selectById(id);

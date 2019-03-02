@@ -80,6 +80,14 @@
                 <td>Photo</td>
                 <td><img class="img-responsive" src="/static/repo/${image}" width="300"></td>
             </tr>
+            <tr>
+                <td>Seller</td>
+                <td><input class="form-control" type="text" name="seller" value=${seller.name} disabled></td>
+            </tr>
+            <tr>
+                <td>Seller's phone</td>
+                <td><input class="form-control" type="text" name="phone" value=${seller.phoneNumber} disabled></td>
+            </tr>
         </table>
     </div>
 </div>

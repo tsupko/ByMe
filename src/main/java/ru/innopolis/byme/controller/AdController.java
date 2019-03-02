@@ -121,10 +121,12 @@ public class AdController {
         LOGGER.info("mapping get /ad/" + id);
         Ad ad = adService.selectById(id);
         Image image = imageService.getImageByAd(id);
+        User user = userService.selectById(ad.getUserId());
+        LOGGER.info("user: {}", user);
         model.addAttribute("category", categoryService.getCategory(ad.getCategoryId()));
         model.addAttribute("ad", ad);
-        model.addAttribute("selected", ad.getCategoryId());
         model.addAttribute("image", image.getImg());
+        model.addAttribute("seller", user);
         return "ad_view";
     }
 }

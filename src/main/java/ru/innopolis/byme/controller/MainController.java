@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.User;
+import ru.innopolis.byme.form.AdFilter;
 import ru.innopolis.byme.service.CityService;
 import ru.innopolis.byme.service.UserService;
 import ru.innopolis.byme.transfer.CategoryTree;
@@ -21,8 +22,8 @@ public class MainController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
     private static final int MAX_ADVERT_NUMBER = 20;
-    public static final int ALL_CATEGORIES_ID = 0;
-    public static final int ALL_CITIES_ID = 0;
+    private static final int ALL_CATEGORIES_ID = 0;
+    private static final int ALL_CITIES_ID = 0;
 
     @Autowired
     private UserService userService;
@@ -72,15 +73,10 @@ public class MainController {
     }
 
     private String buildMainModel(Model model, Principal principal,
-                                  List<Ad> advs, List<City> cityList, List<CategoryTree> categoryList){
+                                  List<Ad> advs, List<City> cityList, List<CategoryTree> categoryList) {
         model.addAttribute("list", advs);
-<<<<<<< HEAD:src/main/java/ru/innopolis/byme/controller/UserController.java
         model.addAttribute("cityList", cityList);
         model.addAttribute("categoryList", categoryList);
-=======
-        model.addAttribute("cityList", userService.getCityList());
-        model.addAttribute("categoryList", userService.getCategoryList());
->>>>>>> design_of_accout_ad_pages:src/main/java/ru/innopolis/byme/controller/MainController.java
 
         if (principal == null) {
             model.addAttribute("logUrl", "/login");
@@ -91,16 +87,6 @@ public class MainController {
             model.addAttribute("user", principal.getName());
         }
         return "index";
-
-<<<<<<< HEAD:src/main/java/ru/innopolis/byme/controller/UserController.java
-=======
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public String index(@RequestParam String cityId,
-                        @RequestParam String categoryId) {
-        System.err.println(cityId);
-        System.err.println(categoryId);
-        return "redirect:/";
->>>>>>> design_of_accout_ad_pages:src/main/java/ru/innopolis/byme/controller/MainController.java
     }
 
     @GetMapping("login")

@@ -5,14 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.User;
-import ru.innopolis.byme.form.AdFilter;
 import ru.innopolis.byme.service.CityService;
 import ru.innopolis.byme.service.UserService;
 import ru.innopolis.byme.transfer.CategoryTree;
@@ -21,9 +17,9 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-public class UserController {
+public class MainController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
     private static final int MAX_ADVERT_NUMBER = 20;
     public static final int ALL_CATEGORIES_ID = 0;
     public static final int ALL_CITIES_ID = 0;
@@ -78,8 +74,13 @@ public class UserController {
     private String buildMainModel(Model model, Principal principal,
                                   List<Ad> advs, List<City> cityList, List<CategoryTree> categoryList){
         model.addAttribute("list", advs);
+<<<<<<< HEAD:src/main/java/ru/innopolis/byme/controller/UserController.java
         model.addAttribute("cityList", cityList);
         model.addAttribute("categoryList", categoryList);
+=======
+        model.addAttribute("cityList", userService.getCityList());
+        model.addAttribute("categoryList", userService.getCategoryList());
+>>>>>>> design_of_accout_ad_pages:src/main/java/ru/innopolis/byme/controller/MainController.java
 
         if (principal == null) {
             model.addAttribute("logUrl", "/login");
@@ -91,6 +92,15 @@ public class UserController {
         }
         return "index";
 
+<<<<<<< HEAD:src/main/java/ru/innopolis/byme/controller/UserController.java
+=======
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public String index(@RequestParam String cityId,
+                        @RequestParam String categoryId) {
+        System.err.println(cityId);
+        System.err.println(categoryId);
+        return "redirect:/";
+>>>>>>> design_of_accout_ad_pages:src/main/java/ru/innopolis/byme/controller/MainController.java
     }
 
     @GetMapping("login")
@@ -100,5 +110,18 @@ public class UserController {
         } else {
             return "redirect:/";
         }
+    }
+
+    @RequestMapping(value = "/about", method = RequestMethod.GET)
+    public String getAboutUs(Model model, Principal principal) {
+        if (principal == null) {
+            model.addAttribute("logUrl", "/login");
+            model.addAttribute("logStatus", "Log In");
+        } else {
+            model.addAttribute("logUrl", "/logout");
+            model.addAttribute("logStatus", "Log Out");
+            model.addAttribute("user", principal.getName());
+        }
+        return "about";
     }
 }

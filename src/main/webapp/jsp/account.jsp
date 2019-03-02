@@ -121,8 +121,7 @@
                         </tr>
                         <tr>
                             <td>Phone Number</td>
-                            <td><input class="form-control" type="number" name="phoneNumber"
-                                       value=${account.phoneNumber} required></td>
+                            <td><input class="form-control" type="number" name="phoneNumber" value=${account.phoneNumber} required></td>
                         </tr>
                         <tr>
                             <td>City</td>

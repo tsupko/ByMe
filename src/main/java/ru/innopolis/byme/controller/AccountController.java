@@ -20,6 +20,7 @@ import java.util.Collection;
 public class AccountController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
+
     private final UserDao userDao;
     private final CityDao cityDao;
     private final AdDao adDao;
@@ -60,16 +61,5 @@ public class AccountController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/about", method = RequestMethod.GET)
-    public String getAboutUs(Model model, Principal principal) {
-        if (principal == null) {
-            model.addAttribute("logUrl", "/login");
-            model.addAttribute("logStatus", "Log In");
-        } else {
-            model.addAttribute("logUrl", "/logout");
-            model.addAttribute("logStatus", "Log Out");
-            model.addAttribute("user", principal.getName());
-        }
-        return "about";
-    }
+
 }

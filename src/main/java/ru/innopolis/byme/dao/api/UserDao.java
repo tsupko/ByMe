@@ -17,6 +17,8 @@ public interface UserDao {
 
     void update(User user);
 
+    void updatePass(User user);
+
     void delete(User user);
 
     Collection<User> getAllUsers();

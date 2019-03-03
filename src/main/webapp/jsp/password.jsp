@@ -24,6 +24,7 @@
             background-image: url(https://png.pngtree.com/element_origin_min_pic/16/12/09/77619c843826cf8c9184bcf626d14f49.jpg);
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
+
         .register {
             padding-top: 70px;
         }
@@ -86,23 +87,25 @@
                         <div class="panel-body">
                             <c:if test="${param.error != null}">
                                 <div class="alert alert-danger" role="alert">
-                                    <input name=error" value="error" disabled>
+                                        ${param.error}
                                 </div>
                             </c:if>
-                            <form role="form">
+                            <form:form role="form">
                                 <input type=hidden name="id" value="${user.id}"/>
                                 <input type=hidden name="login" value="${user.login}"/>
 
                                 <%--валидация пароля--%>
                                 <div class="form-group">
-                                    <input required type="password" name="password" id="pass1" minlength="1" maxlength="30" class="form-control password-field" placeholder="new password" onkeyup="passwordEqualsValidation(); return true;" onchange='check_pass();'/>
+                                    <input required type="password" name="password" id="pass1" minlength="1" maxlength="30" class="form-control password-field"
+                                           placeholder="new password" onkeyup="passwordEqualsValidation(); return true;" onchange='check_pass();'/>
                                 </div>
                                 <div class="form-group">
-                                    <input required type="password" id="pass2" class="form-control password-field" placeholder="enter new password again" onkeyup="passwordEqualsValidation(); return false;" onchange='check_pass();'/>
+                                    <input required type="password" id="pass2" class="form-control password-field" placeholder="enter new password again"
+                                           onkeyup="passwordEqualsValidation(); return false;" onchange='check_pass();'/>
                                     <span id="confirmMessage" class="confirmMessage"></span>
                                 </div>
                                 <input type="submit" value="Save" class="btn btn-info btn-block" id="submit" disabled>
-                            </form>
+                            </form:form>
                         </div>
                     </div>
                 </div>

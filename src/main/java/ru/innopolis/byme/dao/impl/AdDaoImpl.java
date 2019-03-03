@@ -115,7 +115,7 @@ public class AdDaoImpl implements AdDao {
             } catch (SQLException e) {
                 LOGGER.error("Исключение при получении объявлений по автору user_id={}", userId, e);
             }
-            LOGGER.info(ads.toString());
+            LOGGER.debug(ads.toString());
             return ads;
         });
         return ads;

@@ -85,6 +85,10 @@
                 <td><label for="phone">Contact</label></td>
                 <td><input id="phone" class="form-control" type="text" name="phone" value=${seller.phoneNumber} disabled></td>
             </tr>
+            <tr>
+                <td><label for="city">City</label></td>
+                <td><input id="city" class="form-control" type="text" name="city" value=${city.name} disabled></td>
+            </tr>
         </table>
     </div>
 </div>

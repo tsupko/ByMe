@@ -9,6 +9,7 @@ import ru.innopolis.byme.entity.User;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,5 +52,14 @@ public class AdService {
     public void delete(Ad ad) {
         adDao.delete(ad);
     }
+
+    public List<Ad> getAdvs(int maxAdvertsNumber) {
+        return adDao.getAdvs(maxAdvertsNumber, 0, 0);
+    }
+
+    public List<Ad> getAdvs(int maxAdvertsNumber, int categoryId, int cityId) {
+        return adDao.getAdvs(maxAdvertsNumber, categoryId, cityId);
+    }
+
 
 }

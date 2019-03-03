@@ -28,24 +28,16 @@ import java.util.stream.Collectors;
  */
 @Component
 public class UserService {
-
-    @Autowired
-    private AdDao adDao;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final PasswordEncoder encoder;
     private final UserDao userDao;
-    private final CityDao cityDao;
-    private final CategoryDao categoryDao;
 
     @Autowired
-    public UserService(PasswordEncoder encoder, UserDao userDao, CityDao cityDao, CategoryDao categoryDao) {
+    public UserService(PasswordEncoder encoder, UserDao userDao) {
         LOGGER.debug("создали UserService");
         this.encoder = encoder;
         this.userDao = userDao;
-        this.cityDao = cityDao;
-        this.categoryDao = categoryDao;
     }
 
     public void saveUser(User user) throws UserLoginAlreadyExistsException {
@@ -72,54 +64,6 @@ public class UserService {
 
     public DataSource getDataSource() {
         return userDao.getDataSource();
-    }
-
-    public List<Ad> getAdvs(int maxAdvertsNumber) {
-        return adDao.getAdvs(maxAdvertsNumber, 0, 0);
-    }
-
-    public List<Ad> getAdvs(int maxAdvertsNumber, int categoryId, int cityId) {
-        return adDao.getAdvs(maxAdvertsNumber, categoryId, cityId);
-    }
-
-    public List<City> getCityListWithSelected(int cityId) {
-        List<City> cityList = getCityList();
-        ((LinkedList<City>) cityList).addFirst(new City(0, "Any Location"));
-
-        Iterator<City> cityIterator = cityList.iterator();
-        while (cityIterator.hasNext()) {
-            City city = cityIterator.next();
-            if (city.getId() == cityId) {
-                City currentCity = city;
-                ((LinkedList<City>) cityList).addFirst(currentCity);
-                break;
-            }
-        }
-        return cityList;
-    }
-
-    public List<CategoryTree> getCategoryListWithSelected(int categoryId) {
-        List<CategoryTree> categoryTreeList = getCategoryList();
-        ((LinkedList<CategoryTree>) categoryTreeList).addFirst(new CategoryTree(0, "Any category", 0));
-
-        Iterator<CategoryTree> categoryTreeIterator = categoryTreeList.iterator();
-        while (categoryTreeIterator.hasNext()) {
-            CategoryTree category = categoryTreeIterator.next();
-            if (category.getId() == categoryId) {
-                CategoryTree currentCategory = category;
-                ((LinkedList<CategoryTree>) categoryTreeList).addFirst(currentCategory);
-                break;
-            }
-        }
-        return categoryTreeList;
-    }
-
-    private List<CategoryTree> getCategoryList() {
-        return CategoryTree.categoryListToTree(new LinkedList<>(categoryDao.getAll()));
-    }
-
-    public List<City> getCityList() {
-        return new LinkedList<>(cityDao.getAllCities());
     }
 
     public User selectByLogin(String login) {

@@ -58,7 +58,7 @@
         </div>
     </c:if>
     <div class="navPadding">
-        <form:form method="post" enctype="multipart/form-data">
+        <form:form method="post" modelAttribute="ad" enctype="multipart/form-data">
             <table class="table">
                 <tr>
                     <td>Category</td>
@@ -89,14 +89,15 @@
                 <tr>
                     <td>Photo</td>
                     <td>
-                        <c:if test="${ad.id != 0}">
-                            <img class="img-responsive" src="/static/repo/${ad.id}.jpg" width="300">
-                        </c:if>
+                            <img class="img-responsive" src="/static/repo/${image == null ? 'no_image.jpg' : image}" width="300">
                     </td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="file" class="form-control-file" name="imageFile"></td>
+                    <td>
+                        <input type="file" class="form-control-file" name="imageFile" accept="image/gif,image/png,image/jpeg"/>
+                        <form:errors path="*" cssClass="error" />
+                    </td>
                 </tr>
                 <tr>
                     <td></td>

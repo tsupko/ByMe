@@ -6,5 +6,6 @@ import java.util.Collection;
 
 public interface CategoryDao {
     Collection<Category> getAll();
+
     Category selectById(int id);
 }

@@ -18,6 +18,7 @@ import ru.innopolis.byme.service.CategoryService;
 import ru.innopolis.byme.service.ImageService;
 import ru.innopolis.byme.service.UserService;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
@@ -46,23 +47,25 @@ public class AdController {
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public String addAd(@ModelAttribute("ad") Ad ad, MultipartFile imageFile,
-                        BindingResult bindingResult, Principal principal) {
+                        BindingResult bindingResult, Principal principal, Model model) {
         String login = principal.getName();
         LOGGER.info("mapping post /ad/new, login: {}", login);
-        adService.createAd(ad, login);
         LOGGER.info("imageFile.isEmpty(): " + imageFile.isEmpty());
-        String imageName = "no_image.jpg";
         try {
             if (!imageFile.isEmpty()) {
                 imageService.validateImageFile(imageFile);
-                imageName = ad.getId() + ".jpg";
+                adService.createAd(ad, login);
+                String imageName = ad.getId() + ".jpg";
                 imageService.saveImageFile(imageName, imageFile);
                 imageService.createImgById(ad.getId(), imageName);
             } else {
-                imageService.createImgById(ad.getId(), imageName);
+                adService.createAd(ad, login);
             }
         } catch (ImageUploadException e) {
             bindingResult.reject(e.getMessage());
+            model.addAttribute("categories", categoryService.getAll());
+            model.addAttribute("submit", "Добавить объявление");
+            model.addAttribute("selected", ad.getCategoryId());
             return "ad";
         }
         return "redirect:/";
@@ -75,11 +78,13 @@ public class AdController {
         LOGGER.info(" user = {}", user);
         Ad ad = adService.selectById(id);
         LOGGER.info(" ad = {}", ad);
-        if (user.getId() == ad.getUserId() ) {
+        if (user.getId() == ad.getUserId()) {
+            Image image = imageService.getImageByAd(id);
             model.addAttribute("categories", categoryService.getAll());
             model.addAttribute("ad", ad);
             model.addAttribute("user", principal.getName());
             model.addAttribute("selected", ad.getCategoryId());
+            model.addAttribute("image", image.getImg());
             model.addAttribute("submit", "Сохранить изменения");
             return "ad";
         } else {
@@ -88,7 +93,7 @@ public class AdController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad,
+    public String updateAd(@PathVariable int id, @Valid Ad ad,
                            MultipartFile imageFile, BindingResult bindingResult) {
         LOGGER.info("mapping post /edit/" + id);
         adService.updateAd(id, ad);

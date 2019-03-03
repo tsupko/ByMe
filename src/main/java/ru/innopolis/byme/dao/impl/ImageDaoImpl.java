@@ -64,6 +64,31 @@ public class ImageDaoImpl implements ImageDao {
     }
 
     /**
+     * sql-скрипт для изменения значений в таблице image
+     */
+    private static final String UPDATE_IMAGE = "update image" +
+            " set img = ?, is_main = ?, ad_id = ?  where id = ?";
+
+    /**
+     * изменение значений  в таблице image
+     * в соответствии с полями переданного экземпляра
+     *
+     * @param image объект, для которого будет обновлена запись в БД
+     */
+    @Override
+    public void update(Image image) {
+        this.jdbcTemplate.execute(UPDATE_IMAGE, (PreparedStatementCallback<Boolean>) stmt -> {
+            stmt.setString(1, image.getImg());
+            stmt.setBoolean(2, image.isMain());
+            stmt.setInt(3, image.getAdId());
+            stmt.setInt(4, image.getId());
+            stmt.execute();
+            LOGGER.info("Image с id={} изменен успешно. Инфо: {}", image.getId(), image.toString());
+            return true;
+        });
+    }
+
+    /**
      * sql-скрипт для проверки наличия фото с укзанным ad_id
      */
     private static final String SELECT_BY_AD_ID = "SELECT * FROM image WHERE ad_id = ?";

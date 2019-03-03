@@ -16,8 +16,9 @@ import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 import ru.innopolis.byme.transfer.CategoryTree;
 
 import javax.sql.DataSource;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * слой сервиса для User Controller
@@ -86,12 +87,9 @@ public class UserService {
         List<City> cityList = getCityList();
         ((LinkedList<City>) cityList).addFirst(new City(0, "Any Location"));
 
-        Iterator<City> cityIterator = cityList.iterator();
-        while (cityIterator.hasNext()) {
-            City city = cityIterator.next();
+        for (City city : cityList) {
             if (city.getId() == cityId) {
-                City currentCity = city;
-                ((LinkedList<City>) cityList).addFirst(currentCity);
+                ((LinkedList<City>) cityList).addFirst(city);
                 break;
             }
         }
@@ -102,12 +100,9 @@ public class UserService {
         List<CategoryTree> categoryTreeList = getCategoryList();
         ((LinkedList<CategoryTree>) categoryTreeList).addFirst(new CategoryTree(0, "Any category", 0));
 
-        Iterator<CategoryTree> categoryTreeIterator = categoryTreeList.iterator();
-        while (categoryTreeIterator.hasNext()) {
-            CategoryTree category = categoryTreeIterator.next();
+        for (CategoryTree category : categoryTreeList) {
             if (category.getId() == categoryId) {
-                CategoryTree currentCategory = category;
-                ((LinkedList<CategoryTree>) categoryTreeList).addFirst(currentCategory);
+                ((LinkedList<CategoryTree>) categoryTreeList).addFirst(category);
                 break;
             }
         }
@@ -123,7 +118,12 @@ public class UserService {
     }
 
     public User selectByLogin(String login) {
-        return userDao.selectByLogin(login).get();
+        Optional<User> user = userDao.selectByLogin(login);
+        if (user.isPresent()){
+            return user.get();
+        }
+        LOGGER.error("NPE in selectByLogin of {} with params {}", this.getClass().getSimpleName(), login);
+        throw new NullPointerException();
     }
 
     public User selectById(int id) {

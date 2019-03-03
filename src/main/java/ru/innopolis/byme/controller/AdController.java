@@ -122,16 +122,18 @@ public class AdController {
     }
 
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-    public String viewAd(@PathVariable int id, Model model) {
+    public String viewAd(@PathVariable int id, Model model, Principal principal) {
         LOGGER.info("mapping get /ad/" + id);
         Ad ad = adService.selectById(id);
         Image image = imageService.getImageByAd(id);
         User user = userService.selectById(ad.getUserId());
         LOGGER.info("user: {}", user);
+
         model.addAttribute("category", categoryService.getCategory(ad.getCategoryId()));
         model.addAttribute("ad", ad);
         model.addAttribute("image", image.getImg());
         model.addAttribute("seller", user);
+        model.addAttribute("user", principal.getName());
         return "ad_view";
     }
 }

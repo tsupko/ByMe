@@ -30,7 +30,7 @@
         });
     </script>
 
-    <%--    css styles--%>
+    <%-- css styles --%>
     <style>
         body {
             margin: 0;
@@ -122,11 +122,11 @@
             <a class="navbar-brand" href="<c:url value="/"/>">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
-            <form class="form-inline" method="post" action="/">
+            <form class="form-inline" method="post" action="<c:url value="/"/>">
                 <ul class="nav navbar-nav">
                         <li><a href="<c:url value="/about"/>">About</a></li>
                     <c:if test="${not empty user}">
-                        <li><a href="<c:url value="/ad/new"/>">Add</a></li>
+                        <li><a href="<c:url value="/ad/new"/>">Sell</a></li>
                         <li><a href="<c:url value="/account"/>">Account</a></li>
                     </c:if>
                 </ul>
@@ -183,7 +183,7 @@
         <div class="box">
             <div class="boxInner">
                 <a href="/ad/view/${item.id}">
-                    <img class="img-responsive" src="/static/repo/${item.image.img == null ? 'no_image.jpg' : item.image.img}"></a>
+                    <img class="img-responsive" src="/static/repo/${item.image.img == null ? 'no_image.jpg' : item.image.img}" alt="Photo"></a>
                 <div class="titleBox">${item.title} - ${item.price} руб.</div>
             </div>
         </div>

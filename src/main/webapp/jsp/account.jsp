@@ -10,13 +10,13 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>Account</title>
     <%--***************************************************--%>
-    <%--                 магия Bootstrap                   --%>
+    <%--                  магия Bootstrap                  --%>
     <%--***************************************************--%>
-    <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>" rel="stylesheet"
-          id="bootstrap-css">
+    <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>"
+          rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <%--    css styles--%>
+    <%-- css styles --%>
     <style>
         body {
             margin: 0;
@@ -52,9 +52,8 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="<c:url value="/about"/>">About</a></li>
-                <li><a href="<c:url value="/ad/new"/>">Add</a></li>
+                <li><a href="<c:url value="/ad/new"/>">Sell</a></li>
             </ul>
-
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="<c:url value="/account"/>">Hello, ${account.login}</a></li>
                 <li><a href="<c:url value="/logout"/>">Log Out</a></li>
@@ -69,15 +68,6 @@
 <div class="container-target">
     <div class="container">
         <div class="row">
-
-            <%--            <form:form method="post" action="ava_update">--%>
-            <%--                <div class="col-12">--%>
-            <%--                    <img src="<c:url value="/static/repo/17.jpg"/>" class="img-circle" alt="Cinque Terre"--%>
-            <%--                         width="300"><br>--%>
-            <%--                    <input class="btn btn-success" type="submit" value="Update"/>--%>
-            <%--                </div>--%>
-            <%--            </form:form>--%>
-
             <form:form method="post" action="/account">
                 <div class="col-12">
                     <h3>Account</h3>
@@ -93,23 +83,22 @@
                             <td>Login</td>
                             <td>${account.login}</td>
                         <tr>
-                            <td>Username</td>
-                            <td><input class="form-control" type="text" name="name" value=${account.name} required></td>
+                            <td><label for="name">Username</label></td>
+                            <td><input id="name" class="form-control" type="text" name="name" value=${account.name} required></td>
                         </tr>
                         <tr>
-                            <td>Email</td>
-                            <td><input class="form-control" type="email" name="email" value=${account.email} required>
-                            </td>
+                            <td><label for="email">Email</label></td>
+                            <td><input id="email" class="form-control" type="email" name="email" value=${account.email} required></td>
                         </tr>
                         <tr>
-                            <td>Phone Number</td>
-                            <td><input class="form-control" type="number" name="phoneNumber" value=${account.phoneNumber} required></td>
+                            <td><label for="phone">Phone</label></td>
+                            <td><input id="phone" class="form-control" type="number" name="phoneNumber" value=${account.phoneNumber} required></td>
                         </tr>
                         <tr>
-                            <td>City</td>
+                            <td><label for="city">City</label></td>
                             <td>
                                 <div class="form-group">
-                                    <select class="form-control" name="cityId">
+                                    <select id="city" class="form-control" name="cityId">
                                         <option value="${city.id}">${city.name}</option>
                                         <c:forEach var="item" items="${cities}">
                                             <c:if test="${account.cityId != item.id}">
@@ -156,8 +145,8 @@
                             <td>${item.title}</td>
                             <td>${item.text}</td>
                             <td>${item.price}</td>
-                            <td><a href="/ad/edit/${item.id}" type="button" class="btn btn-info">update</a></td>
-                            <td><a href="/ad/delete/${item.id}" type="button" class="btn btn-danger">delete</a></td>
+                            <td><a href="/ad/edit/${item.id}" type="button" class="btn btn-info">Edit</a></td>
+                            <td><a href="/ad/delete/${item.id}" type="button" class="btn btn-danger">Delete</a></td>
                         </tr>
                     </c:forEach>
                 </tbody>

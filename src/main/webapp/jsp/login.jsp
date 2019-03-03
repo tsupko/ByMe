@@ -15,7 +15,7 @@
           rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <%--    css styles--%>
+    <%-- css styles --%>
     <style>
         body {
             margin: 0;

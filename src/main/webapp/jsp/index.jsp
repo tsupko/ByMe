@@ -15,17 +15,18 @@
     <%--                магия Bootstrap                    --%>
     <%--***************************************************--%>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'/>
-    <link href="<c:url value="//bootstrap-combobox-test.herokuapp.com/css/bootstrap-combobox.css"/>" media="screen" rel="stylesheet" type="text/css">
-    <link rel="canonical" href="http://bootstrapessentials.com/fulldocs/components/navbar/navbar-submenu/" />
+    <link href="<c:url value="//bootstrap-combobox-test.herokuapp.com/css/bootstrap-combobox.css"/>" media="screen"
+          rel="stylesheet" type="text/css">
+    <link rel="canonical" href="http://bootstrapessentials.com/fulldocs/components/navbar/navbar-submenu/"/>
 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
     <script type='text/javascript'>
-        $(document).ready(function() {
-            $(".dropdown-menu li a").click(function(){
+        $(document).ready(function () {
+            $(".dropdown-menu li a").click(function () {
                 var selText = $(this).text();
-                $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+                $(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
             });
         });
     </script>
@@ -88,9 +89,11 @@
         body.touch .boxInner.touchFocus .titleBox {
             margin-bottom: 0;
         }
+
         .container {
 
         }
+
         .navbar .divider-vertical {
             height: 50px;
             margin: 0 9px;
@@ -102,9 +105,11 @@
             border-right-color: #222222;
             border-left-color: #111111;
         }
+
         .navbar-nav {
             line-height: 50px;
         }
+
         @media (max-width: 767px) {
             .navbar-collapse .nav > .divider-vertical {
                 display: none;
@@ -122,11 +127,11 @@
             <a class="navbar-brand" href="<c:url value="/"/>">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
-            <form class="form-inline" method="post" action="/">
+            <form:form class="form-inline" method="post" action="/">
                 <ul class="nav navbar-nav">
-                        <li><a href="<c:url value="/about"/>">About</a></li>
+                    <li><a href="<c:url value="/about"/>">About</a></li>
                     <c:if test="${not empty user}">
-                        <li><a href="<c:url value="/ad/new"/>">Add</a></li>
+                        <li><a href="<c:url value="/ad/new"/>">Sell</a></li>
                         <li><a href="<c:url value="/account"/>">Account</a></li>
                     </c:if>
                 </ul>
@@ -137,7 +142,7 @@
                         <%
                             List<CategoryTree> categoryTree = (List<CategoryTree>) request.getAttribute("categoryList");
                             out.print("<option selected hidden value=\"" + categoryTree.get(0).getId() + "\">" + categoryTree.get(0).getName() + "</option>");
-                            for(int i = 1; i < categoryTree.size(); i += 1) {
+                            for (int i = 1; i < categoryTree.size(); i += 1) {
                                 out.print(" <option value=\"" + categoryTree.get(i).getId() + "\">");%>
 
                         <% for (int j = 0; j < categoryTree.get(i).getLevel(); j += 1) {
@@ -164,7 +169,7 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <c:if test="${not empty user}">
-                        <li><a href="<c:url value="/account"/>">Hello, ${user}</a></li>
+                        <li><a href="<c:url value="/account"/>">${user}</a></li>
                     </c:if>
                     <c:if test="${empty user}">
                         <li><a href="<c:url value="/registration"/>">Registration</a></li>
@@ -172,7 +177,7 @@
                     <li><a href="${logUrl}">${logStatus}</a></li>
                     <li><a></a></li>
                 </ul>
-            </form>
+            </form:form>
         </div>
     </div>
 </div>
@@ -183,12 +188,12 @@
         <div class="box">
             <div class="boxInner">
                 <a href="/ad/view/${item.id}">
-                    <img class="img-responsive" src="/static/repo/${item.image.img == null ? 'no_image.jpg' : item.image.img}"></a>
+                    <img class="img-responsive"
+                         src="/static/repo/${item.image.img == null ? 'no_image.jpg' : item.image.img}"></a>
                 <div class="titleBox">${item.title} - ${item.price} руб.</div>
             </div>
         </div>
     </c:forEach>
 </div>
-
 </body>
 </html>

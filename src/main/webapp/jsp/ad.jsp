@@ -95,7 +95,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input type="file" class="form-control-file" name="imageFile" accept="image/gif,image/png,image/jpeg,image/pjpeg"/>
+                        <input type="file" class="form-control-file" name="imageFile" accept="image/gif,image/png,image/jpeg"/>
                         <form:errors path="*" cssClass="error" />
                     </td>
                 </tr>

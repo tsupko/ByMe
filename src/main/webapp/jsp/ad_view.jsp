@@ -78,7 +78,7 @@
             </tr>
             <tr>
                 <td>Photo</td>
-                <td><img class="img-responsive" src="/static/repo/${image}" width="300"></td>
+                <td><img class="img-responsive" src="/static/repo/${image == null ? 'no_image.jpg' : image}" width="300"></td>
             </tr>
             <tr>
                 <td>Seller</td>

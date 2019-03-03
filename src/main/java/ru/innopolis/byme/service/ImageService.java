@@ -25,8 +25,9 @@ public class ImageService {
     public void validateImageFile(MultipartFile image) throws ImageUploadException {
         LOGGER.info("Image size: " + image.getSize());
         LOGGER.info("Image content type: " + image.getContentType());
-        if (!"image/jpeg".equals(image.getContentType())) {
-            LOGGER.error("Only JPG images accepted");
+        String contentType = image.getContentType();
+        if (!("image/jpeg".equals(contentType) || "image/gif".equals(contentType) || "image/png".equals(contentType))) {
+            LOGGER.error("Only gif, png, jpeg images accepted");
             throw new ImageUploadException("image_error");
         }
     }
@@ -50,15 +51,15 @@ public class ImageService {
         imageDao.create(img);
     }
 
-    public Image getImageByAd(int adId){
+    public Image getImageByAd(int adId) {
         return imageDao.getImageByAd(adId);
     }
 
-    public boolean exists(int adId){
+    public boolean exists(int adId) {
         return imageDao.exists(adId);
     }
 
-    public void updateImgByAdId(int adId, String imageName){
+    public void updateImgByAdId(int adId, String imageName) {
         Image img = imageDao.getImageByAd(adId);
         img.setImg(imageName);
         imageDao.update(img);

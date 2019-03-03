@@ -18,8 +18,6 @@ import ru.innopolis.byme.service.CategoryService;
 import ru.innopolis.byme.service.ImageService;
 import ru.innopolis.byme.service.UserService;
 
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -53,13 +51,13 @@ public class AdController {
         String login = principal.getName();
         LOGGER.info("mapping post /ad/new, login: {}", login);
         LOGGER.info("imageFile.isEmpty(): " + imageFile.isEmpty());
-        String imageName = "no_image.jpg";
         try {
             if (!imageFile.isEmpty()) {
                 imageService.validateImageFile(imageFile);
                 adService.createAd(ad, login);
-                imageName = ad.getId() + ".jpg";
+                String imageName = ad.getId() + ".jpg";
                 imageService.saveImageFile(imageName, imageFile);
+                imageService.createImgById(ad.getId(), imageName);
             } else {
                 adService.createAd(ad, login);
             }
@@ -70,19 +68,17 @@ public class AdController {
             model.addAttribute("selected", ad.getCategoryId());
             return "ad";
         }
-        imageService.createImgById(ad.getId(), imageName);
         return "redirect:/";
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String editAd(@PathVariable int id, Model model, Principal principal, HttpServletResponse response) {
-//        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    public String editAd(@PathVariable int id, Model model, Principal principal) {
         LOGGER.info("mapping get /edit/" + id);
         User user = userService.selectByLogin(principal.getName());
         LOGGER.info(" user = {}", user);
         Ad ad = adService.selectById(id);
         LOGGER.info(" ad = {}", ad);
-        if (user.getId() == ad.getUserId() ) {
+        if (user.getId() == ad.getUserId()) {
             Image image = imageService.getImageByAd(id);
             model.addAttribute("categories", categoryService.getAll());
             model.addAttribute("ad", ad);
@@ -98,8 +94,7 @@ public class AdController {
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
     public String updateAd(@PathVariable int id, @Valid Ad ad,
-                           MultipartFile imageFile, BindingResult bindingResult, HttpServletResponse response) {
-//        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                           MultipartFile imageFile, BindingResult bindingResult) {
         LOGGER.info("mapping post /edit/" + id);
         adService.updateAd(id, ad);
         LOGGER.info("image.isEmpty(): " + imageFile.isEmpty());
@@ -110,8 +105,6 @@ public class AdController {
                 imageService.saveImageFile(imageName, imageFile);
                 if (!imageService.exists(id)) {
                     imageService.createImgById(id, imageName);
-                }else {
-                    imageService.updateImgByAdId(id, imageName);
                 }
             }
         } catch (ImageUploadException e) {

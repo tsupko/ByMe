@@ -183,7 +183,7 @@
         <div class="box">
             <div class="boxInner">
                 <a href="/ad/view/${item.id}">
-                    <img src="/static/repo/${item.image.img}" alt=""></a>
+                    <img class="img-responsive" src="/static/repo/${item.image.img == null ? 'no_image.jpg' : item.image.img}"></a>
                 <div class="titleBox">${item.title} - ${item.price} руб.</div>
             </div>
         </div>

@@ -52,11 +52,11 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="<c:url value="/about"/>">About</a></li>
-                <li><a href="<c:url value="/ad/new"/>">Add</a></li>
+                <li><a href="<c:url value="/ad/new"/>">Sell</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="<c:url value="/account"/>">Hello, ${account.login}</a></li>
+                <li><a href="<c:url value="/account"/>">${account.login}</a></li>
                 <li><a href="<c:url value="/logout"/>">Log Out</a></li>
             </ul>
         </div>
@@ -70,14 +70,6 @@
     <div class="container">
         <div class="row">
 
-            <%--            <form:form method="post" action="ava_update">--%>
-            <%--                <div class="col-12">--%>
-            <%--                    <img src="<c:url value="/static/repo/17.jpg"/>" class="img-circle" alt="Cinque Terre"--%>
-            <%--                         width="300"><br>--%>
-            <%--                    <input class="btn btn-success" type="submit" value="Update"/>--%>
-            <%--                </div>--%>
-            <%--            </form:form>--%>
-
             <form:form method="post" action="/account">
                 <div class="col-12">
                     <h3>Account</h3>
@@ -86,12 +78,16 @@
                     <input type=hidden name="password" value="${account.password}"/>
                     <input type=hidden name="roleId" value="${account.roleId}"/>
                     <input type=hidden name="actual" value="${account.actual}"/>
+                    <c:if test="${param.error != null}">
+                        <div class="alert alert-danger" role="alert">
+                                ${param.error}
+                        </div>
+                    </c:if>
                     <table class="table">
-                        <thead class="thead-dark">
                         <tbody>
                         <tr>
-                            <td>Login</td>
-                            <td>${account.login}</td>
+                            <td style="width: 25%">Login</td>
+                            <td style="width: 75%">${account.login}</td>
                         <tr>
                             <td>Username</td>
                             <td><input class="form-control" type="text" name="name" value=${account.name} required></td>

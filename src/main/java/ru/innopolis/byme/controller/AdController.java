@@ -10,13 +10,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.innopolis.byme.entity.Ad;
+import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.Image;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.ImageUploadException;
-import ru.innopolis.byme.service.AdService;
-import ru.innopolis.byme.service.CategoryService;
-import ru.innopolis.byme.service.ImageService;
-import ru.innopolis.byme.service.UserService;
+import ru.innopolis.byme.service.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -34,6 +32,8 @@ public class AdController {
     private AdService adService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CityService cityService;
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String ad(Model model, Principal principal) {
@@ -127,11 +127,13 @@ public class AdController {
         Ad ad = adService.selectById(id);
         Image image = imageService.getImageByAd(id);
         User user = userService.selectById(ad.getUserId());
+        City city = cityService.selectByUser(user);
         LOGGER.info("user: {}", user);
         model.addAttribute("category", categoryService.getCategory(ad.getCategoryId()));
         model.addAttribute("ad", ad);
         model.addAttribute("image", image.getImg());
         model.addAttribute("seller", user);
+        model.addAttribute("city", city);
         return "ad_view";
     }
 }

@@ -5,19 +5,18 @@
 <html>
 <head>
     <%--***************************************************--%>
-    <%--             мета Bootstrapp                       --%>
+    <%--                  мета Bootstrap                   --%>
     <%--***************************************************--%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-    <title>Добавить объявлнение</title>
+    <title>Show Ad</title>
     <%--***************************************************--%>
-    <%--            магия Bootstrapp                       --%>
+    <%--                  магия Bootstrap                  --%>
     <%--***************************************************--%>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>"
+          rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
     <style>
         body {
             margin: 0;
@@ -38,20 +37,19 @@
 <div class="container">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">ByMeService</a>
+            <a class="navbar-brand" href="<c:url value="/"/>">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
 
             <ul class="nav navbar-nav">
-                <li><a href="/about">About</a></li>
-                <li><a href="/ad/new">Add</a></li>
-                <li><a href="/account">Account</a></li>
-                <li><a href="/contact">Contact</a></li>
+                <li><a href="<c:url value="/about"/>">About</a></li>
+                <li><a href="<c:url value="/ad/new"/>">Sell</a></li>
+                <li><a href="<c:url value="/account"/>">Account</a></li>
+                <li><a href="<c:url value="/contact"/>">Contact</a></li>
             </ul>
-
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/registration">Registration</a></li>
-                <li><a href="/logout">LogOut</a></li>
+                <li><a href="<c:url value="/registration"/>">Registration</a></li>
+                <li><a href="<c:url value="/logout"/>">Log Out</a></li>
             </ul>
         </div>
     </div>
@@ -61,32 +59,32 @@
     <div class="navPadding">
         <table class="table">
             <tr>
-                <td>Category</td>
-                <td><input class="form-control" type="text" name="title" value="${category.name}" disabled></td>
+                <td><label for="name">Category</label></td>
+                <td><input id="name" class="form-control" type="text" name="title" value="${category.name}" disabled></td>
             </tr>
             <tr>
-                <td>Title</td>
-                <td><input class="form-control" type="text" name="title" value="${ad.title}" disabled></td>
+                <td><label for="title">Title</label></td>
+                <td><input id="title" class="form-control" type="text" name="title" value="${ad.title}" disabled></td>
             </tr>
             <tr>
-                <td>Description</td>
-                <td><textarea class="form-control" name="text" rows="3" disabled>${ad.text}</textarea></td>
+                <td><label for="description">Description</label></td>
+                <td><textarea id="description" class="form-control" name="text" rows="3" disabled>${ad.text}</textarea></td>
             </tr>
             <tr>
-                <td>Price</td>
-                <td><input class="form-control" type="text" name="price" value="${ad.price}" disabled></td>
+                <td><label for="price">Price</label></td>
+                <td><input id="price" class="form-control" type="text" name="price" value="${ad.price}" disabled></td>
             </tr>
             <tr>
                 <td>Photo</td>
-                <td><img class="img-responsive" src="/static/repo/${image == null ? 'no_image.jpg' : image}" width="300"></td>
+                <td><img class="img-responsive" src="/static/repo/${image == null ? 'no_image.jpg' : image}" width="300" alt="Photo"></td>
             </tr>
             <tr>
-                <td>Seller</td>
-                <td><input class="form-control" type="text" name="seller" value=${seller.name} disabled></td>
+                <td><label for="seller">Owner</label></td>
+                <td><input id="seller" class="form-control" type="text" name="seller" value=${seller.name} disabled></td>
             </tr>
             <tr>
-                <td>Seller's phone</td>
-                <td><input class="form-control" type="text" name="phone" value=${seller.phoneNumber} disabled></td>
+                <td><label for="phone">Contact</label></td>
+                <td><input id="phone" class="form-control" type="text" name="phone" value=${seller.phoneNumber} disabled></td>
             </tr>
         </table>
     </div>

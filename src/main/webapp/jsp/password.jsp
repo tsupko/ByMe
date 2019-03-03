@@ -16,7 +16,7 @@
           rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <%--    css styles--%>
+    <%-- css styles --%>
     <style>
         body {
             margin: 0;
@@ -29,25 +29,26 @@
         }
     </style>
     <script type="text/javascript">
+        var pass1 = document.getElementById('pass1').valueOf();
+        var pass2 = document.getElementById('pass2').valueOf();
+
         function passwordEqualsValidation() {
-            var pass1 = document.getElementById('pass1');
-            var pass2 = document.getElementById('pass2');
             var message = document.getElementById('confirmMessage');
             var goodColor = "#66cc66";
             var badColor = "#ff6666";
-            if (pass1.value === pass2.value) {
+            if (pass1 === pass2) {
                 pass2.style.backgroundColor = goodColor;
                 message.style.color = goodColor;
-                message.innerHTML = "Passwords Match"
+                message.innerHTML = "Passwords match."
             } else {
                 pass2.style.backgroundColor = badColor;
                 message.style.color = badColor;
-                message.innerHTML = "Passwords Do Not Match!"
+                message.innerHTML = "Passwords do not match."
             }
         }
 
-        function check_pass() {
-            document.getElementById('submit').disabled = document.getElementById('pass1').value !== document.getElementById('pass2').value;
+        function checkPass() {
+            document.getElementById('submit').disabled = pass1 !== pass2;
         }
     </script>
 </head>
@@ -79,14 +80,12 @@
                 <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Change password
-                                <%--<small> Change password </small>--%>
-                            </h3>
+                            <h3 class="panel-title">Change Password</h3>
                         </div>
                         <div class="panel-body">
                             <c:if test="${param.error != null}">
                                 <div class="alert alert-danger" role="alert">
-                                    <input name=error" value="error" disabled>
+                                    ${param.error}
                                 </div>
                             </c:if>
                             <form role="form">
@@ -95,10 +94,10 @@
 
                                 <%--валидация пароля--%>
                                 <div class="form-group">
-                                    <input required type="password" name="password" id="pass1" minlength="1" maxlength="30" class="form-control password-field" placeholder="new password" onkeyup="passwordEqualsValidation(); return true;" onchange='check_pass();'/>
+                                    <input required type="password" name="password" id="pass1" minlength="1" maxlength="30" class="form-control password-field" placeholder="new password" onkeyup="passwordEqualsValidation(); return true;" onchange='checkPass();'/>
                                 </div>
                                 <div class="form-group">
-                                    <input required type="password" id="pass2" class="form-control password-field" placeholder="enter new password again" onkeyup="passwordEqualsValidation(); return false;" onchange='check_pass();'/>
+                                    <input required type="password" id="pass2" class="form-control password-field" placeholder="enter new password again" onkeyup="passwordEqualsValidation(); return false;" onchange='checkPass();'/>
                                     <span id="confirmMessage" class="confirmMessage"></span>
                                 </div>
                                 <input type="submit" value="Save" class="btn btn-info btn-block" id="submit" disabled>

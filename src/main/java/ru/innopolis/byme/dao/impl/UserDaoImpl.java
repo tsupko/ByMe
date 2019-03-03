@@ -256,14 +256,13 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public Collection<User> getAllUsers() {
-        LOGGER.debug("getAllUsers");
         Collection<User> users = new ArrayList<>();
         this.jdbcTemplate.execute(SELECT_ALL_USERS, (PreparedStatementCallback<Collection<User>>) stmt -> {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     User user = new User();
                     assignResultSetToUserFields(user, rs);
-                    LOGGER.info(user.toString());
+                    LOGGER.debug(user.toString());
                     users.add(user);
                 }
             } catch (SQLException e) {

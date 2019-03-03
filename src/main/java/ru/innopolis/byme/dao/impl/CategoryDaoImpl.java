@@ -38,7 +38,6 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public Collection<Category> getAll() {
-        LOGGER.info("getAllCategory");
         Collection<Category> categories = new ArrayList<>();
         this.jdbcTemplate.execute(SELECT_ALL_CATEGORIES, (PreparedStatementCallback<Collection<Category>>) stmt -> {
             try (ResultSet rs = stmt.executeQuery()) {
@@ -50,7 +49,7 @@ public class CategoryDaoImpl implements CategoryDao {
             } catch (SQLException e) {
                 LOGGER.error("Исключение при получении всех категорий из таблицы category ", e);
             }
-            LOGGER.info(categories.toString());
+            LOGGER.debug(categories.toString());
             return (categories);
         });
         return (categories);

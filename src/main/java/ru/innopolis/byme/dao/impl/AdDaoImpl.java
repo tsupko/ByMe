@@ -102,7 +102,6 @@ public class AdDaoImpl implements AdDao {
      */
     @Override
     public Collection<Ad> selectByUserId(int userId) {
-        LOGGER.info("selectByUserId");
         Collection<Ad> ads = new ArrayList<>();
         this.jdbcTemplate.execute(SELECT_AD_BY_USER_ID, (PreparedStatementCallback<Collection<Ad>>) stmt -> {
             stmt.setInt(1, userId);
@@ -110,7 +109,7 @@ public class AdDaoImpl implements AdDao {
                 while (rs.next()) {
                     Ad ad = new Ad();
                     assignResultSetToAdFields(rs, ad);
-                    LOGGER.info(ad.toString());
+                    LOGGER.debug(ad.toString());
                     ads.add(ad);
                 }
             } catch (SQLException e) {
@@ -242,7 +241,7 @@ public class AdDaoImpl implements AdDao {
                 stmt.setInt(1, categoryId);
             }
             getAdvsFomPstmt(result, stmt);
-            LOGGER.info(result.toString());
+            LOGGER.debug(result.toString());
             return (result);
         });
         return (result);

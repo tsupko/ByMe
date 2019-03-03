@@ -47,8 +47,14 @@
                 <li><a href="<c:url value="/account"/>">Account</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="<c:url value="/registration"/>">Registration</a></li>
-                <li><a href="<c:url value="/logout"/>">Log Out</a></li>
+                <c:if test="${empty user}">
+                    <li><a href="<c:url value="/registration"/>">Registration</a></li>
+                    <li><a href="<c:url value="/login"/>">Log In</a></li>
+                </c:if>
+                <c:if test="${not empty user}">
+                    <li><a href="<c:url value="/account"/>">${user}</a></li>
+                    <li><a href="<c:url value="/logout"/>">Log Out</a></li>
+                </c:if>
             </ul>
         </div>
     </div>

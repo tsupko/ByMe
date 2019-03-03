@@ -24,6 +24,7 @@
             background-image: url(https://png.pngtree.com/element_origin_min_pic/16/12/09/77619c843826cf8c9184bcf626d14f49.jpg);
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
+
         .register {
             padding-top: 70px;
         }
@@ -88,37 +89,46 @@
                                     ${param.error}
                                 </div>
                             </c:if>
-                            <form role="form">
+                            <form:form role="form">
                                 <div class="form-group">
+                                    <small>login</small>
                                     <input required class="form-control" type="text" name="login" minlength="1" maxlength="30" placeholder="login">
                                     <div id="errLast"></div>
                                 </div>
                                 <%--валидация пароля--%>
                                 <div class="form-group">
-                                    <input required type="password" name="password" id="pass1" minlength="1" maxlength="30" class="form-control password-field" placeholder="password" onkeyup="passwordEqualsValidation(); return true;" onchange='checkPass();'/>
+                                    <small>password</small>
+                                    <input required type="password" name="password" id="pass1" minlength="1" maxlength="30" class="form-control password-field" placeholder="password"
+                                           onkeyup="passwordEqualsValidation(); return true;" onchange='check_pass();'/>
                                 </div>
                                 <div class="form-group">
-                                    <input required type="password" id="pass2" class="form-control password-field" placeholder="enter again to validate" onkeyup="passwordEqualsValidation(); return false;" onchange='checkPass();'/>
+                                    <small>password</small>
+                                    <input required type="password" id="pass2" class="form-control password-field" placeholder="enter again to validate" onkeyup="passwordEqualsValidation(); return false;"
+                                           onchange='check_pass();'/>
                                     <span id="confirmMessage" class="confirmMessage"></span>
                                 </div>
                                 <div class="form-group">
+                                    <small>name</small>
                                     <input required type="text" name="name" class="form-control" placeholder="name">
                                 </div>
                                 <div class="form-group">
-                                    <input required type="number" name="phoneNumber"class="form-control phone"placeholder="phone">
+                                    <small>phone</small>
+                                    <input required type="number" name="phoneNumber" class="form-control phone" placeholder="phone">
                                 </div>
                                 <div class="form-group">
+                                    <small>email</small>
                                     <input required type="text" name="email" class="form-control" placeholder="Email Address"/>
                                 </div>
                                 <div class="form-group">
-                                  <select class="form-control" name="cityId">
-                                      <c:forEach var="item" items="${cities}">
-                                          <option value="${item.id} "${item.id == selected ? 'selected' : ''}>${item.name}</option>
-                                      </c:forEach>
-                                  </select>
+                                    <select class="form-control" name="cityId">
+                                        <c:forEach var="item" items="${cities}">
+                                            <option value="${item.id}"${item.id==selected?'selected':''}>${item.name}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
-                                <input type="submit" value="Register" class="btn btn-info btn-block" id="submit" disabled>
-                            </form>
+                                <input type="submit" value="Register" class="btn btn-info btn-block" id="submit"
+                                       disabled>
+                            </form:form>
                         </div>
                     </div>
                 </div>

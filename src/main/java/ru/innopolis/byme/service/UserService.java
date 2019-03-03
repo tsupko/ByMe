@@ -16,8 +16,9 @@ import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 import ru.innopolis.byme.transfer.CategoryTree;
 
 import javax.sql.DataSource;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * слой сервиса для User Controller
@@ -66,8 +67,55 @@ public class UserService {
         return userDao.getDataSource();
     }
 
+    public List<Ad> getAdvs(int maxAdvertsNumber) {
+        return adDao.getAdvs(maxAdvertsNumber, 0, 0);
+    }
+
+    public List<Ad> getAdvs(int maxAdvertsNumber, int categoryId, int cityId) {
+        return adDao.getAdvs(maxAdvertsNumber, categoryId, cityId);
+    }
+
+    public List<City> getCityListWithSelected(int cityId) {
+        List<City> cityList = getCityList();
+        ((LinkedList<City>) cityList).addFirst(new City(0, "Any Location"));
+
+        for (City city : cityList) {
+            if (city.getId() == cityId) {
+                ((LinkedList<City>) cityList).addFirst(city);
+                break;
+            }
+        }
+        return cityList;
+    }
+
+    public List<CategoryTree> getCategoryListWithSelected(int categoryId) {
+        List<CategoryTree> categoryTreeList = getCategoryList();
+        ((LinkedList<CategoryTree>) categoryTreeList).addFirst(new CategoryTree(0, "Any category", 0));
+
+        for (CategoryTree category : categoryTreeList) {
+            if (category.getId() == categoryId) {
+                ((LinkedList<CategoryTree>) categoryTreeList).addFirst(category);
+                break;
+            }
+        }
+        return categoryTreeList;
+    }
+
+    private List<CategoryTree> getCategoryList() {
+        return CategoryTree.categoryListToTree(new LinkedList<>(categoryDao.getAll()));
+    }
+
+    public List<City> getCityList() {
+        return new LinkedList<>(cityDao.getAllCities());
+    }
+
     public User selectByLogin(String login) {
-        return userDao.selectByLogin(login).get();
+        Optional<User> user = userDao.selectByLogin(login);
+        if (user.isPresent()){
+            return user.get();
+        }
+        LOGGER.error("NPE in selectByLogin of {} with params {}", this.getClass().getSimpleName(), login);
+        throw new NullPointerException();
     }
 
     public User selectById(int id) {

@@ -10,13 +10,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.innopolis.byme.entity.Ad;
+import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.Image;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.ImageUploadException;
-import ru.innopolis.byme.service.AdService;
-import ru.innopolis.byme.service.CategoryService;
-import ru.innopolis.byme.service.ImageService;
-import ru.innopolis.byme.service.UserService;
+import ru.innopolis.byme.service.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -33,7 +31,9 @@ public class AdController {
     @Autowired
     private AdService adService;
     @Autowired
-    private UserService userService;
+    private MainService mainService;
+    @Autowired
+    private CityService cityService;
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String ad(Model model, Principal principal) {
@@ -74,7 +74,7 @@ public class AdController {
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String editAd(@PathVariable int id, Model model, Principal principal) {
         LOGGER.info("mapping get /edit/" + id);
-        User user = userService.selectByLogin(principal.getName());
+        User user = mainService.selectByLogin(principal.getName());
         LOGGER.info(" user = {}", user);
         Ad ad = adService.selectById(id);
         LOGGER.info(" ad = {}", ad);
@@ -126,14 +126,24 @@ public class AdController {
         LOGGER.info("mapping get /ad/" + id);
         Ad ad = adService.selectById(id);
         Image image = imageService.getImageByAd(id);
-        User user = userService.selectById(ad.getUserId());
+        User user = mainService.selectById(ad.getUserId());
+        City city = cityService.selectByUser(user);
         LOGGER.info("user: {}", user);
 
         model.addAttribute("category", categoryService.getCategory(ad.getCategoryId()));
         model.addAttribute("ad", ad);
         model.addAttribute("image", image.getImg());
         model.addAttribute("seller", user);
-        model.addAttribute("user", principal.getName());
+        softPrincipalCheck(model, principal);
+        model.addAttribute("city", city);
         return "ad_view";
+    }
+
+    private void softPrincipalCheck(Model model, Principal principal) {
+        try {
+            model.addAttribute("user", principal.getName());
+        } catch (NullPointerException e){
+            model.addAttribute("user", null);
+        }
     }
 }

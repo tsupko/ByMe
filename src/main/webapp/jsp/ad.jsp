@@ -9,9 +9,9 @@
     <%--***************************************************--%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>New Advertisement</title>
+    <title>New Ad</title>
     <%--***************************************************--%>
-    <%--                 магия Bootstrap                   --%>
+    <%--                  магия Bootstrap                  --%>
     <%--***************************************************--%>
     <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>"
           rel="stylesheet" id="bootstrap-css">
@@ -54,7 +54,7 @@
 <div class="container">
     <c:if test="${param.error != null}">
         <div class="alert alert-danger" role="alert">
-            <strong>Oh snap!</strong> Change a few things up and try submitting again.
+            Please change a few things and try submitting again.
         </div>
     </c:if>
     <div class="navPadding">
@@ -62,10 +62,10 @@
             <h3>Advert</h3>
             <table class="table">
                 <tr>
-                    <td>Category</td>
+                    <td><label for="category">Category</label></td>
                     <td>
                         <div class="form-group">
-                            <select class="form-control" name="categoryId">
+                            <select id="category" class="form-control" name="categoryId">
                                 <c:forEach var="item" items="${categories}">
                                     <option value="${item.id}" ${item.id == selected ? 'selected' : ''}>${item.name}</option>
                                 </c:forEach>
@@ -74,30 +74,28 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Title</td>
-                    <td><input class="form-control" type="text" name="title" required autofocus value="${ad.title}">
-                        <input type=text hidden name="hidden"></td>
+                    <td><label for="title">Title</label></td>
+                    <td><input id="title" class="form-control" type="text" name="title" required autofocus value="${ad.title}">
+                        <label><input type="text" name="hidden" hidden></label></td>
                 </tr>
                 <tr>
-                    <td>Description</td>
-                    <td><textarea class="form-control" name="text" rows="6" maxlength="3000"
+                    <td><label for="description">Description</label></td>
+                    <td><textarea id="description" class="form-control" name="text" rows="6" maxlength="3000"
                                   required>${ad.text}</textarea></td>
                 </tr>
                 <tr>
-                    <td>Price</td>
+                    <td><label for="max">Price</label></td>
                     <td><input id="max" class="form-control" type="text" name="price" required pattern="\d+(\.\d{2})?" value="${ad.price}"/></td>
                 </tr>
                 <tr>
                     <td>Photo</td>
-                    <td>
-                            <img class="img-responsive" src="/static/repo/${image == null ? 'no_image.jpg' : image}" width="300">
-                    </td>
+                    <td><img class="img-responsive" src="/static/repo/${image == null ? 'no_image.jpg' : image}" width="300" alt="Photo"></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
                         <input type="file" class="form-control-file" name="imageFile" accept="image/gif,image/png,image/jpeg"/>
-                        <form:errors path="*" cssClass="error" />
+                        <form:errors path="image" cssClass="error"/>
                     </td>
                 </tr>
                 <tr>

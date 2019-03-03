@@ -14,7 +14,7 @@ import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 import ru.innopolis.byme.service.AdService;
 import ru.innopolis.byme.service.CityService;
-import ru.innopolis.byme.service.UserService;
+import ru.innopolis.byme.service.MainService;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -26,7 +26,7 @@ public class AccountController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
-    private UserService userService;
+    private MainService mainService;
     @Autowired
     private CityService cityService;
     @Autowired
@@ -35,8 +35,8 @@ public class AccountController {
     @RequestMapping(value = "/account", method = RequestMethod.GET)
     public String showUserAccount(Model model, Principal principal) {
         String login = principal.getName();
-        User user = userService.selectByLogin(login);
-        Collection<City> cities = userService.getCityList();
+        User user = mainService.selectByLogin(login);
+        Collection<City> cities = cityService.getCityList();
         City city = cityService.selectByUser(user);
         Collection<Ad> ads = adService.selectByUser(user);
         model.addAttribute("account", user);
@@ -49,7 +49,7 @@ public class AccountController {
     @RequestMapping(value = "/account", method = RequestMethod.POST)
     public String changeSome(@ModelAttribute("account") User user, Model model) {
         try {
-            userService.update(user);
+            mainService.update(user);
         } catch (UserLoginAlreadyExistsException e){
             model.addAttribute("error", e.getMessage());
             return "redirect:/account";

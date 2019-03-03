@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import ru.innopolis.byme.service.UserService;
+import ru.innopolis.byme.service.MainService;
 
 @Configuration
 @EnableWebSecurity
@@ -21,9 +21,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String USER_BY_USER = "SELECT login, password, true as enabled FROM public.user WHERE login = ?";
     private static final String USER_BY_ROLE = "SELECT login, 'USER' FROM public.user WHERE login = ?";
 
-    private final UserService service;
+    private final MainService service;
 
-    public SecurityConfig(UserService service) {
+    public SecurityConfig(MainService service) {
         this.service = service;
     }
 
@@ -55,6 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .logout()
                 .logoutSuccessUrl("/")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
                 .permitAll()
                 .and()
             .rememberMe()

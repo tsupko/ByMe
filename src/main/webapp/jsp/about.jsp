@@ -37,7 +37,6 @@
                 <li><a href="<c:url value="/account"/>">Account</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <jsp:useBean id="user" scope="request" type="java.lang.String"/>
                 <c:if test="${not empty user}">
                     <li><a href="<c:url value="/account"/>">${user}</a></li>
                 </c:if>

@@ -2,15 +2,14 @@ package ru.innopolis.byme.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.innopolis.byme.dao.api.AdDao;
-import ru.innopolis.byme.dao.api.CityDao;
-import ru.innopolis.byme.dao.api.UserDao;
 import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.User;
+import ru.innopolis.byme.service.*;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -21,23 +20,20 @@ public class AccountController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 
-    private final UserDao userDao;
-    private final CityDao cityDao;
-    private final AdDao adDao;
-
-    public AccountController(UserDao userDao, CityDao cityDao, AdDao adDao) {
-        this.userDao = userDao;
-        this.cityDao = cityDao;
-        this.adDao = adDao;
-    }
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CityService cityService;
+    @Autowired
+    private AdService adService;
 
     @RequestMapping(value = "/account", method = RequestMethod.GET)
     public String showUserAccount(Model model, Principal principal) {
         String login = principal.getName();
-        User user = userDao.selectByLogin(login).get();
-        Collection<City> cities = cityDao.getAllCities();
-        City city = cityDao.selectById(user.getCityId()).get();
-        Collection<Ad> ads = adDao.selectByUserId(user.getId());
+        User user = userService.selectByLogin(login);
+        Collection<City> cities = userService.getCityList();
+        City city = cityService.selectByUser(user);
+        Collection<Ad> ads = adService.selectByUser(user);
         model.addAttribute("account", user);
         model.addAttribute("city", city);
         model.addAttribute("cities", cities);
@@ -47,7 +43,7 @@ public class AccountController {
 
     @RequestMapping(value = "/account", method = RequestMethod.POST)
     public String changeSome(@ModelAttribute("account") User user) {
-        userDao.update(user);
+        userService.update(user);
         return "redirect:/account";
     }
 

@@ -10,7 +10,6 @@ import ru.innopolis.byme.dao.api.CategoryDao;
 import ru.innopolis.byme.dao.api.CityDao;
 import ru.innopolis.byme.dao.api.UserDao;
 import ru.innopolis.byme.entity.Ad;
-import ru.innopolis.byme.entity.Category;
 import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
@@ -42,7 +41,7 @@ public class UserService {
 
     @Autowired
     public UserService(PasswordEncoder encoder, UserDao userDao, CityDao cityDao, CategoryDao categoryDao) {
-        LOGGER.info("создали UserService");
+        LOGGER.debug("создали UserService");
         this.encoder = encoder;
         this.userDao = userDao;
         this.cityDao = cityDao;
@@ -50,24 +49,24 @@ public class UserService {
     }
 
     public void saveUser(User user) throws UserLoginAlreadyExistsException {
-        LOGGER.info("регистрируем нового пользователя в БД");
+        LOGGER.debug("регистрируем нового пользователя в БД");
         user.setPassword(encoder.encode(user.getPassword()));
         userDao.create(user);
     }
 
     public void changePasswUser(User user) {
-        LOGGER.info("Изменение пароля для пользователя " + user);
+        LOGGER.debug("Изменение пароля для пользователя " + user);
         user.setPassword(encoder.encode(user.getPassword()));
         userDao.updatePass(user);
     }
 
     public User newUser() {
-        LOGGER.info("создаем пользователя");
+        LOGGER.debug("создаем пользователя");
         return new User();
     }
 
     public PasswordEncoder getEncoder() {
-        LOGGER.info("запрос на получение кодировки");
+        LOGGER.debug("запрос на получение кодировки");
         return encoder;
     }
 
@@ -88,9 +87,9 @@ public class UserService {
         ((LinkedList<City>) cityList).addFirst(new City(0, "Any Location"));
 
         Iterator<City> cityIterator = cityList.iterator();
-        while (cityIterator.hasNext()){
+        while (cityIterator.hasNext()) {
             City city = cityIterator.next();
-            if(city.getId() == cityId){
+            if (city.getId() == cityId) {
                 City currentCity = city;
                 ((LinkedList<City>) cityList).addFirst(currentCity);
                 break;
@@ -104,9 +103,9 @@ public class UserService {
         ((LinkedList<CategoryTree>) categoryTreeList).addFirst(new CategoryTree(0, "Any category", 0));
 
         Iterator<CategoryTree> categoryTreeIterator = categoryTreeList.iterator();
-        while (categoryTreeIterator.hasNext()){
+        while (categoryTreeIterator.hasNext()) {
             CategoryTree category = categoryTreeIterator.next();
-            if(category.getId() == categoryId){
+            if (category.getId() == categoryId) {
                 CategoryTree currentCategory = category;
                 ((LinkedList<CategoryTree>) categoryTreeList).addFirst(currentCategory);
                 break;
@@ -115,7 +114,7 @@ public class UserService {
         return categoryTreeList;
     }
 
-    public List<CategoryTree> getCategoryList() {
+    private List<CategoryTree> getCategoryList() {
         return CategoryTree.categoryListToTree(new LinkedList<>(categoryDao.getAll()));
     }
 
@@ -123,11 +122,21 @@ public class UserService {
         return new LinkedList<>(cityDao.getAllCities());
     }
 
-    public User selectByLogin(String login){
+    public User selectByLogin(String login) {
         return userDao.selectByLogin(login).get();
     }
 
-    public User selectById(int id){
-        return userDao.selectById(id).get();
+    public User selectById(int id) {
+        Optional<User> user = userDao.selectById(id);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            LOGGER.error("NPE in selectById with params:{}", id);
+            throw new NullPointerException();
+        }
+    }
+
+    public void update(User user) {
+        userDao.update(user);
     }
 }

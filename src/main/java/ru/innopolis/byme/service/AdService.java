@@ -8,6 +8,7 @@ import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.User;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,10 @@ public class AdService {
         newAd.setPrice(ad.getPrice());
         newAd.setPriceMin(new BigDecimal(0));
         adDao.update(newAd);
+    }
+
+    public Collection<Ad> selectByUser(User user){
+        return adDao.selectByUserId(user.getId());
     }
 
     public Ad selectById(int id) {

@@ -121,7 +121,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><a href="<c:url value="/password"/>">Change password</a></td>
+                            <td><a href="<c:url value="/password"/>">Change Password</a></td>
                             <td><input class="btn btn-success" type="submit" value="Update"></td>
                         </tr>
                         </tbody>

@@ -62,7 +62,7 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="<c:url value="/about"/>">About</a></li>
-                <li><a href="<c:url value="/ad/new"/>">Add</a></li>
+                <li><a href="<c:url value="/ad/new"/>">Sell</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">

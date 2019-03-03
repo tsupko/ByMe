@@ -126,7 +126,7 @@
                 <ul class="nav navbar-nav">
                         <li><a href="<c:url value="/about"/>">About</a></li>
                     <c:if test="${not empty user}">
-                        <li><a href="<c:url value="/ad/new"/>">Add</a></li>
+                        <li><a href="<c:url value="/ad/new"/>">Sell</a></li>
                         <li><a href="<c:url value="/account"/>">Account</a></li>
                     </c:if>
                 </ul>

@@ -5,19 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.innopolis.byme.dao.api.AdDao;
-import ru.innopolis.byme.dao.api.CategoryDao;
-import ru.innopolis.byme.dao.api.CityDao;
 import ru.innopolis.byme.dao.api.UserDao;
-import ru.innopolis.byme.entity.Ad;
-import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
-import ru.innopolis.byme.transfer.CategoryTree;
 
 import javax.sql.DataSource;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 /**
  * слой сервиса для User Controller
@@ -27,18 +20,13 @@ import java.util.stream.Collectors;
  * @since 21.02.2019
  */
 @Component
-public class UserService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
-
-    private final PasswordEncoder encoder;
-    private final UserDao userDao;
+public class MainService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainService.class);
 
     @Autowired
-    public UserService(PasswordEncoder encoder, UserDao userDao) {
-        LOGGER.debug("создали UserService");
-        this.encoder = encoder;
-        this.userDao = userDao;
-    }
+    private PasswordEncoder encoder;
+    @Autowired
+    private UserDao userDao;
 
     public void saveUser(User user) throws UserLoginAlreadyExistsException {
         LOGGER.debug("регистрируем нового пользователя в БД");
@@ -67,7 +55,12 @@ public class UserService {
     }
 
     public User selectByLogin(String login) {
-        return userDao.selectByLogin(login).get();
+        Optional<User> user = userDao.selectByLogin(login);
+        if (user.isPresent()){
+            return user.get();
+        }
+        LOGGER.error("NPE in selectByLogin of {} with params {}", this.getClass().getSimpleName(), login);
+        throw new NullPointerException();
     }
 
     public User selectById(int id) {

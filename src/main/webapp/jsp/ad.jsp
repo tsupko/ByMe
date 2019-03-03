@@ -45,7 +45,7 @@
                 <li><a href="<c:url value="/account"/>">Account</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="<c:url value="/account"/>">Hello, ${user}</a></li>
+                <li><a href="<c:url value="/account"/>">${user}</a></li>
                 <li><a href="<c:url value="/logout"/>">Log Out</a></li>
             </ul>
         </div>
@@ -59,6 +59,7 @@
     </c:if>
     <div class="navPadding">
         <form:form method="post" modelAttribute="ad" enctype="multipart/form-data">
+            <h3>Advert</h3>
             <table class="table">
                 <tr>
                     <td><label for="category">Category</label></td>

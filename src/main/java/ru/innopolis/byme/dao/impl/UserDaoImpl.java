@@ -11,7 +11,8 @@ import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -64,14 +65,15 @@ public class UserDaoImpl implements UserDao {
      * @param user объект, для которого будет создана запись в БД
      */
     @Override
-    public void create(User user) throws UserLoginAlreadyExistsException {
+    public void create(User user) {
         if (user == null) {
             LOGGER.error("Попытка создавать запись в БД для user == null ");
             return;
         }
         if (exists(user.getLogin())) {
-            throw new UserLoginAlreadyExistsException("Пользователь c данным логином уже зарегистрирован: login = " + user.getLogin());
+            throw new UserLoginAlreadyExistsException("user already exist: login = " + user.getLogin());
         } else {
+
             LOGGER.debug("Создание пользователя {}", user);
             this.jdbcTemplate.execute(INSERT_USER, (PreparedStatementCallback<User>) stmt -> {
                 stmt.setString(1, user.getLogin());
@@ -89,7 +91,7 @@ public class UserDaoImpl implements UserDao {
                     }
                 } catch (SQLException e) {
                     LOGGER.error("Исключение при создании пользователя");
-                    throw new RuntimeException(e);
+                    throw new UserLoginAlreadyExistsException("user email already exist: email = " + user.getEmail());
                 }
                 return user;
             });
@@ -178,17 +180,35 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public void update(User user) {
-        this.jdbcTemplate.execute(UPDATE_USER, (PreparedStatementCallback<Boolean>) stmt -> {
-            stmt.setString(1, user.getPassword());
-            stmt.setString(2, user.getName());
-            stmt.setString(3, user.getEmail());
-            stmt.setString(4, user.getPhoneNumber());
-            stmt.setInt(5, user.getCityId());
-            stmt.setInt(6, user.getId());
-            stmt.execute();
-            LOGGER.info("Пользователь с id={} изменен успешно. Инфо: {}", user.getId(), user.toString());
-            return true;
+        User current = selectById(user.getId()).orElse(new User());
+
+        if (!current.getEmail().replaceAll("\"", "").equals(user.getEmail())) {
+            if (checkEmail(user))
+                throw new UserLoginAlreadyExistsException("user email already exist: email = " + user.getEmail());
+        } else {
+            this.jdbcTemplate.execute(UPDATE_USER, (PreparedStatementCallback<Boolean>) stmt -> {
+                stmt.setString(1, user.getPassword());
+                stmt.setString(2, user.getName());
+                stmt.setString(3, user.getEmail());
+                stmt.setString(4, user.getPhoneNumber());
+                stmt.setInt(5, user.getCityId());
+                stmt.setInt(6, user.getId());
+                stmt.execute();
+                LOGGER.info("Пользователь с id={} изменен успешно. Инфо: {}", user.getId(), user.toString());
+                return true;
+            });
+        }
+    }
+
+    private boolean checkEmail(User user) {
+        String sql = "select id from public.user where email = ?";
+
+        LOGGER.debug("проверяем не зарегистрирована ли почта?");
+        Boolean execute = this.jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) stmt -> {
+            stmt.setString(1, user.getEmail());
+            return stmt.executeQuery().next();
         });
+        return Optional.ofNullable(execute).orElse(false);
     }
 
     private static final String UPDATE_USER_PASS = "update public.user" +
@@ -200,7 +220,7 @@ public class UserDaoImpl implements UserDao {
             stmt.setString(1, user.getPassword());
             stmt.setInt(2, user.getId());
             stmt.execute();
-            LOGGER.info("Пароль пользователя с id={} изменен успешно. ", user.getId(), user.toString());
+            LOGGER.info("Пароль пользователя с id={} изменен успешно. {}", user.getId(), user.toString());
             return true;
         });
     }

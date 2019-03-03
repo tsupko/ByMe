@@ -24,6 +24,7 @@
             background-image: url(https://png.pngtree.com/element_origin_min_pic/16/12/09/77619c843826cf8c9184bcf626d14f49.jpg);
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
+
         .register {
             padding-top: 70px;
         }
@@ -88,7 +89,7 @@
                                     ${param.error}
                                 </div>
                             </c:if>
-                            <form role="form">
+                            <form:form role="form">
                                 <input type=hidden name="id" value="${user.id}"/>
                                 <input type=hidden name="login" value="${user.login}"/>
 
@@ -101,7 +102,7 @@
                                     <span id="confirmMessage" class="confirmMessage"></span>
                                 </div>
                                 <input type="submit" value="Save" class="btn btn-info btn-block" id="submit" disabled>
-                            </form>
+                            </form:form>
                         </div>
                     </div>
                 </div>

@@ -55,7 +55,7 @@
                 <li><a href="<c:url value="/ad/new"/>">Sell</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="<c:url value="/account"/>">Hello, ${account.login}</a></li>
+                <li><a href="<c:url value="/account"/>">${account.login}</a></li>
                 <li><a href="<c:url value="/logout"/>">Log Out</a></li>
             </ul>
         </div>
@@ -68,6 +68,7 @@
 <div class="container-target">
     <div class="container">
         <div class="row">
+
             <form:form method="post" action="/account">
                 <div class="col-12">
                     <h3>Account</h3>
@@ -76,12 +77,16 @@
                     <input type=hidden name="password" value="${account.password}"/>
                     <input type=hidden name="roleId" value="${account.roleId}"/>
                     <input type=hidden name="actual" value="${account.actual}"/>
+                    <c:if test="${param.error != null}">
+                        <div class="alert alert-danger" role="alert">
+                                ${param.error}
+                        </div>
+                    </c:if>
                     <table class="table">
-                        <thead class="thead-dark">
                         <tbody>
                         <tr>
-                            <td>Login</td>
-                            <td>${account.login}</td>
+                            <td style="width: 25%">Login</td>
+                            <td style="width: 75%">${account.login}</td>
                         <tr>
                             <td><label for="name">Username</label></td>
                             <td><input id="name" class="form-control" type="text" name="name" value=${account.name} required></td>

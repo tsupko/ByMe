@@ -7,7 +7,6 @@ import ru.innopolis.byme.entity.Category;
 import ru.innopolis.byme.transfer.CategoryTree;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,12 +27,9 @@ public class CategoryService {
         List<CategoryTree> categoryTreeList = getCategoryList();
         ((LinkedList<CategoryTree>) categoryTreeList).addFirst(new CategoryTree(0, "Any category", 0));
 
-        Iterator<CategoryTree> categoryTreeIterator = categoryTreeList.iterator();
-        while (categoryTreeIterator.hasNext()) {
-            CategoryTree category = categoryTreeIterator.next();
+        for (CategoryTree category : categoryTreeList) {
             if (category.getId() == categoryId) {
-                CategoryTree currentCategory = category;
-                ((LinkedList<CategoryTree>) categoryTreeList).addFirst(currentCategory);
+                ((LinkedList<CategoryTree>) categoryTreeList).addFirst(category);
                 break;
             }
         }

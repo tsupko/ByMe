@@ -38,7 +38,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${not empty user}">
-                    <li><a href="<c:url value="/account"/>">Hello, ${user}</a></li>
+                    <li><a href="<c:url value="/account"/>">${user}</a></li>
                 </c:if>
                 <c:if test="${empty user}">
                     <li><a href="<c:url value="/registration"/>">Registration</a></li>

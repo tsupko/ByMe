@@ -31,7 +31,7 @@ public class AdController {
     @Autowired
     private AdService adService;
     @Autowired
-    private UserService userService;
+    private MainService mainService;
     @Autowired
     private CityService cityService;
 
@@ -74,7 +74,7 @@ public class AdController {
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String editAd(@PathVariable int id, Model model, Principal principal) {
         LOGGER.info("mapping get /edit/" + id);
-        User user = userService.selectByLogin(principal.getName());
+        User user = mainService.selectByLogin(principal.getName());
         LOGGER.info(" user = {}", user);
         Ad ad = adService.selectById(id);
         LOGGER.info(" ad = {}", ad);
@@ -122,18 +122,28 @@ public class AdController {
     }
 
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-    public String viewAd(@PathVariable int id, Model model) {
+    public String viewAd(@PathVariable int id, Model model, Principal principal) {
         LOGGER.info("mapping get /ad/" + id);
         Ad ad = adService.selectById(id);
         Image image = imageService.getImageByAd(id);
-        User user = userService.selectById(ad.getUserId());
+        User user = mainService.selectById(ad.getUserId());
         City city = cityService.selectByUser(user);
         LOGGER.info("user: {}", user);
+
         model.addAttribute("category", categoryService.getCategory(ad.getCategoryId()));
         model.addAttribute("ad", ad);
         model.addAttribute("image", image.getImg());
         model.addAttribute("seller", user);
+        softPrincipalCheck(model, principal);
         model.addAttribute("city", city);
         return "ad_view";
+    }
+
+    private void softPrincipalCheck(Model model, Principal principal) {
+        try {
+            model.addAttribute("user", principal.getName());
+        } catch (NullPointerException e){
+            model.addAttribute("user", null);
+        }
     }
 }

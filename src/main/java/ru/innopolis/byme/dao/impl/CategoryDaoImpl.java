@@ -60,7 +60,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public Category selectById(int id) {
-        LOGGER.debug("Выбор категории по id={}: {}", id);
+        LOGGER.debug("Выбор категории по id={} ", id);
         Category category = new Category();
         this.jdbcTemplate.execute(SELECT_CATEGORY_BY_ID, (PreparedStatementCallback<Category>) stmt -> {
             stmt.setInt(1,id);

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <%--***************************************************--%>
@@ -23,6 +24,7 @@
             background-image: url(https://png.pngtree.com/element_origin_min_pic/16/12/09/77619c843826cf8c9184bcf626d14f49.jpg);
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
+
         .register {
             padding-top: 70px;
         }
@@ -58,16 +60,17 @@
                         <div class="panel-body">
                             <c:if test="${param.error != null}">
                                 <div class="alert alert-danger" role="alert">
-                                    Invalid username or password.
+                                    Invalid login or password
                                 </div>
                             </c:if>
-                            <form role="form">
+                            <form:form role="form">
                                 <div class="form-group">
                                     <input required class="form-control" type="text" name="login" placeholder="login">
                                     <div id="errLast"></div>
                                 </div>
                                 <div class="form-group">
-                                    <input required type="password" name="password" class="form-control password-field" placeholder="password"/>
+                                    <input required type="password" name="password" class="form-control password-field"
+                                           placeholder="password"/>
                                 </div>
                                 <div class="check-box">
                                     <label>
@@ -76,7 +79,7 @@
                                     </label>
                                 </div>
                                 <input type="submit" value="LogIn" class="btn btn-info btn-block">
-                            </form>
+                            </form:form>
                         </div>
                     </div>
                 </div>

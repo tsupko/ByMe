@@ -31,7 +31,7 @@ public class AccountController {
     public String showUserAccount(Model model, Principal principal) {
         String login = principal.getName();
         User user = userService.selectByLogin(login);
-        Collection<City> cities = userService.getCityList();
+        Collection<City> cities = cityService.getCityList();
         City city = cityService.selectByUser(user);
         Collection<Ad> ads = adService.selectByUser(user);
         model.addAttribute("account", user);

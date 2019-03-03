@@ -10,6 +10,8 @@ import ru.innopolis.byme.entity.Ad;
 import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.form.AdFilter;
+import ru.innopolis.byme.service.AdService;
+import ru.innopolis.byme.service.CategoryService;
 import ru.innopolis.byme.service.CityService;
 import ru.innopolis.byme.service.UserService;
 import ru.innopolis.byme.transfer.CategoryTree;
@@ -26,9 +28,13 @@ public class MainController {
     private static final int ALL_CITIES_ID = 0;
 
     @Autowired
+    private AdService adService;
+    @Autowired
     private UserService userService;
     @Autowired
     private CityService cityService;
+    @Autowired
+    private CategoryService categoryService;
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
@@ -56,18 +62,18 @@ public class MainController {
     public String index(Model model, Principal principal) {
         LOGGER.info("index обработан userController get");
 
-        List<Ad> advs = userService.getAdvs(MAX_ADVERT_NUMBER);
-        List<City> cityList = userService.getCityListWithSelected(ALL_CITIES_ID);
-        List<CategoryTree> categoryList  = userService.getCategoryListWithSelected(ALL_CATEGORIES_ID);
+        List<Ad> advs = adService.getAdvs(MAX_ADVERT_NUMBER);
+        List<City> cityList = cityService.getCityListWithSelected(ALL_CITIES_ID);
+        List<CategoryTree> categoryList  = categoryService.getCategoryListWithSelected(ALL_CATEGORIES_ID);
 
         return buildMainModel(model, principal, advs, cityList, categoryList);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String index(AdFilter filter, Model model, Principal principal){
-        List<Ad> advs = userService.getAdvs(MAX_ADVERT_NUMBER, filter.getCategoryId(), filter.getCityId());
-        List<City> cityList = userService.getCityListWithSelected(filter.getCityId());
-        List<CategoryTree> categoryList  = userService.getCategoryListWithSelected(filter.getCategoryId());
+        List<Ad> advs = adService.getAdvs(MAX_ADVERT_NUMBER, filter.getCategoryId(), filter.getCityId());
+        List<City> cityList = cityService.getCityListWithSelected(filter.getCityId());
+        List<CategoryTree> categoryList  = categoryService.getCategoryListWithSelected(filter.getCategoryId());
 
         return buildMainModel(model, principal, advs, cityList, categoryList);
     }

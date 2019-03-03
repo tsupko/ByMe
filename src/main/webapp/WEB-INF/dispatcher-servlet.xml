@@ -39,7 +39,7 @@
 
     <bean id="messageSource"
           class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
-          p:basename="/WEB-INF/messages" />
+          p:basename="classpath:messages" />
 
     <mvc:annotation-driven/>
     <mvc:resources mapping="/static/**" location="/static/" cache-period="1"/>

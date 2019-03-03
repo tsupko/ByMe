@@ -25,7 +25,7 @@ public class CategoryService {
 
     public List<CategoryTree> getCategoryListWithSelected(int categoryId) {
         List<CategoryTree> categoryTreeList = getCategoryList();
-        ((LinkedList<CategoryTree>) categoryTreeList).addFirst(new CategoryTree(0, "Any category", 0));
+        ((LinkedList<CategoryTree>) categoryTreeList).addFirst(new CategoryTree(0, "Any Category", 0));
 
         for (CategoryTree category : categoryTreeList) {
             if (category.getId() == categoryId) {

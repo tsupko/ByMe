@@ -92,7 +92,7 @@ public class AdDaoImpl implements AdDao {
      * sql-скрипт для выбора объявлений по автору (user_id)
      */
     private static final String SELECT_AD_BY_USER_ID = "select * from ad" +
-            " where user_id = ? and is_actual = true order by id";
+            " where user_id = ? and is_actual = true order by id desc ";
 
     /**
      * выбор объявлений из таблицы ad,

@@ -80,7 +80,7 @@
                 <td><input id="price" class="form-control" type="text" name="price" value="${ad.price}" disabled></td>
             </tr>
             <tr>
-                <td>Photo</td>
+                <td><label>Photo</label></td>
                 <td><img class="img-responsive" src="/static/repo/${image == null ? 'no_image.jpg' : image}" width="300" alt="Photo"></td>
             </tr>
             <tr>

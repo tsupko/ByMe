@@ -74,10 +74,10 @@ public class CityDaoImpl implements CityDao {
     @Override
     public Optional<City> selectById(int id) {
         if (id <= 0) {
-            LOGGER.error("Некорректный id={}: {}", id);
+            LOGGER.error("Некорректный id={}", id);
             return Optional.empty ();
         }
-        LOGGER.debug("Выбор города по id={}: {}", id);
+        LOGGER.debug("Выбор города по id={}", id);
         City city = new City();
         this.jdbcTemplate.execute(SELECT_CITY_BY_ID, (PreparedStatementCallback<City>) stmt -> {
             stmt.setInt(1,id);

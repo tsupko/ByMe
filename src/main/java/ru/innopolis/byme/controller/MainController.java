@@ -17,7 +17,7 @@ import ru.innopolis.byme.form.AdFilter;
 import ru.innopolis.byme.service.AdService;
 import ru.innopolis.byme.service.CategoryService;
 import ru.innopolis.byme.service.CityService;
-import ru.innopolis.byme.service.UserService;
+import ru.innopolis.byme.service.MainService;
 import ru.innopolis.byme.transfer.CategoryTree;
 
 import java.security.Principal;
@@ -34,7 +34,7 @@ public class MainController {
     @Autowired
     private AdService adService;
     @Autowired
-    private UserService userService;
+    private MainService mainService;
     @Autowired
     private CityService cityService;
     @Autowired
@@ -44,7 +44,7 @@ public class MainController {
     public String registration(Model model) {
         LOGGER.info("registration обработан userController get");
         model.addAttribute("error", null);
-        model.addAttribute("user", userService.newUser());
+        model.addAttribute("user", mainService.newUser());
         model.addAttribute("cities", cityService.getAll());
         return "registration";
     }
@@ -53,7 +53,7 @@ public class MainController {
     public String registration(@ModelAttribute("user") User user, Model model) {
         LOGGER.info("registration обработан userController POST");
         try {
-            userService.saveUser(user);
+            mainService.saveUser(user);
             LOGGER.info("добавление USER в БД");
         } catch (UserLoginAlreadyExistsException e){
             LOGGER.info("пользователь под данным login уже зарегистрирован");
@@ -112,7 +112,7 @@ public class MainController {
     @RequestMapping(value = "/password", method = RequestMethod.GET)
     public String changePassword(Model model, Principal principal) {
         String login = principal.getName();
-        User user = userService.selectByLogin(login);
+        User user = mainService.selectByLogin(login);
         model.addAttribute("user", user);
         return "password";
     }
@@ -121,7 +121,7 @@ public class MainController {
     public String changePassword(@ModelAttribute("user") User user, Model model) {
         try {
             LOGGER.info("изменение пароля user " + user);
-            userService.changePasswUser(user);
+            mainService.changePasswUser(user);
         } catch (Exception e) {
             LOGGER.info("ошибка изменения пароля");
             model.addAttribute("error", "error changing password");

@@ -16,7 +16,7 @@
           rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <%-- css styles --%>
+    <%--    css styles--%>
     <style>
         body {
             margin: 0;
@@ -30,26 +30,25 @@
         }
     </style>
     <script type="text/javascript">
-        var pass1 = document.getElementById('pass1').valueOf();
-        var pass2 = document.getElementById('pass2').valueOf();
-
         function passwordEqualsValidation() {
+            var pass1 = document.getElementById('pass1');
+            var pass2 = document.getElementById('pass2');
             var message = document.getElementById('confirmMessage');
             var goodColor = "#66cc66";
             var badColor = "#ff6666";
-            if (pass1 === pass2) {
+            if (pass1.value === pass2.value) {
                 pass2.style.backgroundColor = goodColor;
                 message.style.color = goodColor;
-                message.innerHTML = "Passwords match."
+                message.innerHTML = "Passwords Match"
             } else {
                 pass2.style.backgroundColor = badColor;
                 message.style.color = badColor;
-                message.innerHTML = "Passwords do not match."
+                message.innerHTML = "Passwords Do Not Match!"
             }
         }
 
-        function checkPass() {
-            document.getElementById('submit').disabled = pass1 !== pass2;
+        function check_pass() {
+            document.getElementById('submit').disabled = document.getElementById('pass1').value !== document.getElementById('pass2').value;
         }
     </script>
 </head>
@@ -86,7 +85,7 @@
                         <div class="panel-body">
                             <c:if test="${param.error != null}">
                                 <div class="alert alert-danger" role="alert">
-                                    ${param.error}
+                                        ${param.error}
                                 </div>
                             </c:if>
                             <form:form role="form">

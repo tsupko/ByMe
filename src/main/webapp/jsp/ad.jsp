@@ -29,6 +29,12 @@
             padding-top: 70px;
         }
     </style>
+        <script>
+            var loadFile = function(event) {
+                var output = document.getElementById('output');
+                output.src = URL.createObjectURL(event.target.files[0]);
+            };
+        </script>
 </head>
 <body>
 <%--***************************************************--%>
@@ -89,12 +95,13 @@
                 </tr>
                 <tr>
                     <td>Photo</td>
-                    <td><img class="img-responsive" src="/static/repo/${image == null ? 'no_image.jpg' : image}" width="300" alt="Photo"></td>
+                    <td><img id="output" class="img-responsive" src="/static/repo/${image == null ? 'no_image.jpg' : image}" width="300" alt="Photo"></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
-                        <input type="file" class="form-control-file" name="imageFile" accept="image/gif,image/png,image/jpeg"/>
+                        <input type="file" class="form-control-file" name="imageFile" accept="image/gif,image/png,image/jpeg"
+                               onchange="loadFile(event)"/>
                         <form:errors path="image" cssClass="error"/>
                     </td>
                 </tr>

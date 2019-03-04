@@ -268,7 +268,7 @@ public class AdDaoImpl implements AdDao {
                     "           FROM category\n" +
                     "                  JOIN r ON category.parent_id = r.id\n" +
                     "           ) SELECT id FROM r\n" +
-                    "     ) order by id desc \n";
+                    "     ) order by ad.id desc \n";
         }
         if (i != 0) {
             sql += " limit %d";

@@ -3,6 +3,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <%--***************************************************--%>
@@ -190,8 +192,9 @@
                 <a href="/ad/view/${item.id}">
                     <img class="img-responsive"
                          src="/static/repo/${item.image.img == null ? 'no_image.jpg' : item.image.img}" alt="Photo"></a>
-                <div class="titleBox">${item.title} - ${item.price} &#x20bd; </div>
-            </div>
+                <div class="titleBox">
+                    <fmt:formatNumber groupingUsed="true" value="${item.price}"/>&nbsp;&#x20bd;</div>
+                </div>
         </div>
     </c:forEach>
 </div>

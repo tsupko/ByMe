@@ -1,4 +1,4 @@
-package ru.innopolis.byme.dao;
+package ru.innopolis.byme.dao.api;
 
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.UserLoginAlreadyExistsException;
@@ -16,6 +16,8 @@ public interface UserDao {
     Optional<User> selectByLogin(String login);
 
     void update(User user);
+
+    void updatePass(User user);
 
     void delete(User user);
 

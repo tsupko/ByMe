@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import ru.innopolis.byme.service.UserService;
+import ru.innopolis.byme.service.MainService;
 
 @Configuration
 @EnableWebSecurity
@@ -19,11 +19,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // TODO: 2019-02-21 реализовать данные запросы в DAO
     private static final String USER_BY_USER = "SELECT login, password, true as enabled FROM public.user WHERE login = ?";
-    private static final String USER_BT_ROLE = "SELECT login, 'USER' FROM public.user WHERE login = ?";
+    private static final String USER_BY_ROLE = "SELECT login, 'USER' FROM public.user WHERE login = ?";
 
-    private final UserService service;
+    private final MainService service;
 
-    public SecurityConfig(UserService service) {
+    public SecurityConfig(MainService service) {
         this.service = service;
     }
 
@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .jdbcAuthentication()
                 .dataSource(service.getDataSource())
                 .usersByUsernameQuery(USER_BY_USER)
-                .authoritiesByUsernameQuery(USER_BT_ROLE)
+                .authoritiesByUsernameQuery(USER_BY_ROLE)
                 .passwordEncoder(service.getEncoder());
     }
 
@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/", "/registration")
+                .antMatchers("/", "/registration", "/about", "/ad/view/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -53,12 +53,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("login").passwordParameter("password")
                 .permitAll()
                 .and()
-            .logout().logoutSuccessUrl("/")
-                .permitAll();
+            .logout()
+                .logoutSuccessUrl("/")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+                .and()
+            .rememberMe()
+                .key("ByMeKey");
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web
                 .ignoring()
                 .antMatchers("/static/**");

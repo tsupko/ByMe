@@ -1,4 +1,4 @@
-package ru.innopolis.byme.dao;
+package ru.innopolis.byme.dao.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
+import ru.innopolis.byme.dao.api.CityDao;
 import ru.innopolis.byme.entity.City;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -58,7 +59,7 @@ public class CityDaoImpl implements CityDao {
                 while (rs.next()) {
                     city.setId(rs.getInt(CITY_ID));
                     city.setName(rs.getString(CITY_NAME));
-                    LOGGER.info("Город выбран успешно по name={}: {}. Инфо: {}", name, city.toString());
+                    LOGGER.debug("Город выбран успешно по name={}: {}. Инфо: {}", name, city.toString());
                 }
             } catch (SQLException e) {
                 LOGGER.error("Исключение при выборе города: ", e);
@@ -73,10 +74,10 @@ public class CityDaoImpl implements CityDao {
     @Override
     public Optional<City> selectById(int id) {
         if (id <= 0) {
-            LOGGER.error("Некорректный id={}: {}", id);
+            LOGGER.error("Некорректный id={}", id);
             return Optional.empty ();
         }
-        LOGGER.debug("Выбор города по id={}: {}", id);
+        LOGGER.debug("Выбор города по id={}", id);
         City city = new City();
         this.jdbcTemplate.execute(SELECT_CITY_BY_ID, (PreparedStatementCallback<City>) stmt -> {
             stmt.setInt(1,id);
@@ -84,7 +85,7 @@ public class CityDaoImpl implements CityDao {
                 while (rs.next()) {
                     city.setId(rs.getInt(CITY_ID));
                     city.setName(rs.getString(CITY_NAME));
-                    LOGGER.info("Город выбран успешно по id={}: {}. Инфо: {}", id, city.toString());
+                    LOGGER.debug("Город выбран успешно по id={} Инфо: {}", id, city.toString());
                 }
             } catch (SQLException e) {
                 LOGGER.error("Исключение при выборе города: ", e);
@@ -97,15 +98,15 @@ public class CityDaoImpl implements CityDao {
     private static final String SELECT_ALL_CITIES = "Select * from city";
 
     @Override
-    public Collection<City> getAllCities() {
-        Collection<City> cities = new ArrayList<>();
-        this.jdbcTemplate.execute(SELECT_ALL_CITIES, (PreparedStatementCallback<Collection<City>>) stmt -> {
+    public List<City> getAllCities() {
+        List<City> cities = new ArrayList<>();
+        this.jdbcTemplate.execute(SELECT_ALL_CITIES, (PreparedStatementCallback<List<City>>) stmt -> {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     City city = new City();
                     city.setId(rs.getInt(CITY_ID));
                     city.setName(rs.getString(CITY_NAME));
-                    LOGGER.info(city.toString());
+                    LOGGER.debug(city.toString());
                     cities.add(city);
                 }
             } catch (SQLException e) {

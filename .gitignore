@@ -3,5 +3,5 @@ classes
 lib
 target
 *.iml
-jdbc.properties
+*.properties
 .DS_Store

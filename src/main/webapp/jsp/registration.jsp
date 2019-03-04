@@ -1,21 +1,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <%--***************************************************--%>
-    <%--             мета Bootstrapp                       --%>
+    <%--                   мета Bootstrap                  --%>
     <%--***************************************************--%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-    <title>registration</title>
+    <title>Registration</title>
     <%--***************************************************--%>
-    <%--            магия Bootstrapp                       --%>
+    <%--                  магия Bootstrap                  --%>
     <%--***************************************************--%>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>"
+          rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
     <%--    css styles--%>
     <style>
         body {
@@ -28,9 +28,7 @@
         .register {
             padding-top: 70px;
         }
-
     </style>
-
     <script type="text/javascript">
         function passwordEqualsValidation() {
             var pass1 = document.getElementById('pass1');
@@ -38,7 +36,7 @@
             var message = document.getElementById('confirmMessage');
             var goodColor = "#66cc66";
             var badColor = "#ff6666";
-            if (pass1.value == pass2.value) {
+            if (pass1.value === pass2.value) {
                 pass2.style.backgroundColor = goodColor;
                 message.style.color = goodColor;
                 message.innerHTML = "Passwords Match"
@@ -48,6 +46,10 @@
                 message.innerHTML = "Passwords Do Not Match!"
             }
         }
+
+        function check_pass() {
+            document.getElementById('submit').disabled = document.getElementById('pass1').value !== document.getElementById('pass2').value;
+        }
     </script>
 </head>
 
@@ -55,25 +57,22 @@
 <div class="container">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">ByMeService</a>
+            <a class="navbar-brand" href="<c:url value="/"/>">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/about">About</a></li>
-                <li><a href="/account">Account</a></li>
-                <li><a href="/contact">Contact</a></li>
+                <li><a href="<c:url value="/about"/>">About</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">Home</a></li>
-                <li><a href="/login">LogIn</a></li>
-                <li></li>
+                <li><a href="<c:url value="/"/>">Home</a></li>
+                <li><a href="<c:url value="/login"/>">Log In</a></li>
             </ul>
         </div>
     </div>
 </div>
 
 <div class="register">
-    <form id="details" method="post" action="/registration" modelAttribute="user">
+    <form id="details" method="post" action="<c:url value="/registration"/>">
         <div class="container">
             <div class="row centered-form">
                 <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
@@ -84,64 +83,51 @@
                             </h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <c:if test="${param.error != null}">
+                                <div class="alert alert-danger" role="alert">
+                                        ${param.error}
+                                </div>
+                            </c:if>
+                            <form:form role="form">
                                 <div class="form-group">
-                                    <input
-                                            class="form-control"
-                                            type="text"
-                                            name="login"
-                                            id="login"
-                                            minlength="5" maxlength="30"
-                                            placeholder="login">
-
+                                    <small>login</small>
+                                    <input required class="form-control" type="text" name="login" minlength="1" maxlength="30" placeholder="login">
                                     <div id="errLast"></div>
                                 </div>
                                 <%--валидация пароля--%>
                                 <div class="form-group">
-                                    <input
-                                            type="password"
-                                            name="password"
-                                            id="pass1"
-                                            minlength="5" maxlength="15"
-                                            class="form-control password-field"
-                                            placeholder="password"/>
+                                    <small>password</small>
+                                    <input required type="password" name="password" id="pass1" minlength="5" maxlength="30" class="form-control password-field" placeholder="password"
+                                           onkeyup="passwordEqualsValidation(); return true;" onchange='check_pass();'/>
                                 </div>
                                 <div class="form-group">
-                                    <input
-                                            type="password"
-                                            id="pass2"
-                                            class="form-control password-field"
-                                            placeholder="enter again to validate"
-                                            onkeyup="passwordEqualsValidation(); return false;"/>
+                                    <small>password</small>
+                                    <input required type="password" id="pass2" class="form-control password-field" placeholder="enter again to validate" onkeyup="passwordEqualsValidation(); return false;"
+                                           onchange='check_pass();'/>
                                     <span id="confirmMessage" class="confirmMessage"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input
-                                            type="text"
-                                            name="name"
-                                            id="name"
-                                            minlength="5" maxlength="30"
-                                            class="form-control"
-                                            placeholder="name">
+                                    <small>name</small>
+                                    <input required type="text" name="name" class="form-control" placeholder="name">
                                 </div>
                                 <div class="form-group">
-                                    <input
-                                            type="number"
-                                            name="phoneNumber"
-                                            id="phoneNumber"
-                                            class="form-control phone"
-                                            placeholder="phone">
+                                    <small>phone</small>
+                                    <input required type="number" name="phoneNumber" class="form-control phone" placeholder="phone">
                                 </div>
                                 <div class="form-group">
-                                    <input
-                                            type="text"
-                                            name="email"
-                                            id="email"
-                                            class="form-control"
-                                            placeholder="Email Address"/>
+                                    <small>email</small>
+                                    <input required type="text" name="email" class="form-control" placeholder="Email Address"/>
                                 </div>
-                                <input type="submit" value="Register" class="btn btn-info btn-block">
-                            </form>
+                                <div class="form-group">
+                                    <select class="form-control" name="cityId">
+                                        <c:forEach var="item" items="${cities}">
+                                            <option value="${item.id}"${item.id==selected?'selected':''}>${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <input type="submit" value="Register" class="btn btn-info btn-block" id="submit"
+                                       disabled>
+                            </form:form>
                         </div>
                     </div>
                 </div>

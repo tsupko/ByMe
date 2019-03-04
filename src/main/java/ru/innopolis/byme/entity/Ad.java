@@ -1,5 +1,7 @@
 package ru.innopolis.byme.entity;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
@@ -9,6 +11,8 @@ import java.util.Objects;
  *
  * @author Kuzina Anastasia
  */
+
+@Data
 public class Ad {
 
     private int id;
@@ -23,132 +27,5 @@ public class Ad {
     private boolean confirm;
     private boolean isActual;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public BigDecimal getPriceMin() {
-        return priceMin;
-    }
-
-    public void setPriceMin(BigDecimal priceMin) {
-        this.priceMin = priceMin;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public int getDayCount() {
-        return dayCount;
-    }
-
-    public void setDayCount(int dayCount) {
-        this.dayCount = dayCount;
-    }
-
-    public boolean isConfirm() {
-        return confirm;
-    }
-
-    public void setConfirm(boolean confirm) {
-        this.confirm = confirm;
-    }
-
-    public boolean isActual() {
-        return isActual;
-    }
-
-    public void setActual(boolean isActual) {
-        this.isActual = isActual;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Ad{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", userId=" + userId +
-                ", categoryId=" + categoryId +
-                ", price=" + price +
-                ", priceMin=" + priceMin +
-                ", date=" + date +
-                ", dayCount=" + dayCount +
-                ", confirm=" + confirm +
-                ", isActual=" + isActual +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Ad ad = (Ad) o;
-        return id == ad.id &&
-                userId == ad.userId &&
-                categoryId == ad.categoryId &&
-                dayCount == ad.dayCount &&
-                confirm == ad.confirm &&
-                isActual == ad.isActual &&
-                title.equals(ad.title) &&
-                text.equals(ad.text) &&
-                price.equals(ad.price) &&
-                priceMin.equals(ad.priceMin) &&
-                date.equals(ad.date);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, text, userId, categoryId, price, priceMin, date, dayCount, confirm, isActual);
-    }
+    private Image image = new Image();
 }

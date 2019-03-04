@@ -3,20 +3,19 @@
 <html>
 <head>
     <%--***************************************************--%>
-    <%--             мета Bootstrapp                       --%>
+    <%--                  мета Bootstrap                   --%>
     <%--***************************************************--%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-    <title>about</title>
+    <title>About</title>
     <%--***************************************************--%>
-    <%--            магия Bootstrapp                       --%>
+    <%--                  магия Bootstrap                  --%>
     <%--***************************************************--%>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <link href="<c:url value="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>"
+          rel="stylesheet" id="bootstrap-css">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-    <%--    css styles--%>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <%-- css styles --%>
     <style>
         body {
             margin: 0;
@@ -25,46 +24,56 @@
             font: 17px/23px 'Lucida Sans', sans-serif;
         }
     </style>
-    <link href="css/about.css" rel="stylesheet" , type="text/css">
 </head>
-
 <body>
 <div class="container">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">ByMeService</a>
+            <a class="navbar-brand" href="<c:url value="/"/>">ByMeService</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/account">Account</a></li>
-                <li><a href="/contact">Contact</a></li>
+                <li><a href="<c:url value="/ad/new"/>">Sell</a></li>
+                <li><a href="<c:url value="/account"/>">Account</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <c:if test="${not empty user}">
+                    <li><a href="<c:url value="/account"/>">${user}</a></li>
+                </c:if>
+                <c:if test="${empty user}">
+                    <li><a href="<c:url value="/registration"/>">Registration</a></li>
+                </c:if>
+                <li><a href="${logUrl}">${logStatus}</a></li>
             </ul>
         </div>
     </div>
 </div>
-
 <div class="container">
     <div class="row">
         <div class="[ col-sm-6 col-md-offset-2 col-md-4 ]">
             <div class="[ info-card ]">
-                <img style="width: 100%"
-                     src="https://avatars.githubusercontent.com/u/14054783"/>
+                <br/><br/><br/>
+                <a href="<c:url value="/"/>">
+                <img style="width: 70%"
+                     src="https://pbs.twimg.com/media/DbshRJiWAAAbBw0.jpg"
+                     alt="Dog Software Developer"/>
+                </a>
                 <div class="[ info-card-details ] animate">
                     <div class="[ info-card-header ]">
-                        <h1> Cat Developer </h1>
-                        <h3> DevCat </h3>
+                        <h2>Welcome!</h2>
                     </div>
                     <div class="[ info-card-detail ]">
                         <p>
-                            Привет всем! Я обычный кот - девелопер.
-                            Тружусь на благо компании, занимаюсь разработкой
-                            клиентской части приложений, дизайном и версткой.
-                            Главной задачей для меня всегда явзялось создание
-                            отзывчивого дизайна, простого для использования
-                            любому существу на планете (даже мышам!)
-                            Я очень люблю свою работу.
-                            А еще я работаю за еду, поэтому если вдруг у вас есть интересная
-                            задача и вкусная еда - можете смело обращаться ко мне!
+                            <b>ByMe</b> is a great place to put your ads on!<br/>
+                            It allows not only to sell your stuff, but also
+                            to do that with time-varying price.<br/>
+                            <br/>
+                            Feel free to click <b><a href="<c:url value="/registration"/>">Registration</a></b><br/>
+                            if you are not yet registered here.<br/>
+                            <br/>
+                            Otherwise, click <b><a href="<c:url value="/login"/>">Log In</a></b>
+                            <br/>
+                            to start adding your ads, view other people's ads, and have a good time!
                         </p>
                         <div class="social">
                             <a href="https://www.facebook.com/"
@@ -79,7 +88,7 @@
                                class="[ social-icon github ] animate">
                                 <span class="fa fa-github-alt"></span>
                             </a>
-                            <a href="www.linkedin.com/"
+                            <a href="https://www.linkedin.com/"
                                class="[ social-icon linkedin ] animate">
                                 <span class="fa fa-linkedin"></span>
                             </a>
@@ -90,22 +99,28 @@
         </div>
         <div class="[ col-sm-6 col-md-4 ]">
             <div class="[ info-card ]">
-                <img style="width: 100%" src="https://pbs.twimg.com/media/DbshRJiWAAAbBw0.jpg"/>
+                <br/><br/><br/>
+                <a href="<c:url value="/"/>">
+                <img style="width: 47%"
+                     src="<c:url value="/static/favicon/ads.svg"/>"
+                     alt="Ads Favicon"/>
+                </a>
                 <div class="[ info-card-details ] animate">
                     <div class="[ info-card-header ]">
-                        <h1> Dog Developer </h1>
-                        <h3> DevDog </h3>
+                        <h2>Добро пожаловать!</h2>
                     </div>
                     <div class="[ info-card-detail ]">
                         <p>
-                            Привет народ! От имени всех псов девелоперов
-                            категорически вас приветствую! Я занимаюсь разработкой
-                            высогонагруженых серверных решений для малого бизнеса.
-                            Задачи отказоустойчивости и безопасности,
-                            хранение и обработка больших данных - все это про меня.
-                            И хоть нам и приходится работать бок о бок с кошачими
-                            мы научились находить общий язык, ведь все мы в итоге занимаемся
-                            общим делом которое очень любим! Гав!
+                            <b>ByMe</b> &ndash; отличное место для Ваших объявлений!
+                            Сервис позволяет не только продавать вещи, но и задавать
+                            изменение их цены со временем.<br/>
+                            <br/>
+                            Нажмите, пожалуйста, кнопку <b><a href="<c:url value="/registration"/>">Регистрация</a></b>,
+                            если Вы пока ещё не зарегистрированы здесь.<br/>
+                            <br/>
+                            Иначе нажмите кнопку <b><a href="<c:url value="/login"/>">Войти</a></b>,
+                            чтобы добавить Ваше объявление, посмотреть другие
+                            и хорошо провести время!
                         </p>
                         <div class="social">
                             <a href="https://www.facebook.com/"
@@ -120,7 +135,7 @@
                                class="[ social-icon github ] animate">
                                 <span class="fa fa-github-alt"></span>
                             </a>
-                            <a href="www.linkedin.com/"
+                            <a href="https://www.linkedin.com/"
                                class="[ social-icon linkedin ] animate">
                                 <span class="fa fa-linkedin"></span>
                             </a>

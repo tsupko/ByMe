@@ -1,8 +1,8 @@
-package ru.innopolis.byme.dao;
+package ru.innopolis.byme.dao.api;
 
 import ru.innopolis.byme.entity.City;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface CityDao {
@@ -11,5 +11,5 @@ public interface CityDao {
 
     Optional<City> selectById(int id);
 
-    Collection<City> getAllCities();
+    List<City> getAllCities();
 }

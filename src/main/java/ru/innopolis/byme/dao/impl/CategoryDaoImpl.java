@@ -1,10 +1,11 @@
-package ru.innopolis.byme.dao;
+package ru.innopolis.byme.dao.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
+import ru.innopolis.byme.dao.api.CategoryDao;
 import ru.innopolis.byme.entity.Category;
 
 import javax.sql.DataSource;
@@ -37,7 +38,6 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public Collection<Category> getAll() {
-        LOGGER.info("getAllCategory");
         Collection<Category> categories = new ArrayList<>();
         this.jdbcTemplate.execute(SELECT_ALL_CATEGORIES, (PreparedStatementCallback<Collection<Category>>) stmt -> {
             try (ResultSet rs = stmt.executeQuery()) {
@@ -49,10 +49,31 @@ public class CategoryDaoImpl implements CategoryDao {
             } catch (SQLException e) {
                 LOGGER.error("Исключение при получении всех категорий из таблицы category ", e);
             }
-            LOGGER.info(categories.toString());
+            LOGGER.debug(categories.toString());
             return (categories);
         });
         return (categories);
+    }
+
+    private static final String SELECT_CATEGORY_BY_ID = "Select * from category where id = ? ";
+
+    @Override
+    public Category selectById(int id) {
+        LOGGER.debug("Выбор категории по id={} ", id);
+        Category category = new Category();
+        this.jdbcTemplate.execute(SELECT_CATEGORY_BY_ID, (PreparedStatementCallback<Category>) stmt -> {
+            stmt.setInt(1,id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    assignResultSetToCategoryFields(rs, category);
+                    LOGGER.info("Категория выбрана успешно по id={} Инфо: {}", id, category.toString());
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Исключение при выборе категории: ", e);
+            }
+            return category;
+        });
+        return category;
     }
 
     private void assignResultSetToCategoryFields(ResultSet rs, Category category) throws SQLException {

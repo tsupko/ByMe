@@ -3,24 +3,20 @@ package ru.innopolis.byme.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.innopolis.byme.dao.AdDao;
-import ru.innopolis.byme.dao.CategoryDao;
-import ru.innopolis.byme.dao.ImageDao;
-import ru.innopolis.byme.dao.UserDao;
 import ru.innopolis.byme.entity.Ad;
+import ru.innopolis.byme.entity.City;
 import ru.innopolis.byme.entity.Image;
 import ru.innopolis.byme.entity.User;
 import ru.innopolis.byme.exception.ImageUploadException;
-import ru.innopolis.byme.service.ImageService;
+import ru.innopolis.byme.service.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
@@ -28,101 +24,87 @@ import java.security.Principal;
 public class AdController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdController.class);
 
-    private final AdDao adDao;
-    private final UserDao userDao;
-    private final CategoryDao categoryDao;
-    private final ImageDao imageDao;
-    private final ImageService imageService;
-
-    public AdController(AdDao adDao, UserDao userDao, CategoryDao categoryDao, ImageDao imageDao,
-                        ImageService imageService) {
-        this.adDao = adDao;
-        this.userDao = userDao;
-        this.categoryDao = categoryDao;
-        this.imageDao = imageDao;
-        this.imageService = imageService;
-    }
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private ImageService imageService;
+    @Autowired
+    private AdService adService;
+    @Autowired
+    private MainService mainService;
+    @Autowired
+    private CityService cityService;
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public String ad(Model model) {
+    public String ad(Model model, Principal principal) {
         LOGGER.info("mapping get /ad/new");
-        model.addAttribute("categories", categoryDao.getAll());
+        model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("user", principal.getName());
         model.addAttribute("ad", new Ad());
         model.addAttribute("submit", "Добавить объявление");
         return "ad";
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String addAd(@ModelAttribute("ad") Ad ad, MultipartFile image,
-                        BindingResult bindingResult, Principal principal) {
+    public String addAd(@ModelAttribute("ad") Ad ad, MultipartFile imageFile,
+                        BindingResult bindingResult, Principal principal, Model model) {
         String login = principal.getName();
         LOGGER.info("mapping post /ad/new, login: {}", login);
-        User user = userDao.selectByLogin(login).get();
-        ad.setUserId(user.getId());
-        ad.setConfirm(true);
-        ad.setActual(true);
-        adDao.create(ad);
-        LOGGER.info("Новое объявление: {}", ad);
-        LOGGER.info("image.isEmpty(): " + image.isEmpty());
+        LOGGER.info("imageFile.isEmpty(): " + imageFile.isEmpty());
         try {
-            if (!image.isEmpty()) {
-                LOGGER.info("Image size: " + image.getSize());
-                LOGGER.info("Image content type: " + image.getContentType());
-                imageService.validateImage(image);
+            if (!imageFile.isEmpty()) {
+                imageService.validateImageFile(imageFile);
+                adService.createAd(ad, login);
                 String imageName = ad.getId() + ".jpg";
-                imageService.saveImage(imageName, image);
-                Image img = new Image();
-                img.setImg(imageName);
-                img.setAdId(ad.getId());
-                img.setMain(true);
-                imageDao.create(img);
-                LOGGER.info("Новое фото объявления: {}", img);
+                imageService.saveImageFile(imageName, imageFile);
+                imageService.createImgById(ad.getId(), imageName);
+            } else {
+                adService.createAd(ad, login);
             }
         } catch (ImageUploadException e) {
             bindingResult.reject(e.getMessage());
+            model.addAttribute("categories", categoryService.getAll());
+            model.addAttribute("submit", "Добавить объявление");
+            model.addAttribute("selected", ad.getCategoryId());
             return "ad";
         }
         return "redirect:/";
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String editAd(@PathVariable int id, Model model) {
+    public String editAd(@PathVariable int id, Model model, Principal principal) {
         LOGGER.info("mapping get /edit/" + id);
-        Ad ad = adDao.selectById(id);
-        model.addAttribute("categories", categoryDao.getAll());
-        model.addAttribute("ad", ad);
-        model.addAttribute("selected", ad.getCategoryId());
-        model.addAttribute("submit", "Сохранить изменения");
-        return "ad";
+        User user = mainService.selectByLogin(principal.getName());
+        LOGGER.info(" user = {}", user);
+        Ad ad = adService.selectById(id);
+        LOGGER.info(" ad = {}", ad);
+        if (user.getId() == ad.getUserId()) {
+            Image image = imageService.getImageByAd(id);
+            model.addAttribute("categories", categoryService.getAll());
+            model.addAttribute("ad", ad);
+            model.addAttribute("user", principal.getName());
+            model.addAttribute("selected", ad.getCategoryId());
+            model.addAttribute("image", image.getImg());
+            model.addAttribute("submit", "Сохранить изменения");
+            return "ad";
+        } else {
+            return "redirect:/account";
+        }
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    public String updateAd(@PathVariable int id, @ModelAttribute("ad") Ad ad, MultipartFile image,
-                           BindingResult bindingResult) {
+    public String updateAd(@PathVariable int id, @Valid Ad ad,
+                           MultipartFile imageFile, BindingResult bindingResult) {
         LOGGER.info("mapping post /edit/" + id);
-        Ad newAd = adDao.selectById(id);
-        newAd.setTitle(ad.getTitle());
-        newAd.setText(ad.getText());
-        newAd.setCategoryId(ad.getCategoryId());
-        newAd.setPrice(ad.getPrice());
-        newAd.setPriceMin(ad.getPriceMin());
-        adDao.update(newAd);
-        LOGGER.info("объявление изменено: {}", newAd);
-        LOGGER.info("image.isEmpty(): " + image.isEmpty());
+        adService.updateAd(id, ad);
+        LOGGER.info("image.isEmpty(): " + imageFile.isEmpty());
         try {
-            if (!image.isEmpty()) {
-                LOGGER.info("Image size: " + image.getSize());
-                LOGGER.info("Image content type: " + image.getContentType());
-                imageService.validateImage(image);
+            if (!imageFile.isEmpty()) {
+                imageService.validateImageFile(imageFile);
                 String imageName = id + ".jpg";
-                imageService.saveImage(imageName, image);
-                if (!imageDao.exists(id)) {
-                    Image img = new Image();
-                    img.setImg(imageName);
-                    img.setAdId(id);
-                    img.setMain(true);
-                    imageDao.create(img);
-                    LOGGER.info("Новое фото объявления: {}", img);
+                imageService.saveImageFile(imageName, imageFile);
+                if (!imageService.exists(id)) {
+                    imageService.createImgById(id, imageName);
                 }
             }
         } catch (ImageUploadException e) {
@@ -130,5 +112,38 @@ public class AdController {
             return "ad";
         }
         return "redirect:/account";
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String deleteAd(@PathVariable int id) {
+        Ad ad = adService.selectById(id);
+        adService.delete(ad);
+        return "redirect:/account";
+    }
+
+    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
+    public String viewAd(@PathVariable int id, Model model, Principal principal) {
+        LOGGER.info("mapping get /ad/" + id);
+        Ad ad = adService.selectById(id);
+        Image image = imageService.getImageByAd(id);
+        User user = mainService.selectById(ad.getUserId());
+        City city = cityService.selectByUser(user);
+        LOGGER.info("user: {}", user);
+
+        model.addAttribute("category", categoryService.getCategory(ad.getCategoryId()));
+        model.addAttribute("ad", ad);
+        model.addAttribute("image", image.getImg());
+        model.addAttribute("seller", user);
+        softPrincipalCheck(model, principal);
+        model.addAttribute("city", city);
+        return "ad_view";
+    }
+
+    private void softPrincipalCheck(Model model, Principal principal) {
+        try {
+            model.addAttribute("user", principal.getName());
+        } catch (NullPointerException e){
+            model.addAttribute("user", null);
+        }
     }
 }

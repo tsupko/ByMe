@@ -190,7 +190,7 @@
                 <a href="/ad/view/${item.id}">
                     <img class="img-responsive"
                          src="/static/repo/${item.image.img == null ? 'no_image.jpg' : item.image.img}" alt="Photo"></a>
-                <div class="titleBox">${item.title} - ${item.price} руб.</div>
+                <div class="titleBox">${item.title} - ${item.price} &#x20bd; </div>
             </div>
         </div>
     </c:forEach>

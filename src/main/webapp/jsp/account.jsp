@@ -85,7 +85,7 @@
                     <table class="table">
                         <tbody>
                         <tr>
-                            <td style="width: 25%">Login</td>
+                            <td style="width: 25%"><label>Login</label></td>
                             <td style="width: 75%">${account.login}</td>
                         <tr>
                             <td><label for="name">Username</label></td>
@@ -136,9 +136,9 @@
                 <thead class="thead-dark">
                     <tr>
                         <th style="text-align: center">#</th>
-                        <th style="text-align: center">Title</th>
-                        <th style="text-align: center">Text</th>
-                        <th style="text-align: center">Price</th>
+                        <th style="text-align: left">Title</th>
+                        <th style="text-align: left">Text</th>
+                        <th style="text-align: right">Price</th>
                         <th style="text-align: center"></th>
                         <th style="text-align: center"></th>
                     </tr>
@@ -146,10 +146,10 @@
                 <tbody>
                     <c:forEach items="${ads}" var="item">
                         <tr>
-                            <th class="counterCell"></th>
-                            <td>${item.title}</td>
-                            <td>${item.text}</td>
-                            <td>${item.price}</td>
+                            <th class="counterCell" style="text-align: center"></th>
+                            <td style="text-align: left">${item.title}</td>
+                            <td style="text-align: left">${item.text}</td>
+                            <td style="text-align: right">${item.price}</td>
                             <td><a href="/ad/edit/${item.id}" type="button" class="btn btn-info">Edit</a></td>
                             <td><a href="/ad/delete/${item.id}" type="button" class="btn btn-danger">Delete</a></td>
                         </tr>

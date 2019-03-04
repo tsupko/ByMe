@@ -92,7 +92,7 @@ public class AdDaoImpl implements AdDao {
      * sql-скрипт для выбора объявлений по автору (user_id)
      */
     private static final String SELECT_AD_BY_USER_ID = "select * from ad" +
-            " where user_id = ? and is_actual = true order by id";
+            " where user_id = ? and is_actual = true order by id desc ";
 
     /**
      * выбор объявлений из таблицы ad,
@@ -102,7 +102,6 @@ public class AdDaoImpl implements AdDao {
      */
     @Override
     public Collection<Ad> selectByUserId(int userId) {
-        LOGGER.info("selectByUserId");
         Collection<Ad> ads = new ArrayList<>();
         this.jdbcTemplate.execute(SELECT_AD_BY_USER_ID, (PreparedStatementCallback<Collection<Ad>>) stmt -> {
             stmt.setInt(1, userId);
@@ -110,13 +109,13 @@ public class AdDaoImpl implements AdDao {
                 while (rs.next()) {
                     Ad ad = new Ad();
                     assignResultSetToAdFields(rs, ad);
-                    LOGGER.info(ad.toString());
+                    LOGGER.debug(ad.toString());
                     ads.add(ad);
                 }
             } catch (SQLException e) {
                 LOGGER.error("Исключение при получении объявлений по автору user_id={}", userId, e);
             }
-            LOGGER.info(ads.toString());
+            LOGGER.debug(ads.toString());
             return ads;
         });
         return ads;
@@ -242,7 +241,7 @@ public class AdDaoImpl implements AdDao {
                 stmt.setInt(1, categoryId);
             }
             getAdvsFomPstmt(result, stmt);
-            LOGGER.info(result.toString());
+            LOGGER.debug(result.toString());
             return (result);
         });
         return (result);

@@ -59,7 +59,7 @@ public class CityDaoImpl implements CityDao {
                 while (rs.next()) {
                     city.setId(rs.getInt(CITY_ID));
                     city.setName(rs.getString(CITY_NAME));
-                    LOGGER.info("Город выбран успешно по name={}: {}. Инфо: {}", name, city.toString());
+                    LOGGER.debug("Город выбран успешно по name={}: {}. Инфо: {}", name, city.toString());
                 }
             } catch (SQLException e) {
                 LOGGER.error("Исключение при выборе города: ", e);
@@ -85,7 +85,7 @@ public class CityDaoImpl implements CityDao {
                 while (rs.next()) {
                     city.setId(rs.getInt(CITY_ID));
                     city.setName(rs.getString(CITY_NAME));
-                    LOGGER.info("Город выбран успешно по id={} Инфо: {}", id, city.toString());
+                    LOGGER.debug("Город выбран успешно по id={} Инфо: {}", id, city.toString());
                 }
             } catch (SQLException e) {
                 LOGGER.error("Исключение при выборе города: ", e);
@@ -106,7 +106,7 @@ public class CityDaoImpl implements CityDao {
                     City city = new City();
                     city.setId(rs.getInt(CITY_ID));
                     city.setName(rs.getString(CITY_NAME));
-                    LOGGER.info(city.toString());
+                    LOGGER.debug(city.toString());
                     cities.add(city);
                 }
             } catch (SQLException e) {

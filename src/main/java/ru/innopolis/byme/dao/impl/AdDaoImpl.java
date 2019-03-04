@@ -268,10 +268,10 @@ public class AdDaoImpl implements AdDao {
                     "           FROM category\n" +
                     "                  JOIN r ON category.parent_id = r.id\n" +
                     "           ) SELECT id FROM r\n" +
-                    "     )\n";
+                    "     ) order by ad.id desc \n";
         }
         if (i != 0) {
-            sql += "limit %d";
+            sql += " limit %d";
             sql = String.format(sql, i);
         }
         LOGGER.debug("sql =" + sql);

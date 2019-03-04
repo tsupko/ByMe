@@ -97,7 +97,7 @@
                                 <%--валидация пароля--%>
                                 <div class="form-group">
                                     <small>password</small>
-                                    <input required type="password" name="password" id="pass1" minlength="1" maxlength="30" class="form-control password-field" placeholder="password"
+                                    <input required type="password" name="password" id="pass1" minlength="5" maxlength="30" class="form-control password-field" placeholder="password"
                                            onkeyup="passwordEqualsValidation(); return true;" onchange='check_pass();'/>
                                 </div>
                                 <div class="form-group">

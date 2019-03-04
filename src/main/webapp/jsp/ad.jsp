@@ -94,7 +94,7 @@
                     <td><input id="max" class="form-control" type="text" name="price" required pattern="\d+(\.\d{2})?" value="${ad.price}"/></td>
                 </tr>
                 <tr>
-                    <td>Photo</td>
+                    <td><label>Photo</label></td>
                     <td><img id="output" class="img-responsive" src="/static/repo/${image == null ? 'no_image.jpg' : image}" width="300" alt="Photo"></td>
                 </tr>
                 <tr>

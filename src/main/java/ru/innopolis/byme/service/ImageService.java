@@ -21,6 +21,8 @@ public class ImageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
     @Value("${upload.location}")
     private String uploadDir;
+    @Value("${temp.location}")
+    private String temp;
 
     public void validateImageFile(MultipartFile image) throws ImageUploadException {
         LOGGER.info("Image size: " + image.getSize());
@@ -35,7 +37,11 @@ public class ImageService {
     public void saveImageFile(String filename, MultipartFile image) throws ImageUploadException {
         try {
             File file = new File(uploadDir + filename);
+            File tempFile = new File(temp + filename);
+
             FileUtils.writeByteArrayToFile(file, image.getBytes());
+            FileUtils.writeByteArrayToFile(tempFile, image.getBytes());
+
             LOGGER.info("File saved {}", filename);
         } catch (IOException e) {
             LOGGER.error("File save error ", e);

@@ -32,7 +32,6 @@ public class AdDaoImpl implements AdDao {
 
     @Autowired
     public AdDaoImpl(DataSource dataSource) {
-
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 

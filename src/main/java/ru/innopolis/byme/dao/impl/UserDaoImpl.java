@@ -71,9 +71,8 @@ public class UserDaoImpl implements UserDao {
             return;
         }
         if (exists(user.getLogin())) {
-            throw new UserLoginAlreadyExistsException("user already exist: login = " + user.getLogin());
+            throw new UserLoginAlreadyExistsException("User already exists: login = " + user.getLogin());
         } else {
-
             LOGGER.debug("Создание пользователя {}", user);
             this.jdbcTemplate.execute(INSERT_USER, (PreparedStatementCallback<User>) stmt -> {
                 stmt.setString(1, user.getLogin());
@@ -91,7 +90,7 @@ public class UserDaoImpl implements UserDao {
                     }
                 } catch (SQLException e) {
                     LOGGER.error("Исключение при создании пользователя");
-                    throw new UserLoginAlreadyExistsException("user email already exist: email = " + user.getEmail());
+                    throw new UserLoginAlreadyExistsException("User email already exists: email = " + user.getEmail());
                 }
                 return user;
             });
@@ -184,7 +183,7 @@ public class UserDaoImpl implements UserDao {
 
         if (!current.getEmail().replaceAll("\"", "").equals(user.getEmail())) {
             if (checkEmail(user))
-                throw new UserLoginAlreadyExistsException("user email already exist: email = " + user.getEmail());
+                throw new UserLoginAlreadyExistsException("User email already exists: email = " + user.getEmail());
         } else {
             this.jdbcTemplate.execute(UPDATE_USER, (PreparedStatementCallback<Boolean>) stmt -> {
                 stmt.setString(1, user.getPassword());

@@ -65,8 +65,9 @@
                     <div class="[ info-card-detail ]">
                         <p>
                             <b>ByMe</b> is a great place to put your ads on!<br/>
-                            It allows not only to sell your stuff, but also
-                            to do that with time-varying price.<br/>
+                            It allows to tell the world what stuff you are selling,
+                            view ads put by other people, and possibly buy something
+                            having called the owner.<br/>
                             <br/>
                             Feel free to click <b><a href="<c:url value="/registration"/>">Registration</a></b><br/>
                             if you are not yet registered here.<br/>
@@ -112,8 +113,9 @@
                     <div class="[ info-card-detail ]">
                         <p>
                             <b>ByMe</b> &ndash; отличное место для Ваших объявлений!
-                            Сервис позволяет не только продавать вещи, но и задавать
-                            изменение их цены со временем.<br/>
+                            Сервис позволяет рассказать миру, какие вещи Вы продаёте,
+                            а также посмотреть, что продают другие, и, возможно, купить,
+                            созвонившись с продавцом непосредственно.<br/>
                             <br/>
                             Нажмите, пожалуйста, кнопку <b><a href="<c:url value="/registration"/>">Регистрация</a></b>,
                             если Вы пока ещё не зарегистрированы здесь.<br/>

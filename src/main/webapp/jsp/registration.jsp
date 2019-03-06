@@ -36,14 +36,20 @@
             var message = document.getElementById('confirmMessage');
             var goodColor = "#66cc66";
             var badColor = "#ff6666";
-            if (pass1.value === pass2.value) {
-                pass2.style.backgroundColor = goodColor;
-                message.style.color = goodColor;
-                message.innerHTML = "Passwords Match"
+            var threshold = 3;
+            if (pass1.value.length < threshold || pass2.value.length < threshold) {
+                pass2.style.backgroundColor = "";
+                message.innerHTML = "";
             } else {
-                pass2.style.backgroundColor = badColor;
-                message.style.color = badColor;
-                message.innerHTML = "Passwords Do Not Match!"
+                if (pass1.value === pass2.value) {
+                    pass2.style.backgroundColor = goodColor;
+                    message.style.color = goodColor;
+                    message.innerHTML = "Passwords match.";
+                } else {
+                    pass2.style.backgroundColor = badColor;
+                    message.style.color = badColor;
+                    message.innerHTML = "Passwords do not match.";
+                }
             }
         }
 
@@ -90,38 +96,38 @@
                             </c:if>
                             <form:form role="form">
                                 <div class="form-group">
-                                    <small>login</small>
-                                    <input required class="form-control" type="text" name="login" minlength="1" maxlength="30" placeholder="login">
+                                    <small>Username</small>
+                                    <input required autofocus class="form-control" type="text" name="login" minlength="1" maxlength="30" placeholder="Enter your username">
                                     <div id="errLast"></div>
                                 </div>
                                 <%--валидация пароля--%>
                                 <div class="form-group">
-                                    <small>password</small>
-                                    <input required type="password" name="password" id="pass1" minlength="5" maxlength="30" class="form-control password-field" placeholder="password"
+                                    <small>Password</small>
+                                    <input required type="password" name="password" id="pass1" minlength="5" maxlength="30" class="form-control password-field" placeholder="Enter your password"
                                            onkeyup="passwordEqualsValidation(); return true;" onchange='check_pass();'/>
                                 </div>
                                 <div class="form-group">
-                                    <small>password</small>
-                                    <input required type="password" id="pass2" class="form-control password-field" placeholder="enter again to validate" onkeyup="passwordEqualsValidation(); return false;"
+                                    <small>Confirm Password</small>
+                                    <input required type="password" id="pass2" class="form-control password-field" placeholder="Enter your password again" onkeyup="passwordEqualsValidation(); return false;"
                                            onchange='check_pass();'/>
                                     <span id="confirmMessage" class="confirmMessage"></span>
                                 </div>
                                 <div class="form-group">
-                                    <small>name</small>
-                                    <input required type="text" name="name" class="form-control" placeholder="name">
+                                    <small>Name</small>
+                                    <input required type="text" name="name" class="form-control" placeholder="John Doe">
                                 </div>
                                 <div class="form-group">
-                                    <small>phone</small>
-                                    <input required type="number" name="phoneNumber" class="form-control phone" placeholder="phone">
+                                    <small>Phone</small>
+                                    <input required type="number" name="phoneNumber" class="form-control phone" placeholder="79381234567">
                                 </div>
                                 <div class="form-group">
-                                    <small>email</small>
-                                    <input required type="text" name="email" class="form-control" placeholder="Email Address"/>
+                                    <small>Email</small>
+                                    <input required type="text" name="email" class="form-control" placeholder="john.doe@example.com"/>
                                 </div>
                                 <div class="form-group">
                                     <select class="form-control" name="cityId">
                                         <c:forEach var="item" items="${cities}">
-                                            <option value="${item.id}"${item.id==selected?'selected':''}>${item.name}</option>
+                                            <option value="${item.id}"${item.id == selected ? 'selected' : ''}>${item.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>

@@ -41,7 +41,7 @@ public class AdController {
         model.addAttribute("categories", categoryService.getAll());
         model.addAttribute("user", principal.getName());
         model.addAttribute("ad", new Ad());
-        model.addAttribute("submit", "Добавить объявление");
+        model.addAttribute("submit", "Add Advert");
         return "ad";
     }
 
@@ -64,7 +64,7 @@ public class AdController {
         } catch (ImageUploadException e) {
             bindingResult.reject(e.getMessage());
             model.addAttribute("categories", categoryService.getAll());
-            model.addAttribute("submit", "Добавить объявление");
+            model.addAttribute("submit", "Add Advert");
             model.addAttribute("selected", ad.getCategoryId());
             return "ad";
         }
@@ -85,7 +85,7 @@ public class AdController {
             model.addAttribute("user", principal.getName());
             model.addAttribute("selected", ad.getCategoryId());
             model.addAttribute("image", image.getImg());
-            model.addAttribute("submit", "Сохранить изменения");
+            model.addAttribute("submit", "Save Changes");
             return "ad";
         } else {
             return "redirect:/account";

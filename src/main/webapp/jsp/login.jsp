@@ -65,12 +65,12 @@
                             </c:if>
                             <form:form role="form">
                                 <div class="form-group">
-                                    <input required class="form-control" type="text" name="login" placeholder="login">
+                                    <input required autofocus class="form-control" type="text" name="login" placeholder="Username">
                                     <div id="errLast"></div>
                                 </div>
                                 <div class="form-group">
                                     <input required type="password" name="password" class="form-control password-field"
-                                           placeholder="password"/>
+                                           placeholder="Password"/>
                                 </div>
                                 <div class="check-box">
                                     <label>

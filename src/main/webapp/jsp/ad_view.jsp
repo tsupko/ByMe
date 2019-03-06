@@ -73,7 +73,7 @@
             </tr>
             <tr>
                 <td><label for="description">Description</label></td>
-                <td><textarea id="description" class="form-control" name="text" rows="3" disabled>${ad.text}</textarea></td>
+                <td><textarea id="description" class="form-control" name="text" rows="5" disabled>${ad.text}</textarea></td>
             </tr>
             <tr>
                 <td><label for="price">Price</label></td>

@@ -30,30 +30,34 @@
         }
     </style>
     <script type="text/javascript">
-        var pass1 = document.getElementById('pass1').valueOf();
-        var pass2 = document.getElementById('pass2').valueOf();
-
         function passwordEqualsValidation() {
+            var pass1 = document.getElementById('pass1');
+            var pass2 = document.getElementById('pass2');
             var message = document.getElementById('confirmMessage');
             var goodColor = "#66cc66";
             var badColor = "#ff6666";
-            if (pass1 === pass2) {
-                pass2.style.backgroundColor = goodColor;
-                message.style.color = goodColor;
-                message.innerHTML = "Passwords match."
+            var threshold = 3;
+            if (pass1.value.length < threshold || pass2.value.length < threshold) {
+                pass2.style.backgroundColor = "";
+                message.innerHTML = "";
             } else {
-                pass2.style.backgroundColor = badColor;
-                message.style.color = badColor;
-                message.innerHTML = "Passwords do not match."
+                if (pass1.value === pass2.value) {
+                    pass2.style.backgroundColor = goodColor;
+                    message.style.color = goodColor;
+                    message.innerHTML = "Passwords match.";
+                } else {
+                    pass2.style.backgroundColor = badColor;
+                    message.style.color = badColor;
+                    message.innerHTML = "Passwords do not match.";
+                }
             }
         }
 
         function checkPass() {
-            document.getElementById('submit').disabled = pass1 !== pass2;
+            document.getElementById('submit').disabled = document.getElementById('pass1').value !== document.getElementById('pass2').value;
         }
     </script>
 </head>
-
 <body>
 <div class="container">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -65,15 +69,13 @@
                 <li><a href="<c:url value="/about"/>">About</a></li>
                 <li><a href="<c:url value="/ad/new"/>">Sell</a></li>
             </ul>
-
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="<c:url value="/account"/>">Hello, ${user.login}</a></li>
+                <li><a href="<c:url value="/account"/>">${user.login}</a></li>
                 <li><a href="<c:url value="/logout"/>">Log Out</a></li>
             </ul>
         </div>
     </div>
 </div>
-
 <div class="register">
     <form id="details" method="post" action="<c:url value="/password"/>">
         <div class="container">
@@ -92,7 +94,6 @@
                             <form:form role="form">
                                 <input type=hidden name="id" value="${user.id}"/>
                                 <input type=hidden name="login" value="${user.login}"/>
-
                                 <%--валидация пароля--%>
                                 <div class="form-group">
                                     <input required type="password" name="password" id="pass1" minlength="5" maxlength="30" class="form-control password-field" placeholder="new password" onkeyup="passwordEqualsValidation(); return true;" onchange='checkPass();'/>

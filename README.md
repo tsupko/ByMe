@@ -1,2 +1,24 @@
-# Ad board [![codecov](https://codecov.io/gh/alexeybalakin/JavaEE/branch/develop/graph/badge.svg?token=7aihnGkUxb)](https://codecov.io/gh/alexeybalakin/JavaEE)
+**Функционал:**
 
+1. Регистрация и авторизация пользователей с помощью базы данных
+2. Добавление, редактирование и удаление объявлений для авторизованных пользователей
+3. Фильтрация объявлений по категориям и городам на главной странице для всех пользователей
+4. Просмотр объявления и контактов продавца на странице конкретного объявления
+
+**Технологии:**
+
+*Backend:*
+* Spring Framework (MVC, Security, JDBC)
+* Apache Commons (DBCP)
+* PostgreSQL 11
+* Tomcat 9
+
+*Frontend:*
+* CSS (Bootstrap)
+* JavaScript (jQuery)
+
+*Tools:*
+* git
+* Maven
+* Travis
+* IntelliJ IDEA
